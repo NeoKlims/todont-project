@@ -1,0 +1,10 @@
+<section class="templates">
+    <h2>Emprende tu próximo proyecto con las plantillas</h2>
+    <div class="template-grid">
+      <div class="template-card" *ngFor="let template of templates">
+        <img [src]="template.icon" [alt]="template.name">
+        <h4>{{template.name}}</h4>
+        <p>{{template.description}}</p>
+      </div>
+    </div>
+  </section>
