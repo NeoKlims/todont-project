@@ -5,18 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './assets/footer/footer.component';
 import { HeroComponent } from './assets/hero/hero.component';
-import { FeaturesComponent } from './assets/features/features.component';
-import { TemplatesComponent } from './assets/templates/templates.component';
 import { StatsComponent } from './assets/stats/stats.component';
+import { HeaderComponent } from './assets/header/header.component';
+import { FeaturedServicesComponent } from './assets/featured-services/featured-services.component';
+import { ServicesComponent } from './assets/services/services.component';
+import { CommunityListsComponent } from './assets/community-lists/community-lists.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FooterComponent,
     HeroComponent,
-    FeaturesComponent,
-    TemplatesComponent,
-    StatsComponent
+    StatsComponent,
+    HeaderComponent,
+    FeaturedServicesComponent,
+    ServicesComponent,
+    CommunityListsComponent
   ],
   imports: [
     BrowserModule,

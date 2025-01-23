@@ -1,1 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700&display=swap');
+
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsive Typography */
+html {
+  font-size: 16px;
+}
+
+/* Button Styles */
+.btn {
+  display: inline-block;
+  background-color: #ff6b6b;
+  color: #fff;
+  text-decoration: none;
+  padding: 1.2rem 2.5rem;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #e05252;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 12px;
+  }
+}

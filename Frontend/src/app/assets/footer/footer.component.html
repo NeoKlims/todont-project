@@ -1,1 +1,13 @@
-<p>footer works!</p>
+<!-- footer.component.html -->
+<footer>
+    <div class="footer-info">
+      <p>{{ companyInfo.address }}</p>
+      <p>Email: {{ companyInfo.email }}</p>
+      <p>Phone: {{ companyInfo.phone }}</p>
+    </div>
+    <div class="social-links">
+      <a *ngFor="let link of socialLinks" href="{{ link.url }}">
+        {{ link.platform }}
+      </a>
+    </div>
+  </footer>
