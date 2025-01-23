@@ -4,21 +4,26 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateTodoTasksTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        //
+        Schema::create('todo-tasks', function (Blueprint $table) {
+            $table->id();
+            $table->text('description');
+            $table->boolean('completed')->default(false);
+            $table->timestamp('deadline')->nullable();
+            $table->string('tags')->nullable();
+            $table->string('repeat_on')->nullable();
+            $table->unsignedBigInteger('list_id');
+            $table->foreign('list_id')->references('id')->on('todo-lists')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        //
+        Schema::dropIfExists('todo-tasks');
     }
-};
+}
+
