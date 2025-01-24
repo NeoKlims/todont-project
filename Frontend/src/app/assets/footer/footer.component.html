@@ -1,13 +1,31 @@
 <!-- footer.component.html -->
-<footer>
-    <div class="footer-info">
-      <p>{{ companyInfo.address }}</p>
-      <p>Email: {{ companyInfo.email }}</p>
-      <p>Phone: {{ companyInfo.phone }}</p>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-container">
+      <div class="footer-about">
+        <h4>About TCODNT</h4>
+        <p>Innovative solutions for modern challenges.</p>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="#">Home</a>
+        <a href="#">Services</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </div>
+      
+      <div class="footer-contact">
+        <h4>Contact Us</h4>
+        <p>{{ companyInfo.email }}</p>
+        <p>{{ companyInfo.phone }}</p>
+      </div>
     </div>
-    <div class="social-links">
-      <a *ngFor="let link of socialLinks" href="{{ link.url }}">
+    
+    <div class="social-icons">
+      <a *ngFor="let link of socialLinks" href="{{ link.url }}" class="social-icon">
         {{ link.platform }}
       </a>
     </div>
-  </footer>
+  </div>
+</footer>

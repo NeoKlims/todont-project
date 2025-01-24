@@ -1,10 +1,10 @@
 <header>
-    <nav>
-      <a 
-        *ngFor="let link of navLinks" 
-        href="{{ link.url }}"
-      >
+  <div class="header-container">
+    <div class="logo">TODONT</div>
+    <nav class="nav-links">
+      <a *ngFor="let link of navLinks" href="{{ link.url }}">
         {{ link.label }}
       </a>
     </nav>
-  </header>
+  </div>
+</header>

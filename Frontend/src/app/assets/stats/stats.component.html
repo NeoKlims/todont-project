@@ -1,7 +1,19 @@
-<!-- stats.component.html -->
-<section class="stats">
-    <div class="stat" *ngFor="let stat of stats">
-      <div class="stat-value">{{ stat.value }}</div>
-      <div class="stat-label">{{ stat.label }}</div>
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div 
+        class="stat-item" 
+        *ngFor="let stat of stats" 
+        [style.--stat-color]="stat.color"
+      >
+        <div class="stat-icon">
+          <i class="icon-{{ stat.icon }}"></i>
+        </div>
+        <div class="stat-content">
+          <h3 class="stat-value">{{ stat.value }}</h3>
+          <p class="stat-label">{{ stat.label }}</p>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
