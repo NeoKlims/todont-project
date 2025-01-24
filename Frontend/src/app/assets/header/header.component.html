@@ -2,7 +2,7 @@
   <div class="header-container">
     <div class="logo">TODONT</div>
     <nav class="nav-links">
-      <a *ngFor="let link of navLinks" href="{{ link.url }}">
+      <a *ngFor="let link of navLinks" routerLink="{{ link.url }}" routerLinkActive="active">
         {{ link.label }}
       </a>
     </nav>

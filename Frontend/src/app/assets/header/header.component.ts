@@ -10,8 +10,8 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
   navLinks = [
     { label: 'Home', url: '#' },
-    { label: 'About', url: '#' },
+    { label: 'About', url: '#about' },
     { label: 'Services', url: '#' },
-    { label: 'Contact', url: '#' }
+    { label: 'Contact', url: '#contact' }
   ];
 }

@@ -10,6 +10,8 @@ import { HeaderComponent } from './assets/header/header.component';
 import { FeaturedServicesComponent } from './assets/featured-services/featured-services.component';
 import { ServicesComponent } from './assets/services/services.component';
 import { CommunityListsComponent } from './assets/community-lists/community-lists.component';
+import { ContactComponent } from './assets/contact/contact.component';
+import { AboutComponent } from './assets/about/about.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { CommunityListsComponent } from './assets/community-lists/community-list
     HeaderComponent,
     FeaturedServicesComponent,
     ServicesComponent,
-    CommunityListsComponent
+    CommunityListsComponent,
+    ContactComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
