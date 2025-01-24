@@ -1,1 +1,15 @@
-<p>featured-services works!</p>
+<section class="featured-services">
+    <div class="container">
+      <h2 class="section-title">Featured Services</h2>
+      <div class="services-grid">
+        <div class="service-card" *ngFor="let featuredService of featuredServices">
+          <div class="service-icon">
+            <!-- Add icon logic here, could use Font Awesome or Material Icons -->
+            <i class="icon-{{ featuredService.title | lowercase }}"></i>
+          </div>
+          <h3 class="service-title">{{ featuredService.title }}</h3>
+          <p class="service-description">{{ featuredService.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>

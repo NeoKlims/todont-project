@@ -8,6 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './hero.component.css'
 })
 export class HeroComponent {
-  title = 'Plan. Do. Don\'t.';
+  title = 'PLAN. DO. DON\'T.';
   subtitle = 'Write your future with us.';
 }

@@ -1,0 +1,27 @@
+<section class="about-section">
+    <div class="container">
+      <div class="about-content">
+        <h1 class="section-title">About TCODNT</h1>
+        <p class="about-description">{{ companyDescription }}</p>
+        
+        <div class="company-values">
+          <h2>Our Core Values</h2>
+          <ul class="values-list">
+            <li *ngFor="let value of companyValues">{{ value }}</li>
+          </ul>
+        </div>
+      </div>
+  
+      <div class="team-section">
+        <h2 class="section-title">Our Team</h2>
+        <div class="team-grid">
+          <div class="team-member" *ngFor="let member of teamMembers">
+            <img [src]="member.image" [alt]="member.name" class="member-image">
+            <h3 class="member-name">{{ member.name }}</h3>
+            <p class="member-role">{{ member.role }}</p>
+            <p class="member-bio">{{ member.bio }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

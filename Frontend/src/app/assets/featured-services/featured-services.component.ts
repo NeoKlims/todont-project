@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DataService } from '../../services/data.service';
+import { FeaturedService } from '../../models/featured-service.model';
 
 @Component({
   selector: 'app-featured-services',
@@ -8,5 +10,11 @@ import { Component } from '@angular/core';
   styleUrl: './featured-services.component.css'
 })
 export class FeaturedServicesComponent {
+  featuredServices: FeaturedService[] = [];
 
+  constructor(private dataService: DataService) {}
+
+  ngOnInit() {
+    this.featuredServices = this.dataService.getFeaturedServices();
+  }
 }
