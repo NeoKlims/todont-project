@@ -12,6 +12,7 @@ import { ServicesComponent } from './assets/services/services.component';
 import { CommunityListsComponent } from './assets/community-lists/community-lists.component';
 import { ContactComponent } from './assets/contact/contact.component';
 import { AboutComponent } from './assets/about/about.component';
+import { HomeComponent } from './assets/home/home.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AboutComponent } from './assets/about/about.component';
     ServicesComponent,
     CommunityListsComponent,
     ContactComponent,
-    AboutComponent
+    AboutComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
