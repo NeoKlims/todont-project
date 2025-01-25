@@ -1,0 +1,47 @@
+<aside class="sidebar">
+    <button class="create-button" (click)="startAddingTask()">
+      <i class="fas fa-plus"></i>
+      <span>Create</span>
+    </button>
+    
+    <nav class="navigation">
+      <a 
+        href="#" 
+        class="nav-item" 
+        [class.active]="selectedListId === defaultList?.id"
+        (click)="selectList(defaultList?.id || 0); $event.preventDefault()"
+      >
+        <i class="fas fa-tasks"></i>
+        <span>All tasks</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-star"></i>
+        <span>Starred</span>
+      </a>
+    </nav>
+
+    <div class="lists-section">
+      <div class="section-header">
+        <span>Lists</span>
+        <button class="collapse-button" (click)="toggleListsCollapsed()">
+          <i class="fas" [class.fa-chevron-up]="!listsCollapsed" [class.fa-chevron-down]="listsCollapsed"></i>
+        </button>
+      </div>
+      <div class="lists" *ngIf="!listsCollapsed">
+        <a 
+          *ngFor="let list of lists"
+          href="#" 
+          class="list-item"
+          [class.active]="selectedListId === list.id"
+          (click)="selectList(list.id); $event.preventDefault()"
+        >
+          <i class="fas fa-list"></i>
+          <span>{{ list.name }}</span>
+        </a>
+        <button class="create-list-button" (click)="createNewList()">
+          <i class="fas fa-plus"></i>
+          <span>Create list</span>
+        </button>
+      </div>
+    </div>
+  </aside>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { FormsModule } from "@angular/forms"
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +14,11 @@ import { CommunityListsComponent } from './assets/community-lists/community-list
 import { ContactComponent } from './assets/contact/contact.component';
 import { AboutComponent } from './assets/about/about.component';
 import { HomeComponent } from './assets/home/home.component';
-
+import { TodoListComponent } from './assets/todo-list/todo-list.component';
+import { SidebarComponent } from './assets/sidebar/sidebar.component';
+import { WorkspaceComponent } from './assets/workspace/workspace.component';
+import { TaskService } from './services/task.service';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,14 +31,20 @@ import { HomeComponent } from './assets/home/home.component';
     CommunityListsComponent,
     ContactComponent,
     AboutComponent,
-    HomeComponent
+    HomeComponent,
+    TodoListComponent,
+    SidebarComponent,
+    WorkspaceComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    RouterModule.forRoot([{ path: "", component: TodoListComponent }])
   ],
   providers: [
-    provideClientHydration(withEventReplay())
+    provideClientHydration(withEventReplay()),
+    TaskService
   ],
   bootstrap: [AppComponent]
 })
