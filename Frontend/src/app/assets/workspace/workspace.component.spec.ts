@@ -8,7 +8,7 @@ describe('WorkspaceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [WorkspaceComponent]
+      imports: [WorkspaceComponent]
     })
     .compileComponents();
 

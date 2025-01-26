@@ -32,14 +32,14 @@ import { RouterModule } from '@angular/router';
     ContactComponent,
     AboutComponent,
     HomeComponent,
-    TodoListComponent,
-    SidebarComponent,
-    WorkspaceComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    TodoListComponent,
+    SidebarComponent,
+    WorkspaceComponent,
     RouterModule.forRoot([{ path: "", component: TodoListComponent }])
   ],
   providers: [
