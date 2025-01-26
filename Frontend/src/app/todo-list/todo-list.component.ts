@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoList, TodoTask } from '../../models/todo-list.model';
-import { TodoService } from '../../services/todo.service';
+import { TodoList, TodoTask } from '../models/todo-list.model';
+import { TodoService } from '../task-services/todo.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -21,10 +21,10 @@ import { FormsModule } from '@angular/forms';
             (keyup.enter)="updateListName(editInput.value)"
             (blur)="updateListName(editInput.value)"
             class="edit-input"
-          >
+          />
         </div>
         <div class="header-actions">
-          <button 
+          <button
             class="star-btn"
             [class.starred]="list.isStarred"
             (click)="toggleListStar()"
@@ -32,7 +32,9 @@ import { FormsModule } from '@angular/forms';
             ★
           </button>
           <div class="menu-container">
-            <button class="more-options" (click)="showListMenu = !showListMenu">⋮</button>
+            <button class="more-options" (click)="showListMenu = !showListMenu">
+              ⋮
+            </button>
             <div class="menu" *ngIf="showListMenu">
               <button (click)="startEditing()">Edit</button>
               <button (click)="deleteList()">Delete</button>
@@ -42,17 +44,17 @@ import { FormsModule } from '@angular/forms';
       </div>
 
       <div class="tasks">
-        <div 
-          *ngFor="let task of list.tasks" 
+        <div
+          *ngFor="let task of list.tasks"
           class="task-item"
           [class.completed]="task.completed"
         >
           <div class="task-content">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               [checked]="task.completed"
               (change)="toggleTask(task.id)"
-            >
+            />
             <span *ngIf="!editingTaskId || editingTaskId !== task.id">
               {{ task.title }}
             </span>
@@ -64,10 +66,10 @@ import { FormsModule } from '@angular/forms';
               (keyup.enter)="updateTaskTitle(task.id, taskEditInput.value)"
               (blur)="updateTaskTitle(task.id, taskEditInput.value)"
               class="edit-input"
-            >
+            />
           </div>
           <div class="task-actions">
-            <button 
+            <button
               class="star-btn"
               [class.starred]="task.isStarred"
               (click)="toggleTaskStar(task.id)"
@@ -75,7 +77,12 @@ import { FormsModule } from '@angular/forms';
               ★
             </button>
             <div class="menu-container">
-              <button class="more-options" (click)="showTaskMenu[task.id] = !showTaskMenu[task.id]">⋮</button>
+              <button
+                class="more-options"
+                (click)="showTaskMenu[task.id] = !showTaskMenu[task.id]"
+              >
+                ⋮
+              </button>
               <div class="menu" *ngIf="showTaskMenu[task.id]">
                 <button (click)="startEditingTask(task.id)">Edit</button>
                 <button (click)="deleteTask(task.id)">Delete</button>
@@ -86,137 +93,139 @@ import { FormsModule } from '@angular/forms';
       </div>
 
       <div class="add-task">
-        <input 
+        <input
           #taskInput
-          type="text" 
+          type="text"
           placeholder="Add a task"
           (keyup.enter)="addTask(taskInput.value); taskInput.value = ''"
-        >
+        />
       </div>
     </div>
   `,
-  styles: [`
-    .todo-list {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      margin: 16px;
-      padding: 16px;
-      width: 300px;
-    }
+  styles: [
+    `
+      .todo-list {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin: 16px;
+        padding: 16px;
+        width: 300px;
+      }
 
-    .list-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
+      .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
 
-    .header-left {
-      flex: 1;
-    }
+      .header-left {
+        flex: 1;
+      }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
+      .header-actions {
+        display: flex;
+        gap: 8px;
+      }
 
-    .list-header h2 {
-      margin: 0;
-      font-size: 18px;
-    }
+      .list-header h2 {
+        margin: 0;
+        font-size: 18px;
+      }
 
-    .more-options {
-      border: none;
-      background: none;
-      cursor: pointer;
-      font-size: 20px;
-      padding: 4px 8px;
-    }
+      .more-options {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 20px;
+        padding: 4px 8px;
+      }
 
-    .task-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 0;
-      gap: 8px;
-    }
+      .task-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        gap: 8px;
+      }
 
-    .task-content {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-    }
+      .task-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+      }
 
-    .task-actions {
-      display: flex;
-      gap: 4px;
-    }
+      .task-actions {
+        display: flex;
+        gap: 4px;
+      }
 
-    .task-item.completed span {
-      text-decoration: line-through;
-      color: #666;
-    }
+      .task-item.completed span {
+        text-decoration: line-through;
+        color: #666;
+      }
 
-    .add-task input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #e0e0e0;
-      border-radius: 4px;
-      margin-top: 16px;
-    }
+      .add-task input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        margin-top: 16px;
+      }
 
-    .menu-container {
-      position: relative;
-    }
+      .menu-container {
+        position: relative;
+      }
 
-    .menu {
-      position: absolute;
-      right: 0;
-      top: 100%;
-      background: white;
-      border-radius: 4px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      z-index: 1000;
-      min-width: 120px;
-    }
+      .menu {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        min-width: 120px;
+      }
 
-    .menu button {
-      display: block;
-      width: 100%;
-      padding: 8px 16px;
-      text-align: left;
-      border: none;
-      background: none;
-      cursor: pointer;
-    }
+      .menu button {
+        display: block;
+        width: 100%;
+        padding: 8px 16px;
+        text-align: left;
+        border: none;
+        background: none;
+        cursor: pointer;
+      }
 
-    .menu button:hover {
-      background: #f5f5f5;
-    }
+      .menu button:hover {
+        background: #f5f5f5;
+      }
 
-    .edit-input {
-      width: 100%;
-      padding: 4px 8px;
-      border: 1px solid #e0e0e0;
-      border-radius: 4px;
-      font-size: inherit;
-    }
+      .edit-input {
+        width: 100%;
+        padding: 4px 8px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: inherit;
+      }
 
-    .star-btn {
-      border: none;
-      background: none;
-      cursor: pointer;
-      font-size: 16px;
-      color: #ccc;
-      padding: 4px;
-    }
+      .star-btn {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #ccc;
+        padding: 4px;
+      }
 
-    .star-btn.starred {
-      color: #f8c931;
-    }
-  `]
+      .star-btn.starred {
+        color: #f8c931;
+      }
+    `,
+  ],
 })
 export class TodoListComponent {
   @Input() list!: TodoList;

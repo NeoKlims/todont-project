@@ -1,23 +1,27 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { FormsModule } from "@angular/forms"
+import {
+  BrowserModule,
+  provideClientHydration,
+  withEventReplay,
+} from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FooterComponent } from './assets/footer/footer.component';
-import { HeroComponent } from './assets/hero/hero.component';
-import { StatsComponent } from './assets/stats/stats.component';
-import { HeaderComponent } from './assets/header/header.component';
-import { FeaturedServicesComponent } from './assets/featured-services/featured-services.component';
-import { ServicesComponent } from './assets/services/services.component';
-import { CommunityListsComponent } from './assets/community-lists/community-lists.component';
-import { ContactComponent } from './assets/contact/contact.component';
-import { AboutComponent } from './assets/about/about.component';
-import { HomeComponent } from './assets/home/home.component';
-import { TodoListComponent } from './assets/todo-list/todo-list.component';
-import { SidebarComponent } from './assets/sidebar/sidebar.component';
-import { WorkspaceComponent } from './assets/workspace/workspace.component';
-import { TaskService } from './services/task.service';
+import { FooterComponent } from './footer/footer.component';
+import { HeroComponent } from './hero/hero.component';
+import { StatsComponent } from './stats/stats.component';
+import { HeaderComponent } from './header/header.component';
+import { FeaturedServicesComponent } from './featured-services/featured-services.component';
+import { ServicesComponent } from './services/services.component';
+import { CommunityListsComponent } from './community-lists/community-lists.component';
+import { ContactComponent } from './contact/contact.component';
+import { AboutComponent } from './about/about.component';
+import { HomeComponent } from './home/home.component';
+import { TodoListComponent } from './todo-list/todo-list.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { WorkspaceComponent } from './workspace/workspace.component';
+import { TaskService } from './task-services/task.service';
 import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
@@ -40,12 +44,9 @@ import { RouterModule } from '@angular/router';
     TodoListComponent,
     SidebarComponent,
     WorkspaceComponent,
-    RouterModule.forRoot([{ path: "", component: TodoListComponent }])
+    RouterModule.forRoot([{ path: '', component: TodoListComponent }]),
   ],
-  providers: [
-    provideClientHydration(withEventReplay()),
-    TaskService
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideClientHydration(withEventReplay()), TaskService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
