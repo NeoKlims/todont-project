@@ -91,7 +91,11 @@ import { FormsModule } from '@angular/forms';
           </div>
         </div>
       </div>
+      <button (click)="toggleCompletedSection()">Show completed task</button>
 
+      <div *ngIf="showCompleted" id="completed-section">
+        <h4>Completed tasks</h4>
+      </div>
       <div class="add-task">
         <input
           #taskInput
@@ -228,6 +232,12 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class TodoListComponent {
+  showCompleted: boolean = false;
+
+  toggleCompletedSection() {
+    this.showCompleted = !this.showCompleted;
+  }
+
   @Input() list!: TodoList;
   showListMenu = false;
   showTaskMenu: { [key: string]: boolean } = {};
