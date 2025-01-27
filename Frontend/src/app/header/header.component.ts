@@ -12,6 +12,6 @@ export class HeaderComponent {
     { label: 'Home', url: '/home' },
     { label: 'About', url: '/about' },
     { label: 'Services', url: '/workspace' },
-    { label: 'Contact', url: '#contact' }
+    { label: 'Contact', url: '/contact-us' }
   ];
 }
