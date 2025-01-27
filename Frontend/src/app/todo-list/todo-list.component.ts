@@ -45,7 +45,7 @@ import { FormsModule } from '@angular/forms';
 
       <div class="tasks">
         <div
-          *ngFor="let task of list.tasks"
+          *ngFor="let task of pendingTasks"
           class="task-item"
           [class.completed]="task.completed"
         >
@@ -91,11 +91,34 @@ import { FormsModule } from '@angular/forms';
           </div>
         </div>
       </div>
-      <button (click)="toggleCompletedSection()">Show completed task</button>
+
+      <button (click)="toggleCompletedSection()">
+        {{ showCompleted ? 'Hide completed tasks' : 'Show completed tasks' }}
+      </button>
 
       <div *ngIf="showCompleted" id="completed-section">
         <h4>Completed tasks</h4>
+        <div *ngFor="let task of completedTasks" class="task-item completed">
+          <div class="task-content">
+            <input
+              type="checkbox"
+              [checked]="task.completed"
+              (change)="toggleTask(task.id)"
+            />
+            <span>{{ task.title }}</span>
+          </div>
+          <div class="task-actions">
+            <button
+              class="star-btn"
+              [class.starred]="task.isStarred"
+              (click)="toggleTaskStar(task.id)"
+            >
+              ★
+            </button>
+          </div>
+        </div>
       </div>
+
       <div class="add-task">
         <input
           #taskInput
@@ -232,19 +255,22 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class TodoListComponent {
-  showCompleted: boolean = false;
-
-  toggleCompletedSection() {
-    this.showCompleted = !this.showCompleted;
-  }
-
   @Input() list!: TodoList;
   showListMenu = false;
   showTaskMenu: { [key: string]: boolean } = {};
   isEditing = false;
   editingTaskId: string | null = null;
+  showCompleted: boolean = false;
 
   constructor(private todoService: TodoService) {}
+
+  get pendingTasks(): TodoTask[] {
+    return this.list.tasks.filter((task) => !task.completed);
+  }
+
+  get completedTasks(): TodoTask[] {
+    return this.list.tasks.filter((task) => task.completed);
+  }
 
   addTask(title: string) {
     if (title.trim()) {
@@ -291,5 +317,9 @@ export class TodoListComponent {
 
   toggleTaskStar(taskId: string) {
     this.todoService.toggleTaskStar(this.list.id, taskId);
+  }
+
+  toggleCompletedSection() {
+    this.showCompleted = !this.showCompleted;
   }
 }
