@@ -4,7 +4,7 @@ import {
   provideClientHydration,
   withEventReplay,
 } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +23,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { TaskService } from './task-services/task.service';
 import { RouterModule } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,8 +39,14 @@ import { RouterModule } from '@angular/router';
     ContactComponent,
     AboutComponent,
     HomeComponent,
+    RegisterComponent,
+    LoginComponent,
+    ForgotPasswordComponent,
+
+    
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
