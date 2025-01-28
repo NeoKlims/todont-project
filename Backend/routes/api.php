@@ -3,10 +3,18 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
-/*Route::get('/user', function (Request $request) {
+Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');*/
+})->middleware('auth:sanctum');
+
+Route::middleware('guest')->group(function () {
+    Route::get('register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+
+    Route::post('register', [RegisteredUserController::class, 'store']);
+});
 
 Route::get('/todolists', [ApiController::class, 'getTodolists']);
 Route::get('/todolists/{id}', [ApiController::class, 'getTodolist']);
@@ -31,4 +39,3 @@ Route::get('/todonttasks/{id}', [ApiController::class, 'getTodontTask']);
 Route::post('/todonttasks', [ApiController::class, 'createTodontTask']);
 Route::put('/todonttasks/{id}', [ApiController::class, 'updateTodontTask']);
 Route::delete('/todonttasks/{id}', [ApiController::class, 'deleteTodontTask']);
-
