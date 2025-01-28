@@ -32,7 +32,7 @@ export class RegisterComponent {
       ? null : { mismatch: true };
   }
 
-  onSubmit() {
+  /*onSubmit() {
     if (this.registerForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
@@ -47,5 +47,26 @@ export class RegisterComponent {
         }
       });
     }
-  }
+  }*/
+
+    onSubmit() {
+      if (this.registerForm.valid) {
+        this.isLoading = true;
+        this.errorMessage = '';
+    
+        const { name, email, password } = this.registerForm.value;
+    
+        this.authService.register({ name, email, password, password_confirmation: this.registerForm.value.confirmPassword })
+          .subscribe({
+            next: () => {
+              this.isLoading = false;
+              this.router.navigate(['/login']);
+            },
+            error: (err) => {
+              this.isLoading = false;
+              this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
+            }
+          });
+      }
+    }
 }

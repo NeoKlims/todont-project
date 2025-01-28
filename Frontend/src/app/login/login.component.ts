@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  standalone:false
+  standalone: false,
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -22,11 +22,11 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  onSubmit() {
+  /*onSubmit() {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
@@ -39,6 +39,25 @@ export class LoginComponent {
           this.errorMessage = error.message || 'Login failed';
           this.isLoading = false;
         }
+      });
+    }
+  }*/
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+
+      this.authService.login(this.loginForm.value).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.router.navigate(['/dashboard']); // Navigate to the dashboard or home
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage =
+            err.error?.message || 'Login failed. Please try again.';
+        },
       });
     }
   }
