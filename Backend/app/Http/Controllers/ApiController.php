@@ -82,6 +82,10 @@ class ApiController extends Controller
         return TodoTask::all();
     }
 
+    public function getSortedTodoTasks() {
+        return TodoTask::orderBy('deadline', 'asc')->get();
+    }
+    
     public function getTodoTask($id) {
         return TodoTask::findOrFail($id);
     }
