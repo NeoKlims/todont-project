@@ -29,6 +29,7 @@ Route::put('/todontlists/{id}', [ApiController::class, 'updateTodontlist']);
 Route::delete('/todontlists/{id}', [ApiController::class, 'deleteTodontlist']);
 
 Route::get('/todotasks', [ApiController::class, 'getTodoTasks']);
+Route::get('/sortedtodotasks', [ApiController::class, 'getSortedTodoTasks']);
 Route::get('/todotasks/{id}', [ApiController::class, 'getTodoTask']);
 Route::post('/todotasks', [ApiController::class, 'createTodoTask']);
 Route::put('/todotasks/{id}', [ApiController::class, 'updateTodoTask']);
