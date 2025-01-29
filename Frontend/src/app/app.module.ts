@@ -43,7 +43,6 @@ import { HttpClientModule } from '@angular/common/http';
     RegisterComponent,
     LoginComponent,
     ForgotPasswordComponent,
-
     
   ],
   imports: [

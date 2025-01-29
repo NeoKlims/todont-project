@@ -13,15 +13,17 @@ import { FormsModule } from '@angular/forms';
 })
 export class TodoListComponent {
   @Input() list!: TodoList;
+  @Input() isTodont: boolean = false; // Determines if it's a To-Don't list
+
   showListMenu = false;
-  showTaskMenu: { [key: string]: boolean } = {}; // Menú de tareas independiente
+  showTaskMenu: { [key: string]: boolean } = {};
   isEditing = false;
   editingTaskId: string | null = null;
   showCompleted: boolean = false;
 
   constructor(private todoService: TodoService) {}
 
-  // TOGGLE MENU FOR THE COMPLETED TASKS
+  // Get Pending & Completed Tasks
   get pendingTasks(): TodoTask[] {
     return this.list.tasks.filter((task) => !task.completed);
   }
@@ -30,63 +32,63 @@ export class TodoListComponent {
     return this.list.tasks.filter((task) => task.completed);
   }
 
-  // ADDING
+  // Adding a Task
   addTask(title: string) {
     if (title.trim()) {
-      this.todoService.addTask(this.list.id, title);
+      this.todoService.addTask(this.list.id, title, this.isTodont);
     }
   }
 
-  // DELETING
+  // Deleting
   deleteTask(taskId: string) {
-    this.todoService.deleteTask(this.list.id, taskId);
-    this.showTaskMenu[taskId] = false; // Cerrar el menú de la tarea al eliminarla
+    this.todoService.deleteTask(this.list.id, taskId, this.isTodont);
+    this.showTaskMenu[taskId] = false;
   }
 
   deleteList() {
-    this.todoService.deleteList(this.list.id);
+    this.todoService.deleteList(this.list.id, this.isTodont);
   }
 
-  // EDITING
+  // Editing
   startEditing() {
     this.isEditing = true;
-    this.showListMenu = false; // Cerrar el menú de la lista al editar
+    this.showListMenu = false;
   }
 
   startEditingTask(taskId: string) {
     this.editingTaskId = taskId;
-    this.showTaskMenu[taskId] = false; // Cerrar el menú de la tarea al editar
+    this.showTaskMenu[taskId] = false;
   }
 
-  // UPDATING
+  // Updating
   updateListName(newName: string) {
-    this.todoService.updateListName(this.list.id, newName);
+    this.todoService.updateListName(this.list.id, newName, this.isTodont);
     this.isEditing = false;
   }
 
   updateTaskTitle(taskId: string, newTitle: string) {
-    this.todoService.updateTaskTitle(this.list.id, taskId, newTitle);
+    this.todoService.updateTaskTitle(this.list.id, taskId, newTitle, this.isTodont);
     this.editingTaskId = null;
   }
 
-  // TOGGLE
+  // Toggle Actions
   toggleTask(taskId: string) {
-    this.todoService.toggleTask(this.list.id, taskId);
+    this.todoService.toggleTask(this.list.id, taskId, this.isTodont);
   }
 
   toggleListStar() {
-    this.todoService.toggleListStar(this.list.id);
+    this.todoService.toggleListStar(this.list.id, this.isTodont);
   }
 
   toggleTaskStar(taskId: string) {
-    this.todoService.toggleTaskStar(this.list.id, taskId);
+    this.todoService.toggleTaskStar(this.list.id, taskId, this.isTodont);
   }
 
   toggleCompletedSection() {
     this.showCompleted = !this.showCompleted;
   }
 
-  // TOGGLE MENU FOR EACH TASK
+  // Toggle Menu for Tasks
   toggleTaskMenu(taskId: string) {
     this.showTaskMenu[taskId] = !this.showTaskMenu[taskId];
     for (let id in this.showTaskMenu) {
