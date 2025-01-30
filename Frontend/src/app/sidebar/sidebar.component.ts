@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../task-services/todo.service';
 import { TodoList } from '../models/todo-list.model';
@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="sidebar">
+     <div class="sidebar">
       <button class="create-btn" (click)="showCreateList = true">
         + Create List
       </button>
@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
       <div class="lists-section">
         <div
           class="list-item"
-          *ngFor="let list of todoLists$ | async"
+          *ngFor="let list of (showTodont ? todontLists$ : todoLists$) | async"
           [class.starred]="list.isStarred"
         >
           <div class="list-item-content">
@@ -76,7 +76,7 @@ import { FormsModule } from '@angular/forms';
           </button>
         </div>
       </div>
-    </div>
+    </div>  
   `,
   styles: [
     `
@@ -230,25 +230,43 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class SidebarComponent {
+  @Input() showTodont: boolean = false; // Get showTodont from WorkspaceComponent
   todoLists$: any;
+  todontLists$: any;
+
   constructor(private todoService: TodoService) {}
 
   ngOnInit(): void {
-    this.todoLists$ = this.todoService.getTodoLists();
+      this.loadLists();
   }
+
+  ngOnChanges() {
+      this.loadLists();
+  }
+
+  private loadLists() {
+      if (this.showTodont) {
+          this.todontLists$ = this.todoService.getTodontLists();
+      } else {
+          this.todoLists$ = this.todoService.getTodoLists();
+      }
+  }
+
+
+
   showCreateList = false;
   showMenu: { [key: string]: boolean } = {};
   editingListId: string | null = null;
 
   createList(name: string) {
     if (name.trim()) {
-      this.todoService.addTodoList(name);
+      this.todoService.addTodoList(name, this.showTodont);
       this.showCreateList = false;
     }
   }
 
   deleteList(listId: string) {
-    this.todoService.deleteList(listId);
+    this.todoService.deleteList(listId, this.showTodont);
     this.showMenu[listId] = false;
   }
 
@@ -258,11 +276,11 @@ export class SidebarComponent {
   }
 
   updateListName(listId: string, newName: string) {
-    this.todoService.updateListName(listId, newName);
+    this.todoService.updateListName(listId, newName, this.showTodont);
     this.editingListId = null;
   }
 
   toggleListStar(listId: string) {
-    this.todoService.toggleListStar(listId);
+    this.todoService.toggleListStar(listId, this.showTodont);
   }
 }

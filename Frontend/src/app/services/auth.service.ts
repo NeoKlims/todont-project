@@ -11,7 +11,7 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost/practicas/TODONT/todont-project/Backend/public/api'; // Replace with your Laravel API URL
+  private apiUrl = 'http://localhost/practicas/todont-project/Backend/public/api'; // Replace with your Laravel API URL
 
   constructor(private http: HttpClient) {}
 

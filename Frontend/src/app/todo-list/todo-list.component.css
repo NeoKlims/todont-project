@@ -54,6 +54,7 @@
 .task-actions {
   display: flex;
   gap: 4px;
+  position: relative; /* Key change: Position the task-actions */
 }
 
 .task-item.completed span {

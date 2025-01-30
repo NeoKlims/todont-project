@@ -2,21 +2,22 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../task-services/todo.service';
 import { TodoListComponent } from '../todo-list/todo-list.component';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-workspace',
   standalone: true,
-  imports: [CommonModule, TodoListComponent],
+  imports: [CommonModule, TodoListComponent, SidebarComponent],
   template: `
-    <div class="workspace">
+     <div class="workspace">
       <div class="toggle-container">
         <div class="toggle-switch">
-          <input 
-            type="checkbox" 
-            id="listToggle" 
+          <input
+            type="checkbox"
+            id="listToggle"
             [checked]="showTodont"
             (change)="toggleListType(!showTodont)"
-          >
+          />
           <label for="listToggle" class="toggle-label">
             <span class="toggle-button">
               <i class="toggle-icon">
@@ -28,20 +29,23 @@ import { TodoListComponent } from '../todo-list/todo-list.component';
           <span class="toggle-text" [class.active]="showTodont">Todont</span>
         </div>
       </div>
-      <app-todo-list
-        *ngFor="let list of (showTodont ? todontLists$ : todoLists$) | async"
-        [list]="list"
-        [isTodont]="showTodont"
-      ></app-todo-list>
+      <div class="main-content">
+        <app-sidebar [showTodont]="showTodont"></app-sidebar>
+        <app-todo-list
+          *ngFor="let list of (showTodont ? todontLists$ : todoLists$) | async"
+          [list]="list"
+          [isTodont]="showTodont"
+        ></app-todo-list>
+      </div>
     </div>
   `,
   styles: [`
     .workspace {
-      padding: 16px;
+      padding: 120px;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      height: 100%;
+      height: 100vh;
       overflow-y: auto;
     }
 
@@ -124,6 +128,10 @@ import { TodoListComponent } from '../todo-list/todo-list.component';
       flex-wrap: wrap;
       gap: 16px;
     }
+    .main-content{
+        display: flex;
+        height: 100%;
+    }
   `],
 })
 export class WorkspaceComponent {
@@ -134,11 +142,19 @@ export class WorkspaceComponent {
   constructor(private todoService: TodoService) {}
 
   ngOnInit(): void {
-    this.todoLists$ = this.todoService.getTodoLists();
-    this.todontLists$ = this.todoService.getTodontLists();
+    this.loadLists();
   }
 
   toggleListType(showTodont: boolean): void {
     this.showTodont = showTodont;
+    this.loadLists(); // Reload lists when toggle changes
+  }
+
+  private loadLists() {
+      if (this.showTodont) {
+          this.todontLists$ = this.todoService.getTodontLists();
+      } else {
+          this.todoLists$ = this.todoService.getTodoLists();
+      }
   }
 }

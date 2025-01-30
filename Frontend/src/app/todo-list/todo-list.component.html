@@ -31,6 +31,7 @@
       </div>
     </div>
   </div>
+
   <div class="tasks">
     <div
       *ngFor="let task of pendingTasks"
@@ -68,17 +69,19 @@
           <button class="more-options" (click)="toggleTaskMenu(task.id)">
             ⋮
           </button>
-        </div>
-        <div class="menu" *ngIf="showTaskMenu[task.id]">
-          <button (click)="startEditingTask(task.id)">Edit</button>
-          <button (click)="deleteTask(task.id)">Delete</button>
+          <div class="menu" *ngIf="showTaskMenu[task.id]">
+            <button (click)="startEditingTask(task.id)">Edit</button>
+            <button (click)="deleteTask(task.id)">Delete</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
   <button (click)="toggleCompletedSection()">
     {{ showCompleted ? "Hide completed tasks" : "Show completed tasks" }}
   </button>
+
   <div *ngIf="showCompleted" id="completed-section">
     <h4>Completed tasks</h4>
     <div *ngFor="let task of completedTasks" class="task-item completed">
@@ -92,6 +95,7 @@
       </div>
     </div>
   </div>
+
   <div class="add-task">
     <input
       #taskInput
