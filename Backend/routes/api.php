@@ -13,7 +13,7 @@ Route::get('/user', function (Request $request) {
 Route::middleware('guest')->group(function () {
     Route::post('register', [RegisteredUserController::class, 'store']);
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
-});
+})->middleware('auth:sanctum');
 
 Route::get('/todolists', [ApiController::class, 'getTodolists']);
 Route::get('/todolists/{id}', [ApiController::class, 'getTodolist']);
