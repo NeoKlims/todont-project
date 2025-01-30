@@ -26,6 +26,21 @@ export class AuthService {
     });
   }
 
+
+  getWorkspaceData(): Observable<any> {
+    const token = localStorage.getItem('authToken'); // Retrieve stored token
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    return this.http.get(`${this.apiUrl}/workspace`, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`, // Include the token in the header
+        'Content-Type': 'application/json',
+      }),
+    });
+  }
+  
   /*register(credentials: RegisterCredentials): Observable<any> {
     // Implement actual registration logic here
     return of({ success: true });

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoService } from '../task-services/todo.service';
 import { TodoListComponent } from '../todo-list/todo-list.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-workspace',
@@ -138,11 +139,23 @@ export class WorkspaceComponent {
   todoLists$: any;
   todontLists$: any;
   showTodont = false;
+  token: string | null = '';
+  workspaceData: any;
 
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService,private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadLists();
+    this.authService.getWorkspaceData().subscribe({
+      next: (data) => {
+        this.workspaceData = data;
+        console.log('Workspace Data:', data);
+      },
+      error: (err) => {
+        console.error('Error fetching workspace data:', err);
+      },
+    });
+
   }
 
   toggleListType(showTodont: boolean): void {

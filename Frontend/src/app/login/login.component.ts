@@ -43,22 +43,31 @@ export class LoginComponent {
     }
   }*/
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
-
-      this.authService.login(this.loginForm.value).subscribe({
-        next: () => {
-          this.isLoading = false;
-          this.router.navigate(['/dashboard']); // Navigate to the dashboard or home
-        },
-        error: (err) => {
-          this.isLoading = false;
-          this.errorMessage =
-            err.error?.message || 'Login failed. Please try again.';
-        },
-      });
+    onSubmit() {
+      if (this.loginForm.valid) {
+        this.isLoading = true;
+        this.errorMessage = '';
+    
+        this.authService.login(this.loginForm.value).subscribe({
+          next: (response) => {
+            this.isLoading = false;
+    
+            if (response.token) {
+              // Store token for future requests
+              localStorage.setItem('authToken', response.token);
+    
+              // Navigate to the workspace with the token
+              this.router.navigate(['/workspace', response.token]);
+            } else {
+              this.errorMessage = 'Invalid login response. No token received.';
+            }
+          },
+          error: (err) => {
+            this.isLoading = false;
+            this.errorMessage =
+              err.error?.message || 'Login failed. Please try again.';
+          },
+        });
+      }
     }
-  }
 }
