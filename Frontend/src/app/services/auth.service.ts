@@ -56,8 +56,10 @@ export class AuthService {
     });
   }
 
-  resetPassword(email: ResetPassword): Observable<any> {
-    // Implement actual password reset logic here
-    return of({ success: true });
+  resetPassword(data: { email: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, data, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    });
   }
+  
 }
