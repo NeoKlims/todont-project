@@ -8,6 +8,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LoginComponent } from './login/login.component';
 import { ContactComponent } from './contact/contact.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
+import { ServicesComponent } from './services/services.component';
+import { NewPasswordComponent } from './new-password/new-password.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
   { path: 'home', component: HomeComponent },
@@ -17,6 +19,9 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'services', component: ServicesComponent },
+  { path: 'reset-password', component: NewPasswordComponent }
+
 
 
 ];

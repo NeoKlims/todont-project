@@ -27,6 +27,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { HttpClientModule } from '@angular/common/http';
     RegisterComponent,
     LoginComponent,
     ForgotPasswordComponent,
+    NewPasswordComponent,
     
   ],
   imports: [

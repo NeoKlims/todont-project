@@ -11,7 +11,7 @@ export class HeaderComponent {
   navLinks = [
     { label: 'Home', url: '/home' },
     { label: 'About', url: '/about' },
-    { label: 'Services', url: '/workspace' },
+    { label: 'Services', url: '/services' },
     { label: 'Contact', url: '/contact-us' }
   ];
 }

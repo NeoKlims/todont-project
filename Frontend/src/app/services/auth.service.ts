@@ -6,12 +6,13 @@ import {
   RegisterCredentials,
   ResetPassword,
 } from '../models/auth.model';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost/practicas/todont-project/Backend/public/api'; // Replace with your Laravel API URL
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +27,10 @@ export class AuthService {
     });
   }
 
-
+  setNewPassword(payload: { token: string, password: string }) {
+    return this.http.post('/api/reset-password', payload);
+  }
+  
   getWorkspaceData(): Observable<any> {
     const token = localStorage.getItem('authToken'); // Retrieve stored token
     if (!token) {
