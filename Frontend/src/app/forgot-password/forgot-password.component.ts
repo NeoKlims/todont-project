@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css'],
-  standalone:false
+  standalone: false
 })
 export class ForgotPasswordComponent {
   resetForm: FormGroup;
@@ -27,14 +27,15 @@ export class ForgotPasswordComponent {
     if (this.resetForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
+      const emailPayload = { email: this.resetForm.value.email };
 
-      this.authService.resetPassword(this.resetForm.value).subscribe({
+      this.authService.resetPassword(emailPayload).subscribe({
         next: () => {
           this.isSuccess = true;
           this.isLoading = false;
         },
         error: (error) => {
-          this.errorMessage = error.message || 'Password reset request failed';
+          this.errorMessage = error?.error?.message || 'Password reset request failed';
           this.isLoading = false;
         }
       });
