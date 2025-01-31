@@ -32,41 +32,64 @@ export class RegisterComponent {
       ? null : { mismatch: true };
   }
 
-  /*onSubmit() {
+  onSubmit() {
+    console.log('onSubmit() triggered');
+
     if (this.registerForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
-
-      this.authService.register(this.registerForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          this.errorMessage = error.message || 'Registration failed';
-          this.isLoading = false;
-        }
-      });
-    }
-  }*/
-
-    onSubmit() {
-      if (this.registerForm.valid) {
         this.isLoading = true;
         this.errorMessage = '';
-    
-        const { name, email, password } = this.registerForm.value;
-    
-        this.authService.register({ name, email, password, password_confirmation: this.registerForm.value.confirmPassword })
-          .subscribe({
-            next: () => {
-              this.isLoading = false;
-              this.router.navigate(['/login']);
+
+        const { name, email, password, confirmPassword } = this.registerForm.value;
+        console.log('Form Values:', { name, email, password, confirmPassword });
+
+        // Ensure the payload matches the backend's expectations
+        const payload = {
+            name,
+            email,
+            password,
+            password_confirmation: confirmPassword
+        };
+        console.log('Payload:', payload);
+
+        this.authService.register(payload).subscribe({
+            next: (response) => {
+                console.log('Registration Success:', response);
+
+                // After successful registration, log the user in
+                this.authService.login({ email, password }).subscribe({
+                    next: (loginResponse) => {
+                        this.isLoading = false;
+                        console.log('Login Response:', loginResponse);
+
+                        if (loginResponse.token) {
+                            // Store the token in localStorage
+                            localStorage.setItem('authToken', loginResponse.token);
+                            console.log('Token Stored:', loginResponse.token);
+
+                            // Redirect to the workspace or dashboard
+                            this.router.navigate(['/workspace', loginResponse.token]);
+                            console.log('Navigation to /workspace successful');
+                        } else {
+                            this.errorMessage = 'Login failed after registration. No token received.';
+                            console.error(this.errorMessage);
+                        }
+                    },
+                    error: (loginError) => {
+                        this.isLoading = false;
+                        this.errorMessage = loginError.error?.message || 'Login failed after registration. Please try again.';
+                        console.error('Login Error:', loginError);
+                    }
+                });
             },
             error: (err) => {
-              this.isLoading = false;
-              this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
+                this.isLoading = false;
+                this.errorMessage = err.error?.message || 'Registration failed. Please try again.';
+                console.error('Registration Error:', err);
             }
-          });
-      }
+        });
+    } else {
+        console.warn('Form is invalid:', this.registerForm.errors);
     }
+}
+
 }
