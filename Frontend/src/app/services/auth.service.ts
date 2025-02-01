@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   setNewPassword(payload: { token: string, password: string }) {
-    return this.http.post('/api/reset-password', payload);
+    return this.http.post(`${environment.apiUrl}/reset-password`, payload);
   }
   
   getWorkspaceData(): Observable<any> {
@@ -56,10 +56,12 @@ export class AuthService {
     });
   }
 
-  resetPassword(data: { email: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/forgot-password`, data, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  resetPassword(payload: any) {
+    return this.http.post(`${environment.apiUrl}/forgot-password`, payload, {
+      headers: { 'Content-Type': 'application/json' }
     });
   }
+  
+  
   
 }

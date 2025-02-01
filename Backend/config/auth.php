@@ -99,6 +99,11 @@ return [
         ],
     ],
 
+    'reset' => [
+    'url' => env('RESET_PASSWORD_REDIRECT_URL', 'http://localhost:4200/reset-password'),
+    ],
+
+
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout
@@ -110,6 +115,6 @@ return [
     |
     */
 
-    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 1),
 
 ];

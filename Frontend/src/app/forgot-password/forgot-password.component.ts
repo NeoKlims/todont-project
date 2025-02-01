@@ -28,17 +28,22 @@ export class ForgotPasswordComponent {
       this.isLoading = true;
       this.errorMessage = '';
       const emailPayload = { email: this.resetForm.value.email };
-
+  
       this.authService.resetPassword(emailPayload).subscribe({
-        next: () => {
+        next: (response: any) => {
           this.isSuccess = true;
-          this.isLoading = false;
+          this.isLoading = false; 
         },
         error: (error) => {
-          this.errorMessage = error?.error?.message || 'Password reset request failed';
+          if (error.status === 429) {
+            this.errorMessage = 'Debes esperar antes de intentar nuevamente.';
+          } else {
+            this.errorMessage = error?.error?.message || 'Ha ocurrido un error al enviar el correo.';
+          }
           this.isLoading = false;
         }
       });
     }
   }
+  
 }
