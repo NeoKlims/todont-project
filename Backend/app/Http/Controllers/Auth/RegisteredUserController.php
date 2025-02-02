@@ -51,4 +51,22 @@ class RegisteredUserController extends Controller
             "user" => $user,
         ], 200);
     }
+
+    public function getNameByEmail(Request $request)
+{
+    $email = $request->query('email'); // Obtén el parámetro de la consulta
+
+    if (!$email) {
+        return response()->json(['error' => 'El correo es obligatorio'], 400);
+    }
+
+    $user = User::where('email', $email)->first();
+
+    if (!$user) {
+        return response()->json(['error' => 'Usuario no encontrado'], 404);
+    }
+
+    return response()->json(['name' => $user->name]);
+}
+
 }
