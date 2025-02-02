@@ -13,6 +13,9 @@
       />
     </div>
     <div class="header-actions">
+      <button class="toggle-list-btn" (click)="toggleList()">
+        {{ showList ? "-" : "+" }}
+      </button>
       <button
         class="star-btn"
         [class.starred]="list.isStarred"
@@ -32,76 +35,78 @@
     </div>
   </div>
 
-  <div class="tasks">
-    <div
-      *ngFor="let task of pendingTasks"
-      class="task-item"
-      [class.completed]="task.completed"
-    >
-      <div class="task-content">
-        <input
-          type="checkbox"
-          [checked]="task.completed"
-          (change)="toggleTask(task.id)"
-        />
-        <span *ngIf="!editingTaskId || editingTaskId !== task.id">
-          {{ task.title }}
-        </span>
-        <input
-          *ngIf="editingTaskId === task.id"
-          #taskEditInput
-          type="text"
-          [value]="task.title"
-          (keyup.enter)="updateTaskTitle(task.id, taskEditInput.value)"
-          (blur)="updateTaskTitle(task.id, taskEditInput.value)"
-          class="edit-input"
-        />
-      </div>
-      <div class="task-actions">
-        <button
-          class="star-btn"
-          [class.starred]="task.isStarred"
-          (click)="toggleTaskStar(task.id)"
-        >
-          ★
-        </button>
-        <div class="menu-container">
-          <button class="more-options" (click)="toggleTaskMenu(task.id)">
-            ⋮
+  <div class="items" [class.hidden]="!showList">
+    <div class="tasks">
+      <div
+        *ngFor="let task of pendingTasks"
+        class="task-item"
+        [class.completed]="task.completed"
+      >
+        <div class="task-content">
+          <input
+            type="checkbox"
+            [checked]="task.completed"
+            (change)="toggleTask(task.id)"
+          />
+          <span *ngIf="!editingTaskId || editingTaskId !== task.id">
+            {{ task.title }}
+          </span>
+          <input
+            *ngIf="editingTaskId === task.id"
+            #taskEditInput
+            type="text"
+            [value]="task.title"
+            (keyup.enter)="updateTaskTitle(task.id, taskEditInput.value)"
+            (blur)="updateTaskTitle(task.id, taskEditInput.value)"
+            class="edit-input"
+          />
+        </div>
+        <div class="task-actions">
+          <button
+            class="star-btn"
+            [class.starred]="task.isStarred"
+            (click)="toggleTaskStar(task.id)"
+          >
+            ★
           </button>
-          <div class="menu" *ngIf="showTaskMenu[task.id]">
-            <button (click)="startEditingTask(task.id)">Edit</button>
-            <button (click)="deleteTask(task.id)">Delete</button>
+          <div class="menu-container">
+            <button class="more-options" (click)="toggleTaskMenu(task.id)">
+              ⋮
+            </button>
+            <div class="menu" *ngIf="showTaskMenu[task.id]">
+              <button (click)="startEditingTask(task.id)">Edit</button>
+              <button (click)="deleteTask(task.id)">Delete</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <button (click)="toggleCompletedSection()">
-    {{ showCompleted ? "Hide completed tasks" : "Show completed tasks" }}
-  </button>
+    <button class="completed-btn" (click)="toggleCompletedSection()">
+      {{ showCompleted ? "Hide completed tasks" : "Show completed tasks" }}
+    </button>
 
-  <div *ngIf="showCompleted" id="completed-section">
-    <h4>Completed tasks</h4>
-    <div *ngFor="let task of completedTasks" class="task-item completed">
-      <div class="task-content">
-        <input
-          type="checkbox"
-          [checked]="task.completed"
-          (change)="toggleTask(task.id)"
-        />
-        <span>{{ task.title }}</span>
+    <div class="completed-tasks" *ngIf="showCompleted" id="completed-section">
+      <h4>Completed tasks</h4>
+      <div *ngFor="let task of completedTasks" class="task-item completed">
+        <div class="task-content">
+          <input
+            type="checkbox"
+            [checked]="task.completed"
+            (change)="toggleTask(task.id)"
+          />
+          <span>{{ task.title }}</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="add-task">
-    <input
-      #taskInput
-      type="text"
-      placeholder="Add a task"
-      (keyup.enter)="addTask(taskInput.value); taskInput.value = ''"
-    />
+    <div class="add-task">
+      <input
+        #taskInput
+        type="text"
+        placeholder="Add a task"
+        (keyup.enter)="addTask(taskInput.value); taskInput.value = ''"
+      />
+    </div>
   </div>
 </div>
