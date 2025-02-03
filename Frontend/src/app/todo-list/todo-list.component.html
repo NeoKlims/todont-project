@@ -1,12 +1,12 @@
 <div class="todo-list">
   <div class="list-header">
     <div class="header-left">
-      <h2 *ngIf="!isEditing">{{ list.name }}</h2>
+      <h2 *ngIf="!isEditing">{{ list.title }}</h2>
       <input
         *ngIf="isEditing"
         #editInput
         type="text"
-        [value]="list.name"
+        [value]="list.title"
         (keyup.enter)="updateListName(editInput.value)"
         (blur)="updateListName(editInput.value)"
         class="edit-input"

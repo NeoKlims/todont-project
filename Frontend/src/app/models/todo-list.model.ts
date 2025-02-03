@@ -1,7 +1,8 @@
 export interface TodoList {
   id: string;
-  name: string;
+  title: string;
   tasks: TodoTask[];
+  user_id: number | null;
   isStarred?: boolean;
 }
 

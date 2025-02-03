@@ -1,40 +1,102 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { TodoList, TodoTask } from '../models/todo-list.model';
+import { environment } from '../../environments/environment.development';
+import { AuthService } from './auth.service'; // Import AuthService
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-  private todoLists = new BehaviorSubject<TodoList[]>([
-    { id: '1', name: 'My Tasks', tasks: [], isStarred: false },
-  ]);
+  private todoLists = new BehaviorSubject<TodoList[]>([]);
+  private todontLists = new BehaviorSubject<TodoList[]>([]);
+  private apiUrl = environment.apiUrl;
+  private currentUserId: number | null = null; // Initialize as null
 
-  private todontLists = new BehaviorSubject<TodoList[]>([
-    { id: '2', name: 'Things Not To Do', tasks: [], isStarred: false },
-  ]);
+  constructor(private http: HttpClient, private authService: AuthService) {
+    // Set the current user ID from AuthService
+    this.currentUserId = this.authService.getUserId();
+    
+    // Fetch initial data when the service is instantiated
+    this.fetchTodoLists();
+    this.fetchTodontLists();
+  }
 
+  // Fetch Todo lists from the backend for the current user
+  private fetchTodoLists(): void {
+    if (this.currentUserId === null) {
+      console.error('No user is logged in');
+      return;
+    }
+
+    this.http.get<TodoList[]>(`${this.apiUrl}/todolists`).subscribe({
+      next: (lists) => {
+        const filteredLists = lists.filter(list => list.user_id === this.currentUserId);
+        this.todoLists.next(filteredLists);
+      },
+      error: (error) => console.error('Error fetching Todo lists', error)
+    });
+  }
+
+  // Fetch Todont lists from the backend for the current user
+  private fetchTodontLists(): void {
+    if (this.currentUserId === null) {
+      console.error('No user is logged in');
+      return;
+    }
+
+    this.http.get<TodoList[]>(`${this.apiUrl}/todolists`).subscribe({
+      next: (lists) => {
+        const filteredLists = lists.filter(list => list.user_id === this.currentUserId);
+        this.todontLists.next(filteredLists);
+      },
+      error: (error) => console.error('Error fetching Todont lists', error)
+    });
+  }
+
+  // Expose Todo lists as an observable
   getTodoLists(): Observable<TodoList[]> {
     return this.todoLists.asObservable();
   }
 
+  // Expose Todont lists as an observable
   getTodontLists(): Observable<TodoList[]> {
     return this.todontLists.asObservable();
   }
 
-  addTodoList(name: string, isTodont: boolean = false) {
+  addTodoList(title: string, isTodont: boolean = false) {
+    if (this.currentUserId === null) {
+      console.error('No user is logged in');
+      return;
+    }
+
     const newList: TodoList = {
       id: Date.now().toString(),
-      name,
+      title,
       tasks: [],
+      user_id: this.currentUserId,
       isStarred: false
     };
-    
-    if (isTodont) {
-      this.todontLists.next([...this.todontLists.value, newList]);
-    } else {
-      this.todoLists.next([...this.todoLists.value, newList]);
-    }
+
+    // Send a POST request to the backend
+    this.http.post(this.apiUrl+'/todolists', {
+      title: title,
+      user_id: this.currentUserId
+    }).subscribe({
+      next: (response) => {
+        console.log('Todo list created successfully', response);
+        // Update the local state only after the backend confirms the creation
+        if (isTodont) {
+          this.todontLists.next([...this.todontLists.value, newList]);
+        } else {
+          this.todoLists.next([...this.todoLists.value, newList]);
+        }
+      },
+      error: (error) => {
+        console.error('Error creating todo list', error);
+      }
+    });
   }
 
   deleteList(listId: string, isTodont: boolean = false) {
@@ -51,7 +113,7 @@ export class TodoService {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;
     const list = lists.find(l => l.id === listId);
     if (list && newName.trim()) {
-      list.name = newName;
+      list.title = newName;
       if (isTodont) {
         this.todontLists.next([...lists]);
       } else {
