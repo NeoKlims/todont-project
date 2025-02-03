@@ -14,7 +14,8 @@ export class NewPasswordComponent implements OnInit {
   isLoading = false;
   isSuccess = false;
   errorMessage = '';
-  token: string = '';
+  token: string ="";  // Declara el token
+  email: string="";  // Declara el email
 
   constructor(
     private fb: FormBuilder,
@@ -26,6 +27,12 @@ export class NewPasswordComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]]
     }, { validator: this.passwordMatchValidator });
+
+    this.route.queryParams.subscribe(params => {
+      this.token = params['token'];  // Obtén el token de la URL
+      this.email = params['email'];  // Obtén el email de la URL
+    });
+
   }
 
   ngOnInit() {
@@ -46,25 +53,26 @@ export class NewPasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.newPasswordForm.valid && this.token) {
-      this.isLoading = true;
-      this.errorMessage = '';
-
+    if (this.newPasswordForm.valid) {
       const payload = {
-        token: this.token,
-        password: this.newPasswordForm.get('password')?.value
+        token: this.token,  // El token que recibes en la URL
+        email: this.email,  // El email del usuario
+        password: this.newPasswordForm.value.password,  // La nueva contraseña
+        password_confirmation: this.newPasswordForm.value.confirmPassword  // Confirmación de la nueva contraseña
       };
-
+  
       this.authService.setNewPassword(payload).subscribe({
-        next: () => {
+        next: (response) => {
           this.isSuccess = true;
           this.isLoading = false;
         },
-        error: (error) => {
-          this.errorMessage = error.message || 'Failed to update password';
+        error: (err) => {
+          console.error('Error details:', err);
+          this.errorMessage = err?.error?.message || 'Password reset request failed';
           this.isLoading = false;
         }
       });
     }
   }
+  
 }

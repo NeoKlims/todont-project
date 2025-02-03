@@ -1,1 +1,69 @@
 <p>sidebar works!</p>
+<div class="sidebar">
+  <button class="create-btn" (click)="showCreateList = true">
+    + Create List
+  </button>
+
+  <div class="lists-section">
+    <div
+      class="list-item"
+      *ngFor="let list of (showTodont ? todontLists$ : todoLists$) | async"
+      [class.starred]="list.isStarred"
+    >
+      <div class="list-item-content">
+        <span class="checkbox">✓</span>
+        <span *ngIf="!editingListId || editingListId !== list.id">
+          {{ list.name }}
+        </span>
+        <input
+          *ngIf="editingListId === list.id"
+          #editInput
+          type="text"
+          [value]="list.name"
+          (keyup.enter)="updateListName(list.id, editInput.value)"
+          (blur)="updateListName(list.id, editInput.value)"
+          class="edit-input"
+        />
+      </div>
+      <div class="list-actions">
+        <button
+          class="star-btn"
+          [class.starred]="list.isStarred"
+          (click)="toggleListStar(list.id)"
+        >
+          ★
+        </button>
+        <div class="menu-container">
+          <button
+            class="more-options"
+            (click)="showMenu[list.id] = !showMenu[list.id]"
+          >
+            ⋮
+          </button>
+          <div class="menu" *ngIf="showMenu[list.id]">
+            <button (click)="startEditing(list.id)">Edit</button>
+            <button (click)="deleteList(list.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="create-list-form" *ngIf="showCreateList">
+    <input
+      #listInput
+      type="text"
+      placeholder="New list name"
+      (keyup.enter)="createList(listInput.value); listInput.value = ''"
+    />
+    <div class="form-actions">
+      <button (click)="showCreateList = false">Cancel</button>
+      <button
+        (click)="createList(listInput.value); listInput.value = ''"
+        class="create"
+      >
+        Create
+      </button>
+    </div>
+  </div>
+</div>

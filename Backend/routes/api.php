@@ -18,7 +18,7 @@ Route::middleware('guest')->group(function () {
 })->middleware('auth:sanctum');
 
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']); 
-Route::post('reset-password', [NewPasswordController::class, 'store']);
+Route::post('/reset-password', [NewPasswordController::class, 'store']);
 
 Route::get('/todolists', [ApiController::class, 'getTodolists']);
 Route::get('/todolists/{id}', [ApiController::class, 'getTodolist']);

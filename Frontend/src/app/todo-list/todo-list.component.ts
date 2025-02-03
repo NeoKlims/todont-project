@@ -15,6 +15,7 @@ export class TodoListComponent {
   @Input() list!: TodoList;
   @Input() isTodont: boolean = false; // Determines if it's a To-Don't list
 
+  showList = true;
   showListMenu = false;
   showTaskMenu: { [key: string]: boolean } = {};
   isEditing = false;
@@ -67,11 +68,21 @@ export class TodoListComponent {
   }
 
   updateTaskTitle(taskId: string, newTitle: string) {
-    this.todoService.updateTaskTitle(this.list.id, taskId, newTitle, this.isTodont);
+    this.todoService.updateTaskTitle(
+      this.list.id,
+      taskId,
+      newTitle,
+      this.isTodont
+    );
     this.editingTaskId = null;
   }
 
   // Toggle Actions
+
+  toggleList() {
+    this.showList = !this.showList;
+  }
+
   toggleTask(taskId: string) {
     this.todoService.toggleTask(this.list.id, taskId, this.isTodont);
   }
@@ -88,7 +99,6 @@ export class TodoListComponent {
     this.showCompleted = !this.showCompleted;
   }
 
-  // Toggle Menu for Tasks
   toggleTaskMenu(taskId: string) {
     this.showTaskMenu[taskId] = !this.showTaskMenu[taskId];
     for (let id in this.showTaskMenu) {
