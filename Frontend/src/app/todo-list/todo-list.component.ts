@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoList, TodoTask } from '../models/todo-list.model';
-import { TodoService } from '../task-services/todo.service';
+import { TodoService } from '../services/todo.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({

@@ -13,7 +13,6 @@ import { HeroComponent } from './hero/hero.component';
 import { StatsComponent } from './stats/stats.component';
 import { HeaderComponent } from './header/header.component';
 import { FeaturedServicesComponent } from './featured-services/featured-services.component';
-import { ServicesComponent } from './services/services.component';
 import { CommunityListsComponent } from './community-lists/community-lists.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
@@ -21,13 +20,14 @@ import { HomeComponent } from './home/home.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
-import { TaskService } from './task-services/task.service';
+import { TaskService } from './services/task.service';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { OurServicesComponent } from './our-services/our-services.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,6 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     StatsComponent,
     HeaderComponent,
     FeaturedServicesComponent,
-    ServicesComponent,
     CommunityListsComponent,
     ContactComponent,
     AboutComponent,
@@ -46,6 +45,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     LoginComponent,
     ForgotPasswordComponent,
     NewPasswordComponent,
+    OurServicesComponent,
     
   ],
   imports: [

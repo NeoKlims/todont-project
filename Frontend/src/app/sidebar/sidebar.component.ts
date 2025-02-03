@@ -1,6 +1,6 @@
 import { Component,Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoService } from '../task-services/todo.service';
+import { TodoService } from '../services/todo.service';
 import { TodoList } from '../models/todo-list.model';
 import { FormsModule } from '@angular/forms';
 

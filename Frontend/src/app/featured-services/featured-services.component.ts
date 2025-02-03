@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DataService } from '../task-services/data.service';
+import { DataService } from '../services/data.service';
 import { FeaturedService } from '../models/featured-service.model';
 
 @Component({

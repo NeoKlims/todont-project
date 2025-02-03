@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../task-services/data.service';
+import { DataService } from '../services/data.service';
 import { Stat } from '../models/stat.model';
 interface StatItem {
   icon: string;

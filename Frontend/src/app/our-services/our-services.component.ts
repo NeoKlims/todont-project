@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { DataService } from '../task-services/data.service';
+import { DataService } from '../services/data.service';
 import { ServiceItem } from '../models/service-item.model';
 
 @Component({
   selector: 'app-services',
   standalone: false,
 
-  templateUrl: './services.component.html',
-  styleUrl: './services.component.css',
+  templateUrl: './our-services.component.html',
+  styleUrl: './our-services.component.css',
 })
-export class ServicesComponent {
+export class OurServicesComponent {
   serviceItems: ServiceItem[] = [];
 
   constructor(private dataService: DataService) {}

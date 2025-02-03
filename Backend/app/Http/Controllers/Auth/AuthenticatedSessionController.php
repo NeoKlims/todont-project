@@ -43,6 +43,7 @@ class AuthenticatedSessionController extends Controller
 
         return response()->json([
             "message" => "You're logged in!",
+            "user" => $user,
             "token" => $token,
         ], 200);
 

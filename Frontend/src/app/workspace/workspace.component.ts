@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { TodoService } from '../task-services/todo.service';
+import { TodoService } from '../services/todo.service';
 import { TodoListComponent } from '../todo-list/todo-list.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { Component, OnInit } from '@angular/core';
