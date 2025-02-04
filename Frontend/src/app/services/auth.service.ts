@@ -19,11 +19,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  /*login(credentials: LoginCredentials): Observable<any> {
-    // Implement actual login logic here
-    return of({ success: true });
-  }*/
-
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -33,17 +28,17 @@ export class AuthService {
   // Set the current user after successful login
   setCurrentUser(user: any): void {
     this.currentUserSubject.next(user); // Update the current user
-    localStorage.setItem('currentUser', JSON.stringify(user)); // Store user in localStorage
+    sessionStorage.setItem('currentUser', JSON.stringify(user)); // Store user in sessionStorage
   }
 
   // Get the current user
   getCurrentUser(): any {
-    const user = localStorage.getItem('currentUser');
+    const user = sessionStorage.getItem('currentUser');
     return user ? JSON.parse(user) : null;
   }
 
-   // Get the current user's ID
-   getUserId(): number | null {
+  // Get the current user's ID
+  getUserId(): number | null {
     const user = this.getCurrentUser();
     return user ? user.id : null; // Return the user ID or null if no user is logged in
   }
@@ -51,15 +46,15 @@ export class AuthService {
   // Clear the current user (logout)
   clearCurrentUser(): void {
     this.currentUserSubject.next(null); // Clear the current user
-    localStorage.removeItem('currentUser'); // Remove user from localStorage
+    sessionStorage.removeItem('currentUser'); // Remove user from sessionStorage
   }
 
-  setNewPassword(payload: { token: string, password: string }) {
+  setNewPassword(payload: { token: string; password: string }) {
     return this.http.post(`${environment.apiUrl}/reset-password`, payload);
   }
-  
+
   getWorkspaceData(): Observable<any> {
-    const token = localStorage.getItem('authToken'); // Retrieve stored token
+    const token = sessionStorage.getItem('authToken'); // Retrieve stored token
     if (!token) {
       throw new Error('No authentication token found');
     }
@@ -71,11 +66,6 @@ export class AuthService {
       }),
     });
   }
-  
-  /*register(credentials: RegisterCredentials): Observable<any> {
-    // Implement actual registration logic here
-    return of({ success: true });
-  }*/
 
   register(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data, {
@@ -85,10 +75,7 @@ export class AuthService {
 
   resetPassword(payload: any) {
     return this.http.post(`${environment.apiUrl}/forgot-password`, payload, {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
   }
-  
-  
-  
 }

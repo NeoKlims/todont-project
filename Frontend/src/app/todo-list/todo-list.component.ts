@@ -62,8 +62,8 @@ export class TodoListComponent implements OnInit {
   }
 
   // Delete the List
-  deleteList() {
-    this.todoService.deleteList(this.list.id.toString(), this.isTodont);
+  deleteList(listId: string): void {
+    this.todoService.deleteList(listId, this.isTodont);
   }
 
   // Start Editing List Name
@@ -79,11 +79,10 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update List Name
-  updateListName(newName: string) {
+  updateListName(listId: string,newName: string,isTodont = this.isTodont) {
     if (newName.trim()) {
-      this.list.title = newName;
+      this.todoService.updateListName(listId, newName,isTodont);
       this.isEditing = false;
-      // Optionally, send a request to the backend to update the list name
     }
   }
 
