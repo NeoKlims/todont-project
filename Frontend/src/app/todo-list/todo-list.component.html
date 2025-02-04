@@ -7,8 +7,8 @@
         #editInput
         type="text"
         [value]="list.title"
-        (keyup.enter)="updateListName(editInput.value)"
-        (blur)="updateListName(editInput.value)"
+        (keyup.enter)="updateListName(list.id,editInput.value)"
+        (blur)="updateListName(list.id,editInput.value)"
         class="edit-input"
       />
     </div>
@@ -29,7 +29,7 @@
         </button>
         <div class="menu" *ngIf="showListMenu">
           <button (click)="startEditing()">Edit</button>
-          <button (click)="deleteList()">Delete</button>
+          <button (click)="deleteList(list.id)">Delete</button>
         </div>
       </div>
     </div>

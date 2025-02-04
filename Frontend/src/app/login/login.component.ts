@@ -1,4 +1,3 @@
-// components/login/login.component.ts
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
@@ -26,48 +25,32 @@ export class LoginComponent {
     });
   }
 
-  /*onSubmit() {
+  onSubmit() {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
 
       this.authService.login(this.loginForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          this.errorMessage = error.message || 'Login failed';
+        next: (response) => {
           this.isLoading = false;
-        }
+
+          if (response.token) {
+            // Store token and user data in sessionStorage
+            sessionStorage.setItem('authToken', response.token);
+            this.authService.setCurrentUser(response.user); // Save user data in sessionStorage
+
+            // Navigate to the workspace
+            this.router.navigate(['/workspace', response.token]);
+          } else {
+            this.errorMessage = 'Invalid login response. No token received.';
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.errorMessage =
+            err.error?.message || 'Login failed. Please try again.';
+        },
       });
     }
-  }*/
-
-    onSubmit() {
-      if (this.loginForm.valid) {
-        this.isLoading = true;
-        this.errorMessage = '';
-    
-        this.authService.login(this.loginForm.value).subscribe({
-          next: (response) => {
-            this.isLoading = false;
-    
-            if (response.token) {
-              // Store token for future requests
-              localStorage.setItem('authToken', response.token);
-    
-              // Navigate to the workspace with the token
-              this.router.navigate(['/workspace', response.token]);
-            } else {
-              this.errorMessage = 'Invalid login response. No token received.';
-            }
-          },
-          error: (err) => {
-            this.isLoading = false;
-            this.errorMessage =
-              err.error?.message || 'Login failed. Please try again.';
-          },
-        });
-      }
-    }
+  }
 }

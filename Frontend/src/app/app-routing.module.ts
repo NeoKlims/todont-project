@@ -20,9 +20,6 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'services', component: OurServicesComponent },
   { path: 'reset-password', component: NewPasswordComponent }
-
-
-
 ];
 
 @NgModule({
