@@ -4,6 +4,7 @@ export interface TodoList {
   tasks: TodoTask[];
   user_id: number | null;
   isStarred?: boolean;
+  isVisible: boolean;
 }
 
 export interface TodoTask {

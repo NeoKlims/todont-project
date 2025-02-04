@@ -1,4 +1,4 @@
-<div class="todo-list">
+<div class="todo-list" *ngIf="list.isVisible">
   <div class="list-header">
     <div class="header-left">
       <h2 *ngIf="!isEditing">{{ list.title }}</h2>

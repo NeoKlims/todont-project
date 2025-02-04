@@ -69,7 +69,6 @@ export class TodoService {
     return this.todontLists.asObservable();
   }
 
-  
   addTodoList(title: string, isTodont: boolean = false) {
     if (this.currentUserId === null) {
       console.error('No user is logged in');
@@ -82,6 +81,7 @@ export class TodoService {
       tasks: [],
       user_id: this.currentUserId,
       isStarred: false,
+      isVisible: true,
     };
 
     // Determine the correct API endpoint
@@ -120,32 +120,54 @@ export class TodoService {
       this.todoLists.next(lists);
     }
   }*/
-    deleteList(listId: string, isTodont: boolean = false) {
-      // Determine the correct API endpoint
-      const url = isTodont 
-          ? `${this.apiUrl}/todontlists/${listId}`
-          : `${this.apiUrl}/todolists/${listId}`;
-  
-      // Make the HTTP DELETE request
-      this.http.delete(url).subscribe({
-          next: () => {
-              console.log(`List ${listId} deleted successfully.`);
-              // Update the local state only after a successful backend deletion
-              if (isTodont) {
-                  const updatedLists = this.todontLists.value.filter((list) => list.id !== listId);
-                  this.todontLists.next(updatedLists);
-              } else {
-                  const updatedLists = this.todoLists.value.filter((list) => list.id !== listId);
-                  
-                  this.todoLists.next(updatedLists);
-              }
-          },
-          error: (error) => {
-              console.error(`Failed to delete list ${listId}:`, error);
-          }
-      });
+  deleteList(listId: string, isTodont: boolean = false) {
+    // Determine the correct API endpoint
+    const url = isTodont
+      ? `${this.apiUrl}/todontlists/${listId}`
+      : `${this.apiUrl}/todolists/${listId}`;
+
+    // Make the HTTP DELETE request
+    this.http.delete(url).subscribe({
+      next: () => {
+        console.log(`List ${listId} deleted successfully.`);
+        // Update the local state only after a successful backend deletion
+        if (isTodont) {
+          const updatedLists = this.todontLists.value.filter(
+            (list) => list.id !== listId
+          );
+          this.todontLists.next(updatedLists);
+        } else {
+          const updatedLists = this.todoLists.value.filter(
+            (list) => list.id !== listId
+          );
+
+          this.todoLists.next(updatedLists);
+        }
+      },
+      error: (error) => {
+        console.error(`Failed to delete list ${listId}:`, error);
+      },
+    });
   }
-  
+
+  toggleListVisibility(listId: string) {
+    const list = this.todontLists.value.find((list) => list.id === listId);
+    if (list) {
+      // Si la lista está en 'todontLists', alternamos la visibilidad
+      list.isVisible = !list.isVisible;
+      this.todontLists.next([...this.todontLists.value]); // Notificamos la actualización
+      return;
+    }
+
+    // Si no la encontramos en 'todontLists', buscamos en 'todoLists'
+    const todoList = this.todoLists.value.find((list) => list.id === listId);
+    if (todoList) {
+      // Si la lista está en 'todoLists', alternamos la visibilidad
+      todoList.isVisible = !todoList.isVisible;
+      this.todoLists.next([...this.todoLists.value]); // Notificamos la actualización
+    }
+  }
+
   updateListName(listId: string, newName: string, isTodont: boolean = false) {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;
     const list = lists.find((l) => l.id === listId);

@@ -10,7 +10,13 @@
       [class.starred]="list.isStarred"
     >
       <div class="list-item-content">
-        <span class="checkbox">✓</span>
+        <label>
+          <input
+            type="checkbox"
+            [checked]="list.isVisible"
+            (change)="toggleListVisibility(list.id)"
+          />
+        </label>
         <span *ngIf="!editingListId || editingListId !== list.id">
           {{ list.title }}
         </span>

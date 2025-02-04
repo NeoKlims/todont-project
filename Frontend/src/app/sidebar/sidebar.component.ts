@@ -24,6 +24,10 @@ export class SidebarComponent implements OnInit {
 
   constructor(private todoService: TodoService) {}
 
+  toggleListVisibility(listId: string, isTodont: boolean = false) {
+    this.todoService.toggleListVisibility(listId); // Llama al servicio para alternar la visibilidad
+  }
+
   ngOnInit(): void {
     this.loadLists();
   }
