@@ -7,15 +7,12 @@
         #editInput
         type="text"
         [value]="list.title"
-        (keyup.enter)="updateListName(list.id,editInput.value)"
-        (blur)="updateListName(list.id,editInput.value)"
+        (keyup.enter)="updateListName(list.id, editInput.value)"
+        (blur)="updateListName(list.id, editInput.value)"
         class="edit-input"
       />
     </div>
     <div class="header-actions">
-      <button class="toggle-list-btn" (click)="toggleList()">
-        {{ showList ? "-" : "+" }}
-      </button>
       <button
         class="star-btn"
         [class.starred]="list.isStarred"
@@ -35,7 +32,7 @@
     </div>
   </div>
 
-  <div class="items" [class.hidden]="!showList">
+  <div class="items">
     <div class="tasks">
       <div
         *ngFor="let task of pendingTasks"

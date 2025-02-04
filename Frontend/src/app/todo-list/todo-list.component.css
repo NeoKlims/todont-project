@@ -132,15 +132,3 @@
 .toggle-list-btn:hover {
   color: #007bff;
 }
-
-.items {
-  transition: max-height 0.5s ease, opacity 0.5s ease;
-  max-height: 500px; /* Ajusta según el tamaño máximo de tu lista */
-  overflow: hidden; /* Asegura que los elementos ocultos no sobresalgan */
-  opacity: 1;
-}
-
-.items.hidden {
-  max-height: 0; /* Establece la altura máxima a 0 cuando esté oculta */
-  opacity: 0; /* Desvanece el contenido */
-}

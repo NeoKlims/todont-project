@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoList,TodoTask } from '../models/todo-list.model';
+import { TodoList, TodoTask } from '../models/todo-list.model';
 import { TodoService } from '../services/todo.service';
 import { FormsModule } from '@angular/forms';
 
@@ -15,7 +15,6 @@ export class TodoListComponent implements OnInit {
   @Input() list!: TodoList; // Input list from the parent component
   @Input() isTodont: boolean = false; // Determines if it's a To-Don't list
 
-  showList = true; // Toggle visibility of the list
   showListMenu = false; // Toggle visibility of the list menu
   showTaskMenu: { [key: string]: boolean } = {}; // Toggle visibility of task menus
   isEditing = false; // Toggle list name editing
@@ -79,9 +78,9 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update List Name
-  updateListName(listId: string,newName: string,isTodont = this.isTodont) {
+  updateListName(listId: string, newName: string, isTodont = this.isTodont) {
     if (newName.trim()) {
-      this.todoService.updateListName(listId, newName,isTodont);
+      this.todoService.updateListName(listId, newName, isTodont);
       this.isEditing = false;
     }
   }
@@ -96,11 +95,6 @@ export class TodoListComponent implements OnInit {
         // Optionally, send a request to the backend to update the task title
       }
     }
-  }
-
-  // Toggle List Visibility
-  toggleList() {
-    this.showList = !this.showList;
   }
 
   // Toggle Task Completion
