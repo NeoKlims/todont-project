@@ -40,29 +40,30 @@ export class TodoListComponent implements OnInit {
     return this.list.tasks.filter((task) => task.completed);
   }
 
+  
   // Add a Task
-  addTask(title: string) {
+  /*addTask(title: string): void {
     if (title.trim()) {
-      const newTask: TodoTask = {
-        /*id: Date.now().toString(),
-        title,
-        completed: false,*/
-        //isStarred: false,
-        id: Date.now().toString(), // Assuming the backend will generate a unique ID
-        title,
-        description: '', // Default values
-        completed: false,
-        deadline: '', // Default values
-        tags: '', // Default values
-        repeat_on: '', // Default values
-        list_id: "9", // Convert to number if necessary
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-      this.list.tasks.push(newTask);
-      // Optionally, send a request to the backend to save the task
+      this.todoService.addTask(this.list.id, title, this.isTodont).subscribe({
+        next: (newTask: TodoTask) => { 
+          // Update the local state only after the backend confirms the creation
+          this.list.tasks.push(newTask);
+        },
+        error: (error) => {
+          console.error('Error adding task', error);
+        },
+      });
     }
-  }
+  }*/
+    addTask(title: string): void {
+      if (title.trim()) {
+         
+            // Update the local state only after the backend confirms the creation
+            this.todoService.addTask(this.list.id, title, this.isTodont)
+            //this.list.tasks.push(newTask);
+          
+      }
+    }
 
   // Delete a Task
   deleteTask(taskId: string) {
@@ -111,7 +112,7 @@ export class TodoListComponent implements OnInit {
   toggleTask(taskId: string) {
     const task = this.list.tasks.find((task) => task.id === taskId);
     if (task) {
-      task.completed = !task.completed;
+      task.completed != task.completed;
       // Optionally, send a request to the backend to update the task status
     }
   }

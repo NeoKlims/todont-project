@@ -123,7 +123,7 @@ constructor(private http: HttpClient, private authService: AuthService) {
       isStarred: false,
       isVisible: true,
     };
-
+    console.log(newList)
     // Determine the correct API endpoint
     const apiUrl = isTodont
       ? this.apiUrl + '/todontlists'
@@ -252,20 +252,20 @@ constructor(private http: HttpClient, private authService: AuthService) {
     }
   }
 
-  addTask(listId: string, title: string, isTodont: boolean = false) {
+  /*addTask(listId: string, title: string, isTodont: boolean = false) {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;
     const listIndex = lists.findIndex((list) => list.id === listId);
   
     if (listIndex !== -1) {
       const newTask: TodoTask = {
-        id: Date.now().toString(), // Assuming the backend will generate a unique ID
+        id: Date.now().toString(), 
         title,
-        description: '', // Default values
-        completed: false,
-        deadline: '', // Default values
-        tags: '', // Default values
-        repeat_on: '', // Default values
-        list_id: listId, // Convert to number if necessary
+        description: '', // Not implemented
+        completed: 0,
+        deadline: '', // Not implemented
+        tags: '', // Not implemented
+        repeat_on: '', // Not implemented
+        list_id: listId, 
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
@@ -287,8 +287,78 @@ constructor(private http: HttpClient, private authService: AuthService) {
         },
       });
     }
-  }
-
+  }*/
+    /*addTask(listId: string, title: string, isTodont: boolean = false) {
+      const lists = isTodont ? this.todontLists.value : this.todoLists.value;
+      const listIndex = lists.findIndex((list) => list.id === listId);
+      console.log(isTodont)
+      if (listIndex !== -1) {
+        const apiUrl = isTodont ? this.apiUrl + '/todonttasks' : this.apiUrl + '/todotasks';
+        const newTask: TodoTask = {
+          id: Date.now().toString(), // Generate a unique ID (you might want to use a UUID or let the backend generate this)
+          title,
+          description: '1', //  Not implemented
+          completed: 0,
+          deadline: '', // Not implemented
+          tags: '3', // Not implemented
+          repeat_on: 'n', // Not implemented
+          list_id: listId, // Ensure this matches the backend's expected field name
+        };
+        console.log(newTask)
+        // Send a POST request to the backend to add the task
+        this.http.post(apiUrl, newTask).subscribe({
+          next: (response) => {
+            console.log('Task added successfully', response);
+            // Update the local state only after the backend confirms the creation
+            lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
+            if (isTodont) {
+              this.todontLists.next([...lists]);
+            } else {
+              this.todoLists.next([...lists]);
+            }
+          },
+          error: (error) => {
+            console.error('Error adding task', error);
+          },
+        });
+      }
+    }
+*/
+addTask(listId: string, title: string, isTodont: boolean = false) {
+      const lists = isTodont ? this.todontLists.value : this.todoLists.value;
+      const listIndex = lists.findIndex((list) => list.id === listId);
+      console.log(isTodont)
+      if (listIndex !== -1) {
+        const apiUrl = isTodont ? this.apiUrl + '/todonttasks' : this.apiUrl + '/todotasks';
+        const newTask: TodoTask = {
+          id: Date.now().toString(), // Generate a unique ID (you might want to use a UUID or let the backend generate this)
+          title,
+          description: '1', //  Not implemented
+          completed: 0,
+          deadline: '', // Not implemented
+          tags: '3', // Not implemented
+          repeat_on: 'n', // Not implemented
+          list_id: listId, // Ensure this matches the backend's expected field name
+        };
+        console.log(newTask)
+        // Send a POST request to the backend to add the task
+        this.http.post(apiUrl, newTask).subscribe({
+          next: (response) => {
+            console.log('Task added successfully', response);
+            // Update the local state only after the backend confirms the creation
+            lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
+            if (isTodont) {
+              this.todontLists.next([...lists]);
+            } else {
+              this.todoLists.next([...lists]);
+            }
+          },
+          error: (error) => {
+            console.error('Error adding task', error);
+          },
+        });
+      }
+    }
   deleteTask(listId: string, taskId: string, isTodont: boolean = false) {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;
     const list = lists.find((l) => l.id === listId);
@@ -346,7 +416,7 @@ constructor(private http: HttpClient, private authService: AuthService) {
     if (list) {
       const task = list.tasks.find((t) => t.id === taskId);
       if (task) {
-        task.completed = !task.completed;
+        task.completed != task.completed;
         if (isTodont) {
           this.todontLists.next([...lists]);
         } else {
