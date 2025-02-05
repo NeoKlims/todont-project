@@ -20,7 +20,6 @@ import { HomeComponent } from './home/home.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
-import { TaskService } from './services/task.service';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -59,7 +58,7 @@ import { OurServicesComponent } from './our-services/our-services.component';
     WorkspaceComponent,
     RouterModule.forRoot([{ path: '', component: TodoListComponent }]),
   ],
-  providers: [provideClientHydration(withEventReplay()), TaskService],
+  providers: [provideClientHydration(withEventReplay())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
