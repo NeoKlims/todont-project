@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { Stat } from '../models/stat.model';
 interface StatItem {
-  icon: string;
+  image: string;
   value: string;
   label: string;
-  color: string;
 }
 @Component({
   selector: 'app-stats',
@@ -17,31 +16,30 @@ interface StatItem {
 export class StatsComponent implements OnInit {
   stats: StatItem[] = [
     {
-      icon: 'users',
+      image: 'satisfiedclient.jpg',
       value: '2,500+',
       label: 'Satisfied Clients',
-      color: '#3498db',
     },
     {
-      icon: 'rocket',
+      image: '',
       value: '150+',
       label: 'Projects Completed',
-      color: '#2ecc71',
     },
     {
-      icon: 'trophy',
+      image: '',
       value: '25',
       label: 'Awards Won',
-      color: '#f39c12',
     },
     {
-      icon: 'globe',
+      image: '',
       value: '10+',
       label: 'Countries Served',
-      color: '#e74c3c',
     },
   ];
 
+  getImageUrl(image: string): string {
+    return `assets/images/${image}`; // Forma la URL correcta
+  }
   constructor() {}
 
   ngOnInit(): void {}
