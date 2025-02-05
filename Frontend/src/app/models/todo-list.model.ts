@@ -10,7 +10,12 @@ export interface TodoList {
 export interface TodoTask {
   id: string;
   title: string;
+  description: string;
   completed: boolean;
-  dueDate?: Date;
-  isStarred?: boolean;
+  deadline: string;
+  tags: string;
+  repeat_on: string;
+  list_id: string;
+  created_at: string;
+  updated_at: string;
 }

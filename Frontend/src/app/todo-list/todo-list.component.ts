@@ -44,10 +44,20 @@ export class TodoListComponent implements OnInit {
   addTask(title: string) {
     if (title.trim()) {
       const newTask: TodoTask = {
-        id: Date.now().toString(),
+        /*id: Date.now().toString(),
         title,
+        completed: false,*/
+        //isStarred: false,
+        id: Date.now().toString(), // Assuming the backend will generate a unique ID
+        title,
+        description: '', // Default values
         completed: false,
-        isStarred: false,
+        deadline: '', // Default values
+        tags: '', // Default values
+        repeat_on: '', // Default values
+        list_id: "9", // Convert to number if necessary
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
       this.list.tasks.push(newTask);
       // Optionally, send a request to the backend to save the task
@@ -113,13 +123,13 @@ export class TodoListComponent implements OnInit {
   }
 
   // Toggle Task Star
-  toggleTaskStar(taskId: string) {
+  /*toggleTaskStar(taskId: string) {
     const task = this.list.tasks.find((task) => task.id === taskId);
     if (task) {
       task.isStarred = !task.isStarred;
       // Optionally, send a request to the backend to update the task star status
     }
-  }
+  }*/
 
   // Toggle Completed Tasks Section
   toggleCompletedSection() {

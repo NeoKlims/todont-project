@@ -146,7 +146,7 @@ export class WorkspaceComponent {
 
   ngOnInit(): void {
     this.loadLists();
-    this.authService.getWorkspaceData().subscribe({
+    /*this.authService.getWorkspaceData().subscribe({
       next: (data) => {
         this.workspaceData = data;
         console.log('Workspace Data:', data);
@@ -154,7 +154,7 @@ export class WorkspaceComponent {
       error: (err) => {
         console.error('Error fetching workspace data:', err);
       },
-    });
+    });*/
 
   }
 

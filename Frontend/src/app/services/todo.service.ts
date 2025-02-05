@@ -14,14 +14,15 @@ export class TodoService {
   private apiUrl = environment.apiUrl;
   private currentUserId: number | null = null; // Initialize as null
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    // Set the current user ID from AuthService
-    this.currentUserId = this.authService.getUserId();
+  // Inside the constructor of TodoService
 
-    // Fetch initial data when the service is instantiated
-    this.fetchTodoLists();
-    this.fetchTodontLists();
-  }
+constructor(private http: HttpClient, private authService: AuthService) {
+  this.currentUserId = this.authService.getUserId();
+
+  this.fetchTodoLists();
+  this.fetchTodontLists();
+  this.fetchTasks(); // Fetch tasks as well
+}
 
   // Fetch Todo lists from the backend for the current user
   private fetchTodoLists(): void {
@@ -58,7 +59,46 @@ export class TodoService {
       error: (error) => console.error('Error fetching Todont lists', error),
     });
   }
-
+  private fetchTasks(): void {
+    if (this.currentUserId === null) {
+      console.error('No user is logged in');
+      return;
+    }
+  
+    this.http.get<TodoTask[]>(`${this.apiUrl}/todotasks`).subscribe({
+      next: (tasks) => {
+        // Distribute tasks to their corresponding lists
+        this.distributeTasksToLists(tasks);
+        console.log(tasks)
+      },
+      error: (error) => console.error('Error fetching tasks', error),
+    });
+  }
+  
+  private distributeTasksToLists(tasks: TodoTask[]): void {
+    // Get the current lists
+    const todoLists = this.todoLists.value;
+    const todontLists = this.todontLists.value;
+    
+  
+    // Clear existing tasks in the lists
+    todoLists.forEach(list => list.tasks = []);
+    todontLists.forEach(list => list.tasks = []);
+  
+    // Distribute tasks to the appropriate lists
+    tasks.forEach(task => {
+      const list = todoLists.find(list => list.id === task.list_id) || 
+                   todontLists.find(list => list.id === task.list_id);
+      if (list) {
+        list.tasks.push(task);
+      }
+    });
+    console.log(todoLists)
+    console.log(todontLists)
+    // Update the BehaviorSubjects with the new lists
+    this.todoLists.next([...todoLists]);
+    this.todontLists.next([...todontLists]);
+  }
   // Expose Todo lists as an observables
   getTodoLists(): Observable<TodoList[]> {
     return this.todoLists.asObservable();
@@ -111,15 +151,7 @@ export class TodoService {
       });
   }
 
-  /*deleteList(listId: string, isTodont: boolean = false) {
-    if (isTodont) {
-      const lists = this.todontLists.value.filter((list) => list.id !== listId);
-      this.todontLists.next(lists);
-    } else {
-      const lists = this.todoLists.value.filter((list) => list.id !== listId);
-      this.todoLists.next(lists);
-    }
-  }*/
+
   deleteList(listId: string, isTodont: boolean = false) {
     // Determine the correct API endpoint
     const url = isTodont
@@ -223,21 +255,37 @@ export class TodoService {
   addTask(listId: string, title: string, isTodont: boolean = false) {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;
     const listIndex = lists.findIndex((list) => list.id === listId);
-
+  
     if (listIndex !== -1) {
       const newTask: TodoTask = {
-        id: Date.now().toString(),
+        id: Date.now().toString(), // Assuming the backend will generate a unique ID
         title,
+        description: '', // Default values
         completed: false,
-        isStarred: false,
+        deadline: '', // Default values
+        tags: '', // Default values
+        repeat_on: '', // Default values
+        list_id: listId, // Convert to number if necessary
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
-
-      lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
-      if (isTodont) {
-        this.todontLists.next([...lists]);
-      } else {
-        this.todoLists.next([...lists]);
-      }
+  
+      // Send a POST request to the backend to add the task
+      this.http.post(`${this.apiUrl}/todotasks`, newTask).subscribe({
+        next: (response) => {
+          console.log('Task added successfully', response);
+          // Update the local state only after the backend confirms the creation
+          lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
+          if (isTodont) {
+            this.todontLists.next([...lists]);
+          } else {
+            this.todoLists.next([...lists]);
+          }
+        },
+        error: (error) => {
+          console.error('Error adding task', error);
+        },
+      });
     }
   }
 
@@ -275,7 +323,7 @@ export class TodoService {
     }
   }
 
-  toggleTaskStar(listId: string, taskId: string, isTodont: boolean = false) {
+  /*toggleTaskStar(listId: string, taskId: string, isTodont: boolean = false) {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
@@ -289,7 +337,7 @@ export class TodoService {
         }
       }
     }
-  }
+  }*/
 
   toggleTask(listId: string, taskId: string, isTodont: boolean = false) {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;

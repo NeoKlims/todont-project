@@ -65,7 +65,8 @@ export class RegisterComponent {
                             // Store the token in localStorage
                             localStorage.setItem('authToken', loginResponse.token);
                             console.log('Token Stored:', loginResponse.token);
-
+                            sessionStorage.setItem('authToken', response.token);
+                            this.authService.setCurrentUser(response.user);
                             // Redirect to the workspace or dashboard
                             this.router.navigate(['/workspace', loginResponse.token]);
                             console.log('Navigation to /workspace successful');
