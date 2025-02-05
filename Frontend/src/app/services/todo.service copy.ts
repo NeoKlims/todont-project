@@ -331,7 +331,7 @@ addTask(listId: string, title: string, isTodont: boolean = false) {
       if (listIndex !== -1) {
         const apiUrl = isTodont ? this.apiUrl + '/todonttasks' : this.apiUrl + '/todotasks';
         const newTask: TodoTask = {
-          id: Date.now().toString(), // Generate a unique ID (you might want to use a UUID or let the backend generate this)
+          id:-1, // Generate a unique ID (you might want to use a UUID or let the backend generate this)
           title,
           description: '1', //  Not implemented
           completed: 0,
@@ -359,7 +359,7 @@ addTask(listId: string, title: string, isTodont: boolean = false) {
         });
       }
     }
-  deleteTask(listId: string, taskId: string, isTodont: boolean = false) {
+  deleteTask(listId: string, taskId: number, isTodont: boolean = false) {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
@@ -374,7 +374,7 @@ addTask(listId: string, title: string, isTodont: boolean = false) {
 
   updateTaskTitle(
     listId: string,
-    taskId: string,
+    taskId: number,
     newTitle: string,
     isTodont: boolean = false
   ) {
@@ -409,7 +409,7 @@ addTask(listId: string, title: string, isTodont: boolean = false) {
     }
   }*/
 
-  toggleTask(listId: string, taskId: string, isTodont: boolean = false) {
+  toggleTask(listId: string, taskId: number, isTodont: boolean = false) {
     const lists = isTodont ? this.todontLists.value : this.todoLists.value;
     const list = lists.find((l) => l.id === listId);
 

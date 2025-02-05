@@ -19,7 +19,7 @@ export class TodoListComponent implements OnInit {
   showListMenu = false; // Toggle visibility of the list menu
   showTaskMenu: { [key: string]: boolean } = {}; // Toggle visibility of task menus
   isEditing = false; // Toggle list name editing
-  editingTaskId: string | null = null; // Track which task is being edited
+  editingTaskId: number | null = null; // Track which task is being edited
   showCompleted: boolean = false; // Toggle visibility of completed tasks
 
   constructor(private todoService: TodoService,private todontService: TodontService) {}
@@ -63,21 +63,25 @@ export class TodoListComponent implements OnInit {
          }else{
           this.todoService.addTask(this.list.id, title)
          }
-            // Update the local state only after the backend confirms the creation
-            //this.list.tasks.push(newTask);
+        //this.list.tasks.push(newTask);
           
       }
     }
 
   // Delete a Task
-  deleteTask(taskId: string) {
-    this.list.tasks = this.list.tasks.filter((task) => task.id !== taskId);
-    this.showTaskMenu[taskId] = false;
+  deleteTask(taskId: number) {
+      this.list.tasks = this.list.tasks.filter((task) => task.id !== taskId);
+      this.showTaskMenu[taskId] = false;
   }
 
   // Delete the List
   deleteList(listId: string): void {
-    this.todoService.deleteList(listId);
+    
+    if(this.isTodont){
+      this.todontService.deleteList(listId);
+     }else{
+      this.todoService.deleteList(listId);
+     }
   }
 
   // Start Editing List Name
@@ -87,7 +91,7 @@ export class TodoListComponent implements OnInit {
   }
 
   // Start Editing Task Title
-  startEditingTask(taskId: string) {
+  startEditingTask(taskId: number) {
     this.editingTaskId = taskId;
     this.showTaskMenu[taskId] = false;
   }
@@ -95,13 +99,19 @@ export class TodoListComponent implements OnInit {
   // Update List Name
   updateListName(listId: string, newName: string, isTodont = this.isTodont) {
     if (newName.trim()) {
-      this.todoService.updateListName(listId, newName, isTodont);
-      this.isEditing = false;
+      
+      if(this.isTodont){
+        this.todontService.updateListName(listId, newName, isTodont);
+        this.isEditing = false;
+       }else{
+        this.todoService.updateListName(listId, newName, isTodont);
+        this.isEditing = false;
+       }
     }
   }
 
   // Update Task Title
-  updateTaskTitle(taskId: string, newTitle: string) {
+  updateTaskTitle(listId: string,taskId: number, newTitle: string) {
     if (newTitle.trim()) {
       const task = this.list.tasks.find((task) => task.id === taskId);
       if (task) {
@@ -109,11 +119,18 @@ export class TodoListComponent implements OnInit {
         this.editingTaskId = null;
         // Optionally, send a request to the backend to update the task title
       }
+      if(this.isTodont){
+        this.todontService.updateTaskTitle(listId,taskId, newTitle);
+        this.isEditing = false;
+       }else{
+        this.todoService.updateTaskTitle(listId,taskId, newTitle);
+        this.isEditing = false;
+       }
     }
   }
 
   // Toggle Task Completion
-  toggleTask(taskId: string) {
+  toggleTask(taskId: number) {
     const task = this.list.tasks.find((task) => task.id === taskId);
     if (task) {
       task.completed != task.completed;
@@ -142,11 +159,11 @@ export class TodoListComponent implements OnInit {
   }
 
   // Toggle Task Menu
-  toggleTaskMenu(taskId: string) {
+  toggleTaskMenu(taskId: number) {
     this.showTaskMenu[taskId] = !this.showTaskMenu[taskId];
     // Close other task menus
     for (let id in this.showTaskMenu) {
-      if (id !== taskId) {
+      if (+id !== taskId) {
         this.showTaskMenu[id] = false;
       }
     }

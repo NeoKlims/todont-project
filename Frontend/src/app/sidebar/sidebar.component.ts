@@ -66,8 +66,13 @@ export class SidebarComponent implements OnInit {
 
   // Delete a list
   deleteList(listId: string): void {
-    this.todoService.deleteList(listId);
-    this.showMenu[listId] = false;
+    if (this.showTodont) {
+      this.todontService.deleteList(listId);
+      this.showMenu[listId] = false;
+    } else {
+      this.todoService.deleteList(listId);
+      this.showMenu[listId] = false;
+    }
   }
 
   // Start editing a list name

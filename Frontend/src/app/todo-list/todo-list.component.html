@@ -45,16 +45,16 @@
             [checked]="task.completed"
             (change)="toggleTask(task.id)"
           />
-          <span *ngIf="!editingTaskId || editingTaskId !== task.id">
+          <span *ngIf="!editingTaskId || +editingTaskId !== task.id">
             {{ task.title }}
           </span>
           <input
-            *ngIf="editingTaskId === task.id"
+            *ngIf="editingTaskId !=null && +editingTaskId === task.id"
             #taskEditInput
             type="text"
             [value]="task.title"
-            (keyup.enter)="updateTaskTitle(task.id, taskEditInput.value)"
-            (blur)="updateTaskTitle(task.id, taskEditInput.value)"
+            (keyup.enter)="updateTaskTitle(list.id,task.id, taskEditInput.value)"
+            (blur)="updateTaskTitle(list.id,task.id, taskEditInput.value)"
             class="edit-input"
           />
         </div>

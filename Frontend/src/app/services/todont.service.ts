@@ -147,7 +147,7 @@ export class TodontService {
 
     if (listIndex !== -1) {
       const newTask: TodontTask = {
-        id: Date.now().toString(),
+        id:-1,
         title,
         description: '1',
         completed: 0,
@@ -165,7 +165,7 @@ export class TodontService {
     }
   }
 
-  deleteTask(listId: string, taskId: string): void {
+  deleteTask(listId: string, taskId: number): void {
     const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
@@ -174,7 +174,7 @@ export class TodontService {
     }
   }
 
-  updateTaskTitle(listId: string, taskId: string, newTitle: string): void {
+  updateTaskTitle(listId: string, taskId: number, newTitle: string): void {
     const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
@@ -186,7 +186,7 @@ export class TodontService {
     }
   }
 
-  toggleTask(listId: string, taskId: string): void {
+  toggleTask(listId: string, taskId: number): void {
     const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
