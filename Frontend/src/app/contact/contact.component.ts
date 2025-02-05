@@ -4,9 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-contact',
   standalone: false,
-  
+
   templateUrl: './contact.component.html',
-  styleUrl: './contact.component.css'
+  styleUrl: './contact.component.css',
 })
 export class ContactComponent {
   contactForm: FormGroup;
@@ -16,7 +16,7 @@ export class ContactComponent {
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
-      message: ['', [Validators.required, Validators.minLength(10)]]
+      message: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
@@ -30,6 +30,6 @@ export class ContactComponent {
   contactInfo = {
     address: '123 Tech Lane, Innovation City',
     phone: '+1 (555) 123-4567',
-    email: 'contact@tcodnt.com'
+    email: 'contact@todont.com',
   };
 }

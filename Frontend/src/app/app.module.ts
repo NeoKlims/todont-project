@@ -12,7 +12,6 @@ import { FooterComponent } from './footer/footer.component';
 import { HeroComponent } from './hero/hero.component';
 import { StatsComponent } from './stats/stats.component';
 import { HeaderComponent } from './header/header.component';
-import { FeaturedServicesComponent } from './featured-services/featured-services.component';
 import { CommunityListsComponent } from './community-lists/community-lists.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
@@ -35,7 +34,6 @@ import { OurServicesComponent } from './our-services/our-services.component';
     HeroComponent,
     StatsComponent,
     HeaderComponent,
-    FeaturedServicesComponent,
     CommunityListsComponent,
     ContactComponent,
     AboutComponent,
@@ -45,7 +43,6 @@ import { OurServicesComponent } from './our-services/our-services.component';
     ForgotPasswordComponent,
     NewPasswordComponent,
     OurServicesComponent,
-    
   ],
   imports: [
     ReactiveFormsModule,

@@ -1,15 +1,21 @@
-<section class="services-section">
-    <div class="container">
-      <h2 class="section-title">Our Services</h2>
-      <div class="services-container">
-        <div class="service-item" *ngFor="let service of serviceItems">
-          <div class="service-icon">
-            <!-- Add icon logic here -->
-            <i class="icon-{{ service.title | lowercase }}"></i>
-          </div>
-          <h3 class="service-title">{{ service.title }}</h3>
-          <p class="service-description">{{ service.description }}</p>
+<div class="services-section">
+  <div class="container px-4 py-5" id="featured-3">
+    <h2 class="pb-2 border-bottom">Our services</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="feature col" *ngFor="let service of serviceItems">
+        <div
+          class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3"
+        >
+          <svg class="bi" width="1em" height="1em">
+            <use xlink:href="#collection" />
+          </svg>
         </div>
+        <h3 class="fs-2 text-body-emphasis">{{ service.title }}</h3>
+        <p>
+          {{ service.description }}
+        </p>
+        <a href="#" class="icon-link"> LINK TO SOMETHING </a>
       </div>
     </div>
-  </section>
+  </div>
+</div>
