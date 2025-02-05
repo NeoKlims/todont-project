@@ -1,38 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { TodoList, TodoTask } from '../models/todo-list.model';
+import { TodontList, TodontTask } from '../models/todo-list.model';
 import { environment } from '../../environments/environment.development';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TodoService {
-  private todoLists = new BehaviorSubject<TodoList[]>([]);
+export class TodontService {
+  private todontLists = new BehaviorSubject<TodontList[]>([]);
   private apiUrl = environment.apiUrl;
   private currentUserId: number | null = null;
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.currentUserId = this.authService.getUserId();
-    this.fetchTodoLists();
+    this.fetchTodontLists();
     this.fetchTasks();
   }
 
-  private fetchTodoLists(): void {
+  private fetchTodontLists(): void {
     if (this.currentUserId === null) {
       console.error('No user is logged in');
       return;
     }
 
-    this.http.get<TodoList[]>(`${this.apiUrl}/todolists`).subscribe({
+    this.http.get<TodontList[]>(`${this.apiUrl}/todontlists`).subscribe({
       next: (lists) => {
-        const filteredLists = lists.filter(
-          (list) => list.user_id === this.currentUserId
-        );
-        this.todoLists.next(filteredLists);
+        const filteredLists = lists.filter((list) => list.user_id === this.currentUserId);
+        this.todontLists.next(filteredLists);
       },
-      error: (error) => console.error('Error fetching Todo lists', error),
+      error: (error) => console.error('Error fetching Todont lists', error),
     });
   }
 
@@ -42,7 +40,7 @@ export class TodoService {
       return;
     }
 
-    this.http.get<TodoTask[]>(`${this.apiUrl}/todotasks`).subscribe({
+    this.http.get<TodontTask[]>(`${this.apiUrl}/todonttasks`).subscribe({
       next: (tasks) => {
         this.distributeTasksToLists(tasks);
       },
@@ -50,29 +48,29 @@ export class TodoService {
     });
   }
 
-  private distributeTasksToLists(tasks: TodoTask[]): void {
-    const todoLists = this.todoLists.value;
-    todoLists.forEach((list) => (list.tasks = []));
+  private distributeTasksToLists(tasks: TodontTask[]): void {
+    const todontLists = this.todontLists.value;
+    todontLists.forEach((list) => (list.tasks = []));
     tasks.forEach((task) => {
-      const list = todoLists.find((list) => list.id === task.list_id);
+      const list = todontLists.find((list) => list.id === task.list_id);
       if (list) {
         list.tasks.push(task);
       }
     });
-    this.todoLists.next([...todoLists]);
+    this.todontLists.next([...todontLists]);
   }
 
-  getTodoLists(): Observable<TodoList[]> {
-    return this.todoLists.asObservable();
+  getTodontLists(): Observable<TodontList[]> {
+    return this.todontLists.asObservable();
   }
 
-  addTodoList(title: string): void {
+  addTodontList(title: string): void {
     if (this.currentUserId === null) {
       console.error('No user is logged in');
       return;
     }
 
-    const newList: TodoList = {
+    const newList: TodontList = {
       id: Date.now().toString(),
       title,
       tasks: [],
@@ -81,31 +79,26 @@ export class TodoService {
       isVisible: true,
     };
 
-    this.http
-      .post(`${this.apiUrl}/todolists`, { title, user_id: this.currentUserId })
-      .subscribe({
-        next: (response) => {
-          console.log('Todo list created successfully', response);
-          this.todoLists.next([...this.todoLists.value, newList]);
-        },
-        error: (error) => console.error('Error creating todo list', error),
-      });
+    this.http.post(`${this.apiUrl}/todontlists`, { title, user_id: this.currentUserId }).subscribe({
+      next: (response) => {
+        console.log('Todont list created successfully', response);
+        this.todontLists.next([...this.todontLists.value, newList]);
+      },
+      error: (error) => console.error('Error creating todont list', error),
+    });
   }
 
   toggleListVisibility(listId: string) {
-
-    // Si no la encontramos en 'todontLists', buscamos en 'todoLists'
-    const todoList = this.todoLists.value.find((list) => list.id === listId);
-    if (todoList) {
-      // Si la lista está en 'todoLists', alternamos la visibilidad
-      todoList.isVisible = !todoList.isVisible;
-      this.todoLists.next([...this.todoLists.value]); // Notificamos la actualización
+    const list = this.todontLists.value.find((list) => list.id === listId);
+    if (list) {
+      // Si la lista está en 'todontLists', alternamos la visibilidad
+      list.isVisible = !list.isVisible;
+      this.todontLists.next([...this.todontLists.value]); // Notificamos la actualización
+      return;
     }
   }
-
-
-  updateListName(listId: string, newName: string, isTodont: boolean = false) {
-    const lists = this.todoLists.value;
+  updateListName(listId: string, newName: string, isTodont: boolean = true) {
+    const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
 
     console.log(list);
@@ -128,7 +121,7 @@ export class TodoService {
         next: (response) => {
           console.log('List name updated successfully:', response);
           // Update the local state after successful backend update
-          this.todoLists.next([...lists]);
+          this.todontLists.next([...lists]);
         },
         error: (error) => {
           console.error('Failed to update list name:', error);
@@ -139,38 +132,33 @@ export class TodoService {
     }
   }
   deleteList(listId: string): void {
-    this.http.delete(`${this.apiUrl}/todolists/${listId}`).subscribe({
+    this.http.delete(`${this.apiUrl}/todontlists/${listId}`).subscribe({
       next: () => {
-        const updatedLists = this.todoLists.value.filter(
-          (list) => list.id !== listId
-        );
-        this.todoLists.next(updatedLists);
+        const updatedLists = this.todontLists.value.filter((list) => list.id !== listId);
+        this.todontLists.next(updatedLists);
       },
-      error: (error) =>
-        console.error(`Failed to delete list ${listId}:`, error),
+      error: (error) => console.error(`Failed to delete list ${listId}:`, error),
     });
   }
 
   addTask(listId: string, title: string): void {
-    const lists = this.todoLists.value;
+    const lists = this.todontLists.value;
     const listIndex = lists.findIndex((list) => list.id === listId);
 
     if (listIndex !== -1) {
-      const newTask: TodoTask = {
+      const newTask: TodontTask = {
         id: Date.now().toString(),
         title,
         description: '1',
         completed: 0,
-        deadline: '',
-        tags: '3',
-        repeat_on: 'n',
+        streak: "0",
         list_id: listId,
       };
-      console.log(newTask)
-      this.http.post(`${this.apiUrl}/todotasks`, newTask).subscribe({
+
+      this.http.post(`${this.apiUrl}/todonttasks`, newTask).subscribe({
         next: (response) => {
           lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
-          this.todoLists.next([...lists]);
+          this.todontLists.next([...lists]);
         },
         error: (error) => console.error('Error adding task', error),
       });
@@ -178,34 +166,34 @@ export class TodoService {
   }
 
   deleteTask(listId: string, taskId: string): void {
-    const lists = this.todoLists.value;
+    const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
       list.tasks = list.tasks.filter((t) => t.id !== taskId);
-      this.todoLists.next([...lists]);
+      this.todontLists.next([...lists]);
     }
   }
 
   updateTaskTitle(listId: string, taskId: string, newTitle: string): void {
-    const lists = this.todoLists.value;
+    const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
       const task = list.tasks.find((t) => t.id === taskId);
       if (task && newTitle.trim()) {
         task.title = newTitle;
-        this.todoLists.next([...lists]);
+        this.todontLists.next([...lists]);
       }
     }
   }
 
   toggleTask(listId: string, taskId: string): void {
-    const lists = this.todoLists.value;
+    const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
       const task = list.tasks.find((t) => t.id === taskId);
       if (task) {
         task.completed != task.completed;
-        this.todoLists.next([...lists]);
+        this.todontLists.next([...lists]);
       }
     }
   }

@@ -4,6 +4,7 @@ import { TodoListComponent } from '../todo-list/todo-list.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { TodontService } from '../services/todont.service';
 
 @Component({
   selector: 'app-workspace',
@@ -142,7 +143,7 @@ export class WorkspaceComponent {
   token: string | null = '';
   workspaceData: any;
 
-  constructor(private todoService: TodoService,private authService: AuthService) {}
+  constructor(private todoService: TodoService,private todontService: TodontService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadLists();
@@ -165,7 +166,7 @@ export class WorkspaceComponent {
 
   private loadLists() {
       if (this.showTodont) {
-          this.todontLists$ = this.todoService.getTodontLists();
+          this.todontLists$ = this.todontService.getTodontLists();
       } else {
           this.todoLists$ = this.todoService.getTodoLists();
       }

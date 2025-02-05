@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoList, TodoTask } from '../models/todo-list.model';
+import { TodoList, TodoTask,TodontList,TodontTask } from '../models/todo-list.model';
 import { TodoService } from '../services/todo.service';
 import { FormsModule } from '@angular/forms';
+import { TodontService } from '../services/todont.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -21,7 +22,7 @@ export class TodoListComponent implements OnInit {
   editingTaskId: string | null = null; // Track which task is being edited
   showCompleted: boolean = false; // Toggle visibility of completed tasks
 
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService,private todontService: TodontService) {}
 
   ngOnInit(): void {
     // Initialize tasks if not provided
@@ -57,9 +58,12 @@ export class TodoListComponent implements OnInit {
   }*/
     addTask(title: string): void {
       if (title.trim()) {
-         
+         if(this.isTodont){
+          this.todontService.addTask(this.list.id, title)
+         }else{
+          this.todoService.addTask(this.list.id, title)
+         }
             // Update the local state only after the backend confirms the creation
-            this.todoService.addTask(this.list.id, title, this.isTodont)
             //this.list.tasks.push(newTask);
           
       }
@@ -73,7 +77,7 @@ export class TodoListComponent implements OnInit {
 
   // Delete the List
   deleteList(listId: string): void {
-    this.todoService.deleteList(listId, this.isTodont);
+    this.todoService.deleteList(listId);
   }
 
   // Start Editing List Name
