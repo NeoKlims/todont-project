@@ -29,6 +29,7 @@ class ApiController extends Controller
         $todolist->title = $request->title;
         $todolist->user_id = $request->user_id;
         $todolist->save();
+        return response($todolist, 201);
     }
     
 
@@ -63,6 +64,7 @@ class ApiController extends Controller
         $todontlist->title = $request->title;
         $todontlist->user_id = $request->user_id;
         $todontlist->save();
+        return response($todontlist, 201);
     }
 
     public function updateTodontlist(Request $request, $id) {
@@ -104,6 +106,8 @@ class ApiController extends Controller
         $todotask->repeat_on = $request->repeat_on;
         $todotask->list_id = $request->list_id;
         $todotask->save();
+        return response($todotask, 201);
+        
     }
 
     public function updateTodoTask(Request $request, $id) {
@@ -139,6 +143,8 @@ class ApiController extends Controller
         $todonttask->streak = $request->streak;
         $todonttask->list_id = $request->list_id;
         $todonttask->save();
+        return response($todonttask, 201);
+
         
     }
 

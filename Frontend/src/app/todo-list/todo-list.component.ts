@@ -69,13 +69,20 @@ export class TodoListComponent implements OnInit {
     }
 
   // Delete a Task
-  deleteTask(taskId: number) {
-      this.list.tasks = this.list.tasks.filter((task) => task.id !== taskId);
-      this.showTaskMenu[taskId] = false;
+  deleteTask(listId:number,taskId: number) {
+      //this.list.tasks = this.list.tasks.filter((task) => task.id !== taskId);
+      //this.showTaskMenu[taskId] = false;
+      if(this.isTodont){
+        this.todontService.deleteTask(listId,taskId);
+        this.showTaskMenu[taskId] = false;
+       }else{
+        this.todoService.deleteTask(listId,taskId);
+        this.showTaskMenu[taskId] = false;
+       }
   }
 
   // Delete the List
-  deleteList(listId: string): void {
+  deleteList(listId: number): void {
     
     if(this.isTodont){
       this.todontService.deleteList(listId);
@@ -97,7 +104,7 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update List Name
-  updateListName(listId: string, newName: string, isTodont = this.isTodont) {
+  updateListName(listId: number, newName: string, isTodont = this.isTodont) {
     if (newName.trim()) {
       
       if(this.isTodont){
@@ -111,7 +118,7 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update Task Title
-  updateTaskTitle(listId: string,taskId: number, newTitle: string) {
+  updateTaskTitle(listId: number,taskId: number, newTitle: string) {
     if (newTitle.trim()) {
       const task = this.list.tasks.find((task) => task.id === taskId);
       if (task) {

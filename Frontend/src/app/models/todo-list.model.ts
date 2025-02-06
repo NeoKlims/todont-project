@@ -3,11 +3,11 @@ export interface Task {
   title: string;
   description: string;
   completed: number;
-  list_id: string;
+  list_id: number;
 }
 
 export interface List {
-  id: string;
+  id: number;
   title: string;
   user_id: number | null;
   isStarred?: boolean;

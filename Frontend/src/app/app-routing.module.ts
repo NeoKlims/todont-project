@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'workspace/:token', component: WorkspaceComponent },
+  { path: 'workspace', component: WorkspaceComponent },
   { path: 'contact-us', component: ContactComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },

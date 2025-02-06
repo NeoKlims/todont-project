@@ -14,6 +14,7 @@ class CreateTodontTasksTable extends Migration
             $table->text('description');
             $table->boolean('completed')->default(false);
             $table->integer('streak')->default(0);
+            $table->date('streak_reseted')->default(date("Y-m-d"));
             $table->unsignedBigInteger('list_id');
             $table->foreign('list_id')->references('id')->on('todont-lists')->onDelete('cascade');
             $table->timestamps();
@@ -25,4 +26,3 @@ class CreateTodontTasksTable extends Migration
         Schema::dropIfExists('todont-tasks');
     }
 }
-
