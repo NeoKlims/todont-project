@@ -28,3 +28,7 @@
 .card:hover .card-overlay {
   opacity: 1;
 }
+
+.card:hover img {
+ filter: blur(2px);
+}

@@ -8,11 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './footer.component.css',
 })
 export class FooterComponent {
-  companyInfo = {
-    email: 'info@tcodnt.com',
-    phone: '123-456-7890',
-    address: 'Address',
-  };
 
   socialLinks = [
     {
