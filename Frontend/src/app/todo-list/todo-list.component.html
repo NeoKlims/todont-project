@@ -72,7 +72,7 @@
             </button>
             <div class="menu" *ngIf="showTaskMenu[task.id]">
               <button (click)="startEditingTask(task.id)">Edit</button>
-              <button (click)="deleteTask(task.id)">Delete</button>
+              <button (click)="deleteTask(list.id,task.id)">Delete</button>
             </div>
           </div>
         </div>

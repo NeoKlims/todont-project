@@ -40,7 +40,7 @@ export class LoginComponent {
             this.authService.setCurrentUser(response.user); // Save user data in sessionStorage
 
             // Navigate to the workspace
-            this.router.navigate(['/workspace', response.token]);
+            this.router.navigate(['/workspace']);
           } else {
             this.errorMessage = 'Invalid login response. No token received.';
           }

@@ -21,11 +21,11 @@ export class SidebarComponent implements OnInit {
 
   showCreateList = false; // Toggle visibility of the create list form
   showMenu: { [key: string]: boolean } = {}; // Toggle visibility of list menus
-  editingListId: string | null = null; // Track which list is being edited
+  editingListId: number | null = null; // Track which list is being edited
 
   constructor(private todoService: TodoService, private todontService: TodontService) {}
 
-  toggleListVisibility(listId: string, isTodont: boolean = false) {
+  toggleListVisibility(listId: number, isTodont: boolean = false) {
     
     if (this.showTodont) {
       this.todontService.toggleListVisibility(listId);
@@ -65,7 +65,7 @@ export class SidebarComponent implements OnInit {
   }
 
   // Delete a list
-  deleteList(listId: string): void {
+  deleteList(listId: number): void {
     if (this.showTodont) {
       this.todontService.deleteList(listId);
       this.showMenu[listId] = false;
@@ -76,13 +76,13 @@ export class SidebarComponent implements OnInit {
   }
 
   // Start editing a list name
-  startEditing(listId: string): void {
+  startEditing(listId: number): void {
     this.editingListId = listId;
     this.showMenu[listId] = false;
   }
 
   // Update a list name
-  updateListName(listId: string, newName: string): void {
+  updateListName(listId: number, newName: string): void {
     if (newName.trim()) {
       if (this.showTodont) {
         this.todontService.updateListName(listId, newName, this.showTodont);
