@@ -183,7 +183,7 @@ export class TodoService {
       const newTask: TodoTask = {
         id: -1, // Placeholder
         title,
-        description: '1',
+        description: 'Place description here',
         completed: 0,
         deadline: '',
         tags: '3',
@@ -213,25 +213,24 @@ export class TodoService {
       this.todoLists.next([...lists]);
     }
   }*/
-    deleteTask(listId: number, taskId: number): void {
-      console.log(listId)
-      console.log(taskId)
-      const url = `${this.apiUrl}/todotasks/${taskId}`;
-      this.http.delete(url)
-        .subscribe(() => {
-          // Update the local state after successful deletion
-          const lists = this.todoLists.value;
-          const list = lists.find((l) => l.id === listId);
-          console.log(lists)
-          console.log(list)
+  deleteTask(listId: number, taskId: number): void {
+    console.log(listId);
+    console.log(taskId);
+    const url = `${this.apiUrl}/todotasks/${taskId}`;
+    this.http.delete(url).subscribe(() => {
+      // Update the local state after successful deletion
+      const lists = this.todoLists.value;
+      const list = lists.find((l) => l.id === listId);
+      console.log(lists);
+      console.log(list);
 
-          if (list) {
-            list.tasks = list.tasks.filter((t) => t.id !== taskId);
-            console.log(list.tasks)
-            this.todoLists.next([...lists]);
-          }
-        });
-    }
+      if (list) {
+        list.tasks = list.tasks.filter((t) => t.id !== taskId);
+        console.log(list.tasks);
+        this.todoLists.next([...lists]);
+      }
+    });
+  }
 
   /*updateTaskTitle(listId: number, taskId: number, newTitle: string): void {
     const lists = this.todoLists.value;
@@ -244,24 +243,25 @@ export class TodoService {
       }
     }
   }*/
-    updateTaskTitle(listId: number, taskId: number, newTitle: string): void {
-      const url = `${this.apiUrl}/todotasks/${taskId}`;
-      const updatedTask: Partial<TodoTask> = { title: newTitle }; 
-  
-      this.http.put<TodoTask>(url, updatedTask)
-        .subscribe(updatedTaskFromBackend => {
-          // Update the local state after successful update
-          const lists = this.todoLists.value;
-          const list = lists.find((l) => l.id === listId);
-          if (list) {
-            const taskIndex = list.tasks.findIndex((t) => t.id === taskId);
-            if (taskIndex !== -1) {
-              list.tasks[taskIndex] = updatedTaskFromBackend; 
-              this.todoLists.next([...lists]);
-            }
+  updateTaskTitle(listId: number, taskId: number, newTitle: string): void {
+    const url = `${this.apiUrl}/todotasks/${taskId}`;
+    const updatedTask: Partial<TodoTask> = { title: newTitle };
+
+    this.http
+      .put<TodoTask>(url, updatedTask)
+      .subscribe((updatedTaskFromBackend) => {
+        // Update the local state after successful update
+        const lists = this.todoLists.value;
+        const list = lists.find((l) => l.id === listId);
+        if (list) {
+          const taskIndex = list.tasks.findIndex((t) => t.id === taskId);
+          if (taskIndex !== -1) {
+            list.tasks[taskIndex] = updatedTaskFromBackend;
+            this.todoLists.next([...lists]);
           }
-        });
-    }
+        }
+      });
+  }
 
   toggleTask(listId: number, taskId: number): void {
     const lists = this.todoLists.value;

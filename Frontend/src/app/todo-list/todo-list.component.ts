@@ -1,6 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoList, TodoTask,TodontList,TodontTask } from '../models/todo-list.model';
+import {
+  TodoList,
+  TodoTask,
+  TodontList,
+  TodontTask,
+} from '../models/todo-list.model';
 import { TodoService } from '../services/todo.service';
 import { FormsModule } from '@angular/forms';
 import { TodontService } from '../services/todont.service';
@@ -22,7 +27,10 @@ export class TodoListComponent implements OnInit {
   editingTaskId: number | null = null; // Track which task is being edited
   showCompleted: boolean = false; // Toggle visibility of completed tasks
 
-  constructor(private todoService: TodoService,private todontService: TodontService) {}
+  constructor(
+    private todoService: TodoService,
+    private todontService: TodontService
+  ) {}
 
   ngOnInit(): void {
     // Initialize tasks if not provided
@@ -41,7 +49,6 @@ export class TodoListComponent implements OnInit {
     return this.list.tasks.filter((task) => task.completed);
   }
 
-  
   // Add a Task
   /*addTask(title: string): void {
     if (title.trim()) {
@@ -56,39 +63,37 @@ export class TodoListComponent implements OnInit {
       });
     }
   }*/
-    addTask(title: string): void {
-      if (title.trim()) {
-         if(this.isTodont){
-          this.todontService.addTask(this.list.id, title)
-         }else{
-          this.todoService.addTask(this.list.id, title)
-         }
-        //this.list.tasks.push(newTask);
-          
+  addTask(title: string): void {
+    if (title.trim()) {
+      if (this.isTodont) {
+        this.todontService.addTask(this.list.id, title);
+      } else {
+        this.todoService.addTask(this.list.id, title);
       }
+      //this.list.tasks.push(newTask);
     }
+  }
 
   // Delete a Task
-  deleteTask(listId:number,taskId: number) {
-      //this.list.tasks = this.list.tasks.filter((task) => task.id !== taskId);
-      //this.showTaskMenu[taskId] = false;
-      if(this.isTodont){
-        this.todontService.deleteTask(listId,taskId);
-        this.showTaskMenu[taskId] = false;
-       }else{
-        this.todoService.deleteTask(listId,taskId);
-        this.showTaskMenu[taskId] = false;
-       }
+  deleteTask(listId: number, taskId: number) {
+    //this.list.tasks = this.list.tasks.filter((task) => task.id !== taskId);
+    //this.showTaskMenu[taskId] = false;
+    if (this.isTodont) {
+      this.todontService.deleteTask(listId, taskId);
+      this.showTaskMenu[taskId] = false;
+    } else {
+      this.todoService.deleteTask(listId, taskId);
+      this.showTaskMenu[taskId] = false;
+    }
   }
 
   // Delete the List
   deleteList(listId: number): void {
-    
-    if(this.isTodont){
+    if (this.isTodont) {
       this.todontService.deleteList(listId);
-     }else{
+    } else {
       this.todoService.deleteList(listId);
-     }
+    }
   }
 
   // Start Editing List Name
@@ -106,19 +111,18 @@ export class TodoListComponent implements OnInit {
   // Update List Name
   updateListName(listId: number, newName: string, isTodont = this.isTodont) {
     if (newName.trim()) {
-      
-      if(this.isTodont){
+      if (this.isTodont) {
         this.todontService.updateListName(listId, newName, isTodont);
         this.isEditing = false;
-       }else{
+      } else {
         this.todoService.updateListName(listId, newName, isTodont);
         this.isEditing = false;
-       }
+      }
     }
   }
 
   // Update Task Title
-  updateTaskTitle(listId: number,taskId: number, newTitle: string) {
+  updateTaskTitle(listId: number, taskId: number, newTitle: string) {
     if (newTitle.trim()) {
       const task = this.list.tasks.find((task) => task.id === taskId);
       if (task) {
@@ -126,13 +130,13 @@ export class TodoListComponent implements OnInit {
         this.editingTaskId = null;
         // Optionally, send a request to the backend to update the task title
       }
-      if(this.isTodont){
-        this.todontService.updateTaskTitle(listId,taskId, newTitle);
+      if (this.isTodont) {
+        this.todontService.updateTaskTitle(listId, taskId, newTitle);
         this.isEditing = false;
-       }else{
-        this.todoService.updateTaskTitle(listId,taskId, newTitle);
+      } else {
+        this.todoService.updateTaskTitle(listId, taskId, newTitle);
         this.isEditing = false;
-       }
+      }
     }
   }
 
