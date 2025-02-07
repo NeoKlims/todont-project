@@ -1,27 +1,58 @@
-<section class="about-section">
-    <div class="container">
-      <div class="about-content">
-        <h1 class="section-title">About TCODNT</h1>
-        <p class="about-description">{{ companyDescription }}</p>
-        
-        <div class="company-values">
-          <h2>Our Core Values</h2>
-          <ul class="values-list">
-            <li *ngFor="let value of companyValues">{{ value }}</li>
-          </ul>
-        </div>
-      </div>
-  
-      <div class="team-section">
-        <h2 class="section-title">Our Team</h2>
-        <div class="team-grid">
-          <div class="team-member" *ngFor="let member of teamMembers">
-            <img [src]="member.image" [alt]="member.name" class="member-image">
-            <h3 class="member-name">{{ member.name }}</h3>
-            <p class="member-role">{{ member.role }}</p>
-            <p class="member-bio">{{ member.bio }}</p>
-          </div>
+<div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button
+      *ngFor="let slide of slides; let i = index"
+      type="button"
+      data-bs-target="#myCarousel"
+      [attr.data-bs-slide-to]="i"
+      [class.active]="i === 0"
+      [attr.aria-label]="'Slide ' + (i + 1)"
+    ></button>
+  </div>
+
+  <div class="carousel-inner">
+    <div
+      *ngFor="let slide of slides; let i = index"
+      class="carousel-item"
+      [class.active]="i === 0"
+    >
+      <div [innerHTML]="carouselSlideCode"></div>
+      <div class="container">
+        <div
+          class="carousel-caption"
+          [ngClass]="{
+            'text-start': i === 0,
+            'text-end': i === slides.length - 1
+          }"
+        >
+          <h1>{{ slide.title }}</h1>
+          <p class="opacity-75">{{ slide.text }}</p>
+          <p>
+            <a class="btn btn-lg btn-primary" [href]="slide.buttonLink">{{
+              slide.buttonText
+            }}</a>
+          </p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#myCarousel"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#myCarousel"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
