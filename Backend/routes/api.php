@@ -13,12 +13,14 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('guest')->group(function () {
     Route::post('register', [RegisteredUserController::class, 'store']);
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
-    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
-    Route::post('/reset-password', [NewPasswordController::class, 'store']);
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store']);
+    Route::post('reset-password', [NewPasswordController::class, 'store']);
+});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy']);
     Route::put('password', [PasswordController::class, 'update']);
 });
 

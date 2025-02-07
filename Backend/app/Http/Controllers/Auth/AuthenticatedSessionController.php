@@ -58,7 +58,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request) //: JsonResponse
+    public function destroy(Request $request): JsonResponse
     {
         $request->user()->tokens()->delete();
 
