@@ -68,7 +68,7 @@ export class RegisterComponent {
                             sessionStorage.setItem('authToken', response.token);
                             this.authService.setCurrentUser(response.user);
                             // Redirect to the workspace or dashboard
-                            this.router.navigate(['/workspace', loginResponse.token]);
+                            this.router.navigate(['/workspace']);
                             console.log('Navigation to /workspace successful');
                         } else {
                             this.errorMessage = 'Login failed after registration. No token received.';

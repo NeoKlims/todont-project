@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { TodontList, TodontTask } from '../models/todo-list.model';
 import { environment } from '../../environments/environment.development';
 import { AuthService } from './auth.service';
-
+import dayjs from 'dayjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,7 +12,7 @@ export class TodontService {
   private todontLists = new BehaviorSubject<TodontList[]>([]);
   private apiUrl = environment.apiUrl;
   private currentUserId: number | null = null;
-
+  private dateTime = new Date();
   constructor(private http: HttpClient, private authService: AuthService) {
     this.currentUserId = this.authService.getUserId();
     this.fetchTodontLists();
@@ -44,6 +44,7 @@ export class TodontService {
 
     this.http.get<TodontTask[]>(`${this.apiUrl}/todonttasks`).subscribe({
       next: (tasks) => {
+        
         this.distributeTasksToLists(tasks);
       },
       error: (error) => console.error('Error fetching tasks', error),
@@ -54,10 +55,14 @@ export class TodontService {
     const todontLists = this.todontLists.value;
     todontLists.forEach((list) => (list.tasks = []));
     tasks.forEach((task) => {
+      const resetDate = dayjs(task.streak_reseted);
+      const currentDate = dayjs();
+      task.streak = currentDate.diff(resetDate, 'day');
       const list = todontLists.find((list) => list.id === task.list_id);
       if (list) {
         list.tasks.push(task);
       }
+      console.log(tasks)
     });
     this.todontLists.next([...todontLists]);
   }
@@ -183,9 +188,11 @@ export class TodontService {
           title,
           description: '1',
           completed: 0,
-          streak: "0",
+          streak: 0,
+          streak_reseted: dayjs(new Date()).format('YYYY-MM-DD'),
           list_id: listId,
         };
+        console.log(newTask)
   
         this.http
           .post<{ id: number }>(`${this.apiUrl}/todonttasks`, newTask)

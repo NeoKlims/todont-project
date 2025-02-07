@@ -29,5 +29,6 @@ export interface TodoTask extends Task {
 }
 
 export interface TodontTask extends Task {
-  streak: string;
+  streak: number;
+  streak_reseted: string;
 }

@@ -141,6 +141,7 @@ class ApiController extends Controller
         $todonttask->description = $request->description;
         $todonttask->completed = $request->completed;
         $todonttask->streak = $request->streak;
+        $todonttask->streak_reseted = $request->streak_reseted;
         $todonttask->list_id = $request->list_id;
         $todonttask->save();
         return response($todonttask, 201);

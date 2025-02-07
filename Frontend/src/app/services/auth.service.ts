@@ -46,6 +46,8 @@ export class AuthService {
   // Clear the current user (logout)
   clearCurrentUser(): void {
     this.currentUserSubject.next(null); // Clear the current user
+    sessionStorage.removeItem('authToken');
+    localStorage.removeItem('authToken');
     sessionStorage.removeItem('currentUser'); // Remove user from sessionStorage
   }
 
