@@ -29,7 +29,8 @@ class AuthenticatedSessionController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'remember_me' => 'boolean'
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -38,13 +39,17 @@ class AuthenticatedSessionController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        //making a token
-        $token = $user->createToken('userToken')->plainTextToken;
+        if ($request->remember_me) {
+            $token = $user->createToken('RememberMeToken')->plainTextToken;
+        } else {
+            $token = $user->createToken('LoginToken')->plainTextToken;
+        }
 
         return response()->json([
             "message" => "You're logged in!",
             "user" => $user,
             "token" => $token,
+            "token_type" => 'Bearer'
         ], 200);
 
         // return redirect()->intended(route('dashboard', absolute: false));
@@ -53,14 +58,10 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request): JsonResponse
     {
-        Auth::guard('web')->logout();
+        $request->user()->currentAccessToken()->delete();
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect('/');
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }
