@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 interface TeamMember {
   name: string;
@@ -10,41 +11,45 @@ interface TeamMember {
 @Component({
   selector: 'app-about',
   standalone: false,
-  
   templateUrl: './about.component.html',
-  styleUrl: './about.component.css'
+  styleUrl: './about.component.css',
 })
 export class AboutComponent {
-  companyDescription = `
-  TCODNT is an innovative technology company dedicated to transforming 
-  digital experiences through cutting-edge solutions and user-centric design.
-`;
-
-teamMembers: TeamMember[] = [
-  {
-    name: 'John Doe',
-    role: 'CEO & Founder',
-    bio: 'Visionary leader with 15 years of tech innovation experience.',
-    image: 'assets/team/john-doe.jpg'
-  },
-  {
-    name: 'Jane Smith',
-    role: 'CTO',
-    bio: 'Technical expert specializing in cloud and AI technologies.',
-    image: 'assets/team/jane-smith.jpg'
-  },
-  {
-    name: 'Mike Johnson',
-    role: 'Design Director',
-    bio: 'Award-winning designer focusing on user experience.',
-    image: 'assets/team/mike-johnson.jpg'
+  carouselSlideCode: SafeHtml;
+  constructor(private sanitizer: DomSanitizer) {
+    this.carouselSlideCode = this.sanitizer.bypassSecurityTrustHtml(`
+    <svg
+      class="bd-placeholder-img"
+      width="100%"
+      height="70vh"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      preserveAspectRatio="xMidYMid slice"
+      focusable="false"
+    >
+      <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
+    </svg>
+  `);
   }
-];
 
-companyValues = [
-  'Innovation',
-  'Integrity',
-  'Customer Success',
-  'Continuous Learning'
-];
+  slides = [
+    {
+      title: 'Example headline.',
+      text: 'Some representative placeholder content for the first slide of the carousel.',
+      buttonText: 'Sign up today',
+      buttonLink: '#',
+    },
+    {
+      title: 'Another example headline.',
+      text: 'Some representative placeholder content for the second slide of the carousel.',
+      buttonText: 'Learn more',
+      buttonLink: '#',
+    },
+    {
+      title: 'One more for good measure.',
+      text: 'Some representative placeholder content for the third slide of this carousel.',
+      buttonText: 'Browse gallery',
+      buttonLink: '#',
+    },
+  ];
 }
