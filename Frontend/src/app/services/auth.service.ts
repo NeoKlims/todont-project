@@ -43,12 +43,28 @@ export class AuthService {
     return user ? user.id : null; // Return the user ID or null if no user is logged in
   }
 
-  // Clear the current user (logout)
-  clearCurrentUser(): void {
-    this.currentUserSubject.next(null); // Clear the current user
+  logout(): Observable<any> {
+    const token =
+      sessionStorage.getItem('authToken') || localStorage.getItem('authToken');
+
+    if (!token) {
+      console.error('No authentication token found');
+      return of(null); // Return an observable of null if no token is available
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    });
+
+    // Clear the current user and remove tokens from storage
+    this.currentUserSubject.next(null);
     sessionStorage.removeItem('authToken');
     localStorage.removeItem('authToken');
-    sessionStorage.removeItem('currentUser'); // Remove user from sessionStorage
+    sessionStorage.removeItem('currentUser');
+
+    // Send the logout request to the backend
+    return this.http.post(`${this.apiUrl}/logout`, {}, { headers: headers });
   }
 
   setNewPassword(payload: { token: string; password: string }) {
