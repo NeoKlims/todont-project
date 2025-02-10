@@ -1,0 +1,36 @@
+.image-section {
+  height: 60vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.image-section:hover {
+  filter: grayscale(50%);
+}
+
+.image-text {
+  position: absolute;
+  bottom: 20px;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.text-large {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.text-small {
+  font-size: 1.2rem;
+}
+
+.left-align {
+  left: 20px;
+}
+
+.right-align {
+  right: 20px;
+}

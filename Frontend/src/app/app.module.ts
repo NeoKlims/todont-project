@@ -26,6 +26,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { HttpClientModule } from '@angular/common/http';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import { OurServicesComponent } from './our-services/our-services.component';
+import { OurServicesPageComponent } from './our-services-page/our-services-page.component';
+import { ContactPageComponent } from './contact-page/contact-page.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { OurServicesComponent } from './our-services/our-services.component';
     ForgotPasswordComponent,
     NewPasswordComponent,
     OurServicesComponent,
+    OurServicesPageComponent,
+    ContactPageComponent,
   ],
   imports: [
     ReactiveFormsModule,

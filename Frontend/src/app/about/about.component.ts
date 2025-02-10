@@ -52,4 +52,22 @@ export class AboutComponent {
       buttonLink: '#',
     },
   ];
+
+  cards = [
+    {
+      title: 'Heading 1',
+      description: 'Content for the first column.',
+      link: '#',
+    },
+    {
+      title: 'Heading 2',
+      description: 'Content for the second column.',
+      link: '#',
+    },
+    {
+      title: 'Heading 3',
+      description: 'Content for the third column.',
+      link: '#',
+    },
+  ];
 }
