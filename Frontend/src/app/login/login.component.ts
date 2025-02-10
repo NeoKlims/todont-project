@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+// login.component.ts
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css'],
   standalone: false,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
   errorMessage = '';
@@ -22,7 +23,22 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      rememberMe: [false] // Add rememberMe control
     });
+  }
+
+  ngOnInit(): void {
+    // Check if there are saved credentials in localStorage
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    const savedPassword = localStorage.getItem('rememberedPassword');
+
+    if (savedEmail && savedPassword) {
+      this.loginForm.patchValue({
+        email: savedEmail,
+        password: savedPassword,
+        rememberMe: true
+      });
+    }
   }
 
   onSubmit() {
@@ -30,7 +46,19 @@ export class LoginComponent {
       this.isLoading = true;
       this.errorMessage = '';
 
-      this.authService.login(this.loginForm.value).subscribe({
+      const { email, password, rememberMe } = this.loginForm.value;
+
+      // Save credentials to localStorage if "Remember Me" is checked
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', email);
+        localStorage.setItem('rememberedPassword', password);
+      } else {
+        // Remove saved credentials if "Remember Me" is unchecked
+        localStorage.removeItem('rememberedEmail');
+        localStorage.removeItem('rememberedPassword');
+      }
+
+      this.authService.login({ email, password }).subscribe({
         next: (response) => {
           this.isLoading = false;
 
