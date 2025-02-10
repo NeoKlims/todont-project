@@ -18,8 +18,15 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable(); // Expose current user as an observable
 
   constructor(private http: HttpClient) {}
+  private loggedIn = new BehaviorSubject<boolean>(false);
+
+  isLoggedIn() {
+    return this.loggedIn.asObservable();
+  }
 
   login(credentials: { email: string; password: string }): Observable<any> {
+    this.loggedIn.next(true);
+
     return this.http.post(`${this.apiUrl}/login`, credentials, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     });
@@ -63,7 +70,8 @@ export class AuthService {
     localStorage.removeItem('authToken');
     sessionStorage.removeItem('currentUser');
 
-    // Send the logout request to the backend
+    // Send the logout request to the backendç
+    this.loggedIn.next(false);
     return this.http.post(`${this.apiUrl}/logout`, {}, { headers: headers });
   }
 

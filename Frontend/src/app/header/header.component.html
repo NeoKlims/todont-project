@@ -21,11 +21,12 @@
 
     <!-- Botones de Login/Register y Dropdown -->
     <div class="d-flex align-items-center gap-2">
-      <a href="/register" class="btn btn-outline-primary">Sign Up</a>
-      <a href="/login" class="btn btn-primary">Sign In</a>
+      <!-- Hide Sign Up and Sign In buttons if the user is logged in -->
+      <a *ngIf="!isLoggedIn" href="/register" class="btn btn-outline-primary">Sign Up</a>
+      <a *ngIf="!isLoggedIn" href="/login" class="btn btn-primary">Sign In</a>
 
       <!-- Dropdown de perfil del usuario -->
-      <div class="dropdown">
+      <div *ngIf="isLoggedIn" class="dropdown">
         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>

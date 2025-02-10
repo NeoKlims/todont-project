@@ -167,9 +167,7 @@
             <span *ngIf="!editingTaskId || +editingTaskId !== task.id">
               {{ task.title }}
             </span>
-            <span class="streak" *ngIf="task.streak > 0">
-            🔥 {{ task.streak }} day{{ task.streak > 1 ? 's' : '' }} streak
-          </span>
+            
             <!-- MODAL BOX TO EDIT THE TASK-->
             <div
               class="modal-box p-4 py-md-5"
