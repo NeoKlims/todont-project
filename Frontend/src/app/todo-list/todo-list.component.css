@@ -172,3 +172,13 @@
 .toggle-list-btn:hover {
   color: #007bff;
 }
+
+.task-streak {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.streak-text {
+  font-weight: bold;
+}

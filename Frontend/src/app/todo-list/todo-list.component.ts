@@ -122,19 +122,20 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update Task Title
-  updateTaskTitle(listId: number, taskId: number, newTitle: string) {
+  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string) {
     if (newTitle.trim()) {
       const task = this.list.tasks.find((task) => task.id === taskId);
       if (task) {
         task.title = newTitle;
+        task.description = newDesc;
         this.editingTaskId = null;
         // Optionally, send a request to the backend to update the task title
       }
       if (this.isTodont) {
-        this.todontService.updateTaskTitle(listId, taskId, newTitle);
+        this.todontService.updateTaskTitle(listId, taskId, newTitle,newDesc);
         this.isEditing = false;
       } else {
-        this.todoService.updateTaskTitle(listId, taskId, newTitle);
+        this.todoService.updateTaskTitle(listId, taskId, newTitle,newDesc);
         this.isEditing = false;
       }
     }
@@ -144,7 +145,7 @@ export class TodoListComponent implements OnInit {
   toggleTask(taskId: number) {
     const task = this.list.tasks.find((task) => task.id === taskId);
     if (task) {
-      task.completed != task.completed;
+      task.completed = !task.completed;
       // Optionally, send a request to the backend to update the task status
     }
   }
@@ -178,5 +179,9 @@ export class TodoListComponent implements OnInit {
         this.showTaskMenu[id] = false;
       }
     }
+  }
+  getTaskStreak(task: any): number | null {
+    // Check if the task is a TodontTask and has a streak property
+    return this.isTodont && task.hasOwnProperty('streak') ? (task as TodontTask).streak : null;
   }
 }

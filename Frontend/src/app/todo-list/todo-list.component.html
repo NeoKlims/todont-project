@@ -77,7 +77,9 @@
                       <label for="floatingPassword">Task description</label>
                       <div class="form-floating mb-3">
                         <input
+                          #taskEditInputDesc
                           type="description"
+                          [value]="task.description"
                           class="form-control rounded-3"
                           id=""
                           placeholder="Description"
@@ -86,10 +88,10 @@
                       <button
                         class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
                         (keyup.enter)="
-                          updateTaskTitle(list.id, task.id, taskEditInput.value)
+                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value)
                         "
                         (click)="
-                          updateTaskTitle(list.id, task.id, taskEditInput.value)
+                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value)
                         "
                       >
                         Edit
@@ -195,7 +197,9 @@
                       <label for="floatingPassword">Task description</label>
                       <div class="form-floating mb-3">
                         <input
+                          #taskEditInputDesc
                           type="description"
+                          [value]="task.description"
                           class="form-control rounded-3"
                           id=""
                           placeholder="Description"
@@ -204,10 +208,10 @@
                       <button
                         class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
                         (keyup.enter)="
-                          updateTaskTitle(list.id, task.id, taskEditInput.value)
+                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value)
                         "
                         (click)="
-                          updateTaskTitle(list.id, task.id, taskEditInput.value)
+                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value)
                         "
                       >
                         Edit
@@ -233,7 +237,9 @@
           </div>
         </div>
         <span class="task-description">{{ task.description }} </span>
-        
+        <div class="task-streak" *ngIf="isTodont && getTaskStreak(task) !== null">
+          <span class="streak-text">Streak: {{ getTaskStreak(task) }}</span>
+        </div>
       </div>
     </div>
 

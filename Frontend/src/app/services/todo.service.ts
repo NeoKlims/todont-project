@@ -184,7 +184,7 @@ export class TodoService {
         id: -1, // Placeholder
         title,
         description: 'Place description here',
-        completed: 0,
+        completed: false,
         deadline: '',
         tags: '3',
         repeat_on: 'n',
@@ -243,9 +243,9 @@ export class TodoService {
       }
     }
   }*/
-  updateTaskTitle(listId: number, taskId: number, newTitle: string): void {
+  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string): void {
     const url = `${this.apiUrl}/todotasks/${taskId}`;
-    const updatedTask: Partial<TodoTask> = { title: newTitle };
+    const updatedTask: Partial<TodoTask> = { title: newTitle, description: newDesc};
 
     this.http
       .put<TodoTask>(url, updatedTask)
@@ -263,14 +263,53 @@ export class TodoService {
       });
   }
 
+  // toggleTask(listId: number, taskId: number): void {
+  //   const lists = this.todoLists.value;
+  //   const list = lists.find((l) => l.id === listId);
+  //   if (list) {
+  //     const task = list.tasks.find((t) => t.id === taskId);
+  //     if (task) {
+  //       task.completed != task.completed;
+  //       this.todoLists.next([...lists]);
+  //     }
+  //   }
+  // }
   toggleTask(listId: number, taskId: number): void {
+    const url = `${this.apiUrl}/todotasks/${taskId}`;
     const lists = this.todoLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
       const task = list.tasks.find((t) => t.id === taskId);
       if (task) {
-        task.completed != task.completed;
-        this.todoLists.next([...lists]);
+        // Toggle the completion status locally
+        task.completed = !task.completed;
+        if (task.completed) {
+          // Send a request to the backend to update the task's completion status
+          this.http.put(url, { completed: 1 }).subscribe({
+            next: () => {
+              // Update the local state after the backend confirms the update
+              this.todoLists.next([...lists]);
+            },
+            error: (error) => {
+              console.error('Error updating task completion status', error);
+              // Revert the local change if the request fails
+              task.completed = !task.completed;
+            },
+          });
+        }else{
+          // Send a request to the backend to update the task's completion status
+          this.http.put(url, { completed: 0 }).subscribe({
+            next: () => {
+              // Update the local state after the backend confirms the update
+              this.todoLists.next([...lists]);
+            },
+            error: (error) => {
+              console.error('Error updating task completion status', error);
+              // Revert the local change if the request fails
+              task.completed = !task.completed;
+            },
+          });
+        }
       }
     }
   }

@@ -44,7 +44,6 @@ export class TodontService {
 
     this.http.get<TodontTask[]>(`${this.apiUrl}/todonttasks`).subscribe({
       next: (tasks) => {
-        
         this.distributeTasksToLists(tasks);
       },
       error: (error) => console.error('Error fetching tasks', error),
@@ -62,7 +61,7 @@ export class TodontService {
       if (list) {
         list.tasks.push(task);
       }
-      console.log(tasks)
+      console.log(tasks);
     });
     this.todontLists.next([...todontLists]);
   }
@@ -178,35 +177,35 @@ export class TodontService {
       });
     }
   }*/
-    addTask(listId: number, title: string): void {
-      const lists = this.todontLists.value;
-      const listIndex = lists.findIndex((list) => list.id === listId);
-  
-      if (listIndex !== -1) {
-        const newTask: TodontTask = {
-          id: -1, // Placeholder
-          title,
-          description: '1',
-          completed: 0,
-          streak: 0,
-          streak_reseted: dayjs(new Date()).format('YYYY-MM-DD'),
-          list_id: listId,
-        };
-        console.log(newTask)
-  
-        this.http
-          .post<{ id: number }>(`${this.apiUrl}/todonttasks`, newTask)
-          .subscribe({
-            next: (response) => {
-              newTask.id = response.id; // Update task ID from database
-              lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
-              this.todontLists.next([...lists]);
-              console.log('Task added successfully', response);
-            },
-            error: (error) => console.error('Error adding task', error),
-          });
-      }
+  addTask(listId: number, title: string): void {
+    const lists = this.todontLists.value;
+    const listIndex = lists.findIndex((list) => list.id === listId);
+
+    if (listIndex !== -1) {
+      const newTask: TodontTask = {
+        id: -1, // Placeholder
+        title,
+        description: 'Place description here',
+        completed: false,
+        streak: 0,
+        streak_reseted: dayjs(new Date()).format('YYYY-MM-DD'),
+        list_id: listId,
+      };
+      console.log(newTask);
+
+      this.http
+        .post<{ id: number }>(`${this.apiUrl}/todonttasks`, newTask)
+        .subscribe({
+          next: (response) => {
+            newTask.id = response.id; // Update task ID from database
+            lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
+            this.todontLists.next([...lists]);
+            console.log('Task added successfully', response);
+          },
+          error: (error) => console.error('Error adding task', error),
+        });
     }
+  }
 
   /*deleteTask(listId: number, taskId: number): void {
     const lists = this.todontLists.value;
@@ -216,25 +215,24 @@ export class TodontService {
       this.todontLists.next([...lists]);
     }
   }*/
-    deleteTask(listId: number, taskId: number): void {
-      console.log(listId)
-      console.log(taskId)
-      const url = `${this.apiUrl}/todonttasks/${taskId}`;
-      this.http.delete(url)
-        .subscribe(() => {
-          // Update the local state after successful deletion
-          const lists = this.todontLists.value;
-          const list = lists.find((l) => l.id === listId);
-          console.log(lists)
-          console.log(list)
+  deleteTask(listId: number, taskId: number): void {
+    console.log(listId);
+    console.log(taskId);
+    const url = `${this.apiUrl}/todonttasks/${taskId}`;
+    this.http.delete(url).subscribe(() => {
+      // Update the local state after successful deletion
+      const lists = this.todontLists.value;
+      const list = lists.find((l) => l.id === listId);
+      console.log(lists);
+      console.log(list);
 
-          if (list) {
-            list.tasks = list.tasks.filter((t) => t.id !== taskId);
-            console.log(list.tasks)
-            this.todontLists.next([...lists]);
-          }
-        });
-    }
+      if (list) {
+        list.tasks = list.tasks.filter((t) => t.id !== taskId);
+        console.log(list.tasks);
+        this.todontLists.next([...lists]);
+      }
+    });
+  }
 
   /*updateTaskTitle(listId: number, taskId: number, newTitle: string): void {
     const lists = this.todontLists.value;
@@ -247,33 +245,81 @@ export class TodontService {
       }
     }
   }*/
-    updateTaskTitle(listId: number, taskId: number, newTitle: string): void {
-      const url = `${this.apiUrl}/todonttasks/${taskId}`;
-      const updatedTask: Partial<TodontTask> = { title: newTitle }; 
-  
-      this.http.put<TodontTask>(url, updatedTask)
-        .subscribe(updatedTaskFromBackend => {
-          // Update the local state after successful update
-          const lists = this.todontLists.value;
-          const list = lists.find((l) => l.id === listId);
-          if (list) {
-            const taskIndex = list.tasks.findIndex((t) => t.id === taskId);
-            if (taskIndex !== -1) {
-              list.tasks[taskIndex] = updatedTaskFromBackend; 
-              this.todontLists.next([...lists]);
-            }
-          }
-        });
-    }
+  updateTaskTitle(
+    listId: number,
+    taskId: number,
+    newTitle: string,
+    newDesc: string
+  ): void {
+    const url = `${this.apiUrl}/todonttasks/${taskId}`;
+    const updatedTask: Partial<TodontTask> = {
+      title: newTitle,
+      description: newDesc,
+    };
 
+    this.http
+      .put<TodontTask>(url, updatedTask)
+      .subscribe((updatedTaskFromBackend) => {
+        // Update the local state after successful update
+        const lists = this.todontLists.value;
+        const list = lists.find((l) => l.id === listId);
+        if (list) {
+          const taskIndex = list.tasks.findIndex((t) => t.id === taskId);
+          if (taskIndex !== -1) {
+            list.tasks[taskIndex] = updatedTaskFromBackend;
+            this.todontLists.next([...lists]);
+          }
+        }
+      });
+  }
+
+  // toggleTask(listId: number, taskId: number): void {
+  //   const lists = this.todontLists.value;
+  //   const list = lists.find((l) => l.id === listId);
+  //   if (list) {
+  //     const task = list.tasks.find((t) => t.id === taskId);
+  //     if (task) {
+  //       task.completed != task.completed;
+  //       this.todontLists.next([...lists]);
+  //     }
+  //   }
+  // }
   toggleTask(listId: number, taskId: number): void {
+    const url = `${this.apiUrl}/todonttasks/${taskId}`;
     const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
     if (list) {
       const task = list.tasks.find((t) => t.id === taskId);
       if (task) {
-        task.completed != task.completed;
-        this.todontLists.next([...lists]);
+        // Toggle the completion status locally
+        task.completed = !task.completed;
+        if (task.completed) {
+          // Send a request to the backend to update the task's completion status
+          this.http.put(url, { completed: 0 }).subscribe({
+            next: () => {
+              // Update the local state after the backend confirms the update
+              this.todontLists.next([...lists]);
+            },
+            error: (error) => {
+              console.error('Error updating task completion status', error);
+              // Revert the local change if the request fails
+              task.completed = !task.completed;
+            },
+          });
+        }else{
+          // Send a request to the backend to update the task's completion status
+          this.http.put(url, { completed: 1 }).subscribe({
+            next: () => {
+              // Update the local state after the backend confirms the update
+              this.todontLists.next([...lists]);
+            },
+            error: (error) => {
+              console.error('Error updating task completion status', error);
+              // Revert the local change if the request fails
+              task.completed = !task.completed;
+            },
+          });
+        }
       }
     }
   }

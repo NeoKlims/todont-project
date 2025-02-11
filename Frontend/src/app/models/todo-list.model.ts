@@ -2,7 +2,7 @@ export interface Task {
   id: number;
   title: string;
   description: string;
-  completed: number;
+  completed: boolean;
   list_id: number;
 }
 
