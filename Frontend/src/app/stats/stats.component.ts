@@ -21,19 +21,20 @@ export class StatsComponent implements OnInit {
       label: 'Satisfied Clients',
     },
     {
-      image: '',
-      value: '150+',
+      image: 'girlwriting.jpg',
+      value: '500+',
+      label: 'Lists Created',
+    },
+    {
+      image: 'peopleworking.jpg',
+      value: '200+',
       label: 'Projects Completed',
     },
+
     {
-      image: '',
-      value: '25',
-      label: 'Awards Won',
-    },
-    {
-      image: '',
-      value: '10+',
-      label: 'Countries Served',
+      image: 'win.jpg',
+      value: '1,000+',
+      label: 'Goals Achieved',
     },
   ];
 

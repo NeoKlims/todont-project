@@ -1,25 +1,29 @@
 import { Injectable } from '@angular/core';
-
 import { ServiceItem } from '../models/service-item.model';
-import { Stat } from '../models/stat.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
+  constructor() {}
+
+  // Método que devuelve los items de servicio
   getServiceItems(): ServiceItem[] {
     return [
       {
-        title: 'Create TODONT Lists',
-        description: 'Effortlessly manage your tasks and projects.',
+        image: 'icon1.png',
+        title: 'High Quality',
+        description: 'Web Design',
       },
       {
-        title: 'Match your priorities',
-        description: 'Align your efforts with your key objectives.',
+        image: 'icon2.png',
+        title: 'Fast Delivery',
+        description: 'App Development',
       },
       {
-        title: 'Share your creation with others',
-        description: 'Collaborate and get feedback from your team.',
+        image: 'icon3.png',
+        title: 'Affordable Prices',
+        description: 'SEO Optimization',
       },
     ];
   }

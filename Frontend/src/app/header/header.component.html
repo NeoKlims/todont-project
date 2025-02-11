@@ -1,6 +1,7 @@
 <div class="container">
-  <header class="d-flex flex-column flex-md-row align-items-center justify-content-between py-3 text-center text-md-start w-100">
-    
+  <header
+    class="d-flex flex-column flex-md-row align-items-center justify-content-between py-3 text-center text-md-start w-100"
+  >
     <!-- Logo -->
     <div class="text-center text-md-start">
       <a href="/home">
@@ -12,7 +13,11 @@
     <div class="flex-grow-1 d-flex justify-content-center">
       <ul class="nav">
         <li *ngFor="let link of navLinks" class="nav-item">
-          <a [routerLink]="link.url" routerLinkActive="active" class="nav-link px-3">
+          <a
+            [routerLink]="link.url"
+            routerLinkActive="active"
+            class="nav-link px-3"
+          >
             {{ link.label }}
           </a>
         </li>
@@ -22,21 +27,39 @@
     <!-- Botones de Login/Register y Dropdown -->
     <div class="d-flex align-items-center gap-2">
       <!-- Hide Sign Up and Sign In buttons if the user is logged in -->
-      <a *ngIf="!isLoggedIn" href="/register" class="btn btn-outline-primary">Sign Up</a>
-      <a *ngIf="!isLoggedIn" href="/login" class="btn btn-primary">Sign In</a>
+      <a *ngIf="!isLoggedIn" href="/register" class="btn btn-outline-primary"
+        >Sign Up</a
+      >
+      <a *ngIf="!isLoggedIn" href="/login" class="btn btn-outline-primary"
+        >Sign In</a
+      >
 
       <!-- Dropdown de perfil del usuario -->
       <div *ngIf="isLoggedIn" class="dropdown">
-        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+        <a
+          href="#"
+          class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            src="https://github.com/mdo.png"
+            alt="mdo"
+            width="32"
+            height="32"
+            class="rounded-circle"
+          />
         </a>
         <ul class="dropdown-menu text-small">
           <li><a class="dropdown-item" href="/login">Workspace</a></li>
           <li><a class="dropdown-item" href="#">Profile</a></li>
-          <li><a class="dropdown-item" href="/login" (click)="logout($event)">Sign out</a></li>
+          <li>
+            <a class="dropdown-item" href="/login" (click)="logout($event)"
+              >Sign out</a
+            >
+          </li>
         </ul>
       </div>
     </div>
-
   </header>
 </div>
