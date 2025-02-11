@@ -1,4 +1,4 @@
-<div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+<div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button
       *ngFor="let slide of slides; let i = index"
@@ -16,7 +16,11 @@
       class="carousel-item"
       [class.active]="i === 0"
     >
-      <div [innerHTML]="carouselSlideCode"></div>
+      <img
+        [src]="getImageUrl(slide.image)"
+        class="d-block w-100 carousel-img"
+        alt="{{ slide.title }}"
+      />
       <div class="container">
         <div
           class="carousel-caption"
@@ -28,9 +32,9 @@
           <h1>{{ slide.title }}</h1>
           <p class="opacity-75">{{ slide.text }}</p>
           <p>
-            <a class="btn btn-lg btn-primary" [href]="slide.buttonLink">{{
-              slide.buttonText
-            }}</a>
+            <a class="btn btn-lg btn-primary" [href]="slide.buttonLink">
+              {{ slide.buttonText }}
+            </a>
           </p>
         </div>
       </div>
@@ -61,27 +65,13 @@
 <div
   class="row cards d-flex flex-wrap justify-content-center align-items-center text-center"
 >
+  <div class="text mb-5"><h1>Our Team</h1></div>
+  <hr />
   <div
     *ngFor="let card of cards"
-    class="col-lg-4 d-flex flex-column align-items-center text-center p-5"
+    class="col-lg-3 col-md-6 d-flex flex-column align-items-center text-center p-5"
   >
-    <svg
-      class="bd-placeholder-img rounded-circle"
-      width="140"
-      height="140"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Placeholder: 140x140"
-      preserveAspectRatio="xMidYMid slice"
-      focusable="false"
-    >
-      <rect width="100%" height="100%" fill="#777" />
-    </svg>
-
     <h2>{{ card.title }}</h2>
     <p>{{ card.description }}</p>
-    <p>
-      <a class="btn btn-secondary" [href]="card.link">View details &raquo;</a>
-    </p>
   </div>
 </div>
