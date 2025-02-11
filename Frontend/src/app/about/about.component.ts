@@ -1,73 +1,60 @@
-import { Component } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
-interface TeamMember {
-  name: string;
-  role: string;
-  bio: string;
-  image: string;
-}
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-about',
   standalone: false,
   templateUrl: './about.component.html',
-  styleUrl: './about.component.css',
+  styleUrls: ['./about.component.css'],
 })
-export class AboutComponent {
-  carouselSlideCode: SafeHtml;
-  constructor(private sanitizer: DomSanitizer) {
-    this.carouselSlideCode = this.sanitizer.bypassSecurityTrustHtml(`
-    <svg
-      class="bd-placeholder-img"
-      width="100%"
-      height="70vh"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      preserveAspectRatio="xMidYMid slice"
-      focusable="false"
-    >
-      <rect width="100%" height="100%" fill="var(--bs-secondary-color)" />
-    </svg>
-  `);
-  }
-
+export class AboutComponent implements OnInit {
   slides = [
     {
       title: 'Example headline.',
       text: 'Some representative placeholder content for the first slide of the carousel.',
       buttonText: 'Sign up today',
-      buttonLink: '#',
+      buttonLink: '/login',
+      image: 'aboutus1.jpg',
     },
     {
       title: 'Another example headline.',
       text: 'Some representative placeholder content for the second slide of the carousel.',
       buttonText: 'Learn more',
-      buttonLink: '#',
+      buttonLink: '/login',
+      image: 'aboutus2.jpg',
     },
     {
       title: 'One more for good measure.',
       text: 'Some representative placeholder content for the third slide of this carousel.',
-      buttonText: 'Browse gallery',
-      buttonLink: '#',
+      buttonText: 'Enter the workspace',
+      buttonLink: '/login',
+      image: 'aboutus3.jpg',
     },
   ];
 
   cards = [
     {
-      title: 'Heading 1',
-      description: 'Content for the first column.',
-      link: '#',
+      title: 'Adrian',
+      description: 'Backend',
     },
     {
-      title: 'Heading 2',
-      description: 'Content for the second column.',
-      link: '#',
+      title: 'Archie',
+      description: 'Backend',
     },
     {
-      title: 'Heading 3',
-      description: 'Content for the third column.',
-      link: '#',
+      title: 'Nikita',
+      description: 'Frontend',
+    },
+    {
+      title: 'Diego',
+      description: 'Frontend',
     },
   ];
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  getImageUrl(image: string): string {
+    return `assets/images/${image}`; // Asegúrate de que las imágenes estén en 'assets/images/'
+  }
 }

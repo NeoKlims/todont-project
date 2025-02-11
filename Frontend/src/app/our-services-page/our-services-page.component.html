@@ -1,6 +1,8 @@
-<!-- Seccion de servicios con imagenes-->
-<div class="container px-4 py-5" id="custom-cards">
-  <h2 class="pb-2 border-bottom">Custom cards</h2>
+<div
+  class="container px-4 py-5 custom-cards d-flex align-items-center flex-column"
+  id="custom-cards"
+>
+  <h2 class="pb-2 border-bottom">Our services</h2>
 
   <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
     <div class="col" *ngFor="let card of cards">
@@ -12,66 +14,23 @@
           <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
             {{ card.title }}
           </h2>
-          <ul class="d-flex list-unstyled mt-auto">
-            <li class="me-auto">
-              <img
-                [src]="card.avatar"
-                alt="Avatar"
-                width="32"
-                height="32"
-                class="rounded-circle border border-white"
-              />
-            </li>
-            <li class="d-flex align-items-center me-3">
-              <svg class="bi me-2" width="1em" height="1em">
-                <use xlink:href="#geo-fill" />
-              </svg>
-              <small>{{ card.location }}</small>
-            </li>
-            <li class="d-flex align-items-center">
-              <svg class="bi me-2" width="1em" height="1em">
-                <use xlink:href="#calendar3" />
-              </svg>
-              <small>{{ card.time }}</small>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Seccion de imagenes -->
 <div class="container-fluid p-0">
   <div class="row g-0">
-    <!-- Imagen 1 -->
-    <div
-      class="col-4 image-section"
-      style="background-image: url('https://via.placeholder.com/800x400')"
-    >
-      <div class="image-text left-align">
-        <div class="text-large">Servicio 1</div>
-        <div class="text-small">Descripción breve del servicio 1.</div>
-      </div>
-    </div>
-    <!-- Imagen 2 -->
-    <div
-      class="col-4 image-section"
-      style="background-image: url('https://via.placeholder.com/800x400')"
-    >
-      <div class="image-text right-align">
-        <div class="text-large">Servicio 2</div>
-        <div class="text-small">Descripción breve del servicio 2.</div>
-      </div>
-    </div>
-    <!-- Imagen 3 -->
-    <div
-      class="col-4 image-section"
-      style="background-image: url('https://via.placeholder.com/800x400')"
-    >
-      <div class="image-text left-align">
-        <div class="text-large">Servicio 3</div>
-        <div class="text-small">Descripción breve del servicio 3.</div>
+    <div *ngFor="let service of services" class="col-6 video-section">
+      <!-- Usa la etiqueta <video> para mostrar el video -->
+      <video class="w-100 h-100" autoplay loop muted>
+        <source [src]="service.video" type="video/mp4" />
+        Tu navegador no soporta la etiqueta de video.
+      </video>
+      <div class="image-text" [ngClass]="service.align">
+        <div class="text-large">{{ service.title }}</div>
+        <div class="text-small">{{ service.description }}</div>
       </div>
     </div>
   </div>
