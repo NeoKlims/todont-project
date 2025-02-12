@@ -28,8 +28,8 @@ export class ContactComponent {
   }
 
   contactInfo = {
-    address: '123 Tech Lane, Innovation City',
-    phone: '+1 (555) 123-4567',
+    address: "Carrer D'Alberic, 27, bajo 1, Extramurs, 46008 Valencia",
+    phone: '+34 665 714 07',
     email: 'contact@todont.com',
   };
 }

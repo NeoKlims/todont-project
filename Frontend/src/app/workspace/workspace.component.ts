@@ -5,158 +5,46 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { TodontService } from '../services/todont.service';
+import { catchError, of, tap } from 'rxjs';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-workspace',
   standalone: true,
   imports: [CommonModule, TodoListComponent, SidebarComponent],
-  template: `
-     <div class="workspace">
-      <div class="toggle-container">
-        <div class="toggle-switch">
-          <input
-            type="checkbox"
-            id="listToggle"
-            [checked]="showTodont"
-            (change)="toggleListType(!showTodont)"
-          />
-          <label for="listToggle" class="toggle-label">
-            <span class="toggle-button">
-              <i class="toggle-icon">
-                {{ !showTodont ? '✓' : '✕' }}
-              </i>
-            </span>
-          </label>
-          <span class="toggle-text" [class.active]="!showTodont">Todo</span>
-          <span class="toggle-text" [class.active]="showTodont">Todont</span>
-        </div>
-      </div>
-      <div class="main-content">
-        <app-sidebar [showTodont]="showTodont"></app-sidebar>
-        <app-todo-list
-          *ngFor="let list of (showTodont ? todontLists$ : todoLists$) | async"
-          [list]="list"
-          [isTodont]="showTodont"
-        ></app-todo-list>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .workspace {
-      padding: 120px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      height: 100vh;
-      overflow-y: auto;
-    }
-
-    .toggle-container {
-      display: flex;
-      justify-content: flex-start;
-      padding: 8px 16px;
-    }
-
-    .toggle-switch {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    input[type="checkbox"] {
-      display: none;
-    }
-
-    .toggle-label {
-      position: relative;
-      display: block;
-      width: 48px;
-      height: 24px;
-      background-color: #e4e4e4;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .toggle-button {
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
-      background-color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
-    }
-
-    .toggle-icon {
-      font-style: normal;
-      font-size: 12px;
-      color: #007bff;
-    }
-
-    input[type="checkbox"]:checked + .toggle-label {
-      background-color: #e4e4e4;
-    }
-
-    input[type="checkbox"]:checked + .toggle-label .toggle-button {
-      transform: translateX(24px);
-      background-color: #fff;
-    }
-
-    input[type="checkbox"]:checked + .toggle-label .toggle-icon {
-      color: #dc3545;
-    }
-
-    .toggle-text {
-      font-size: 14px;
-      font-weight: 500;
-      color: #666;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-
-    .toggle-text.active {
-      color: #007bff;
-    }
-
-    .lists-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .main-content{
-        display: flex;
-        height: 100%;
-    }
-  `],
+  templateUrl: './workspace.component.html',
+  styleUrls: [`./workspace.component.css`],
 })
-export class WorkspaceComponent {
+export class WorkspaceComponent implements OnInit {
   todoLists$: any;
   todontLists$: any;
   showTodont = false;
   token: string | null = '';
   workspaceData: any;
+  isLoading = true;
 
-  constructor(private todoService: TodoService,private todontService: TodontService, private authService: AuthService) {}
+  constructor(
+    private todoService: TodoService,
+    private todontService: TodontService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.loadLists();
-    /*this.authService.getWorkspaceData().subscribe({
-      next: (data) => {
-        this.workspaceData = data;
-        console.log('Workspace Data:', data);
-      },
-      error: (err) => {
-        console.error('Error fetching workspace data:', err);
-      },
-    });*/
-
+    this.token = this.authService.getCurrentUser(); 
+    if (this.token) {
+      this.loadLists();
+    } else {
+      console.error('Authentication token is not available');
+      this.router.navigate(['/forbidden-access'])
+    }
+      /*this.todoLists$ = this.todoService.getTodoLists().pipe(
+        tap(() => (this.isLoading = false)), // Update loading state
+        catchError(() => {
+          this.isLoading = false; // Handle error and update loading state
+          return of([]);
+        })
+      );*/
   }
 
   toggleListType(showTodont: boolean): void {
@@ -164,11 +52,40 @@ export class WorkspaceComponent {
     this.loadLists(); // Reload lists when toggle changes
   }
 
-  private loadLists() {
+  /*private loadLists() {
+    if (this.showTodont) {
+      this.todontLists$ = this.todontService.getTodontLists().pipe(
+        catchError(error => {
+          console.error('Error loading Todont lists:', error);
+          return of([]); // Return an empty array in case of error
+        })
+      );
+    } else {
+      this.todoLists$ = this.todoService.getTodoLists().pipe(
+        catchError(error => {
+          console.error('Error loading Todo lists:', error);
+          return of([]); // Return an empty array in case of error
+        })
+      );
+    }
+  }*/
+    private loadLists() {
       if (this.showTodont) {
-          this.todontLists$ = this.todontService.getTodontLists();
+        this.todontLists$ = this.todontService.getTodontLists().pipe(
+          tap(() => (this.isLoading = false)), // Update loading state
+          catchError(() => {
+            this.isLoading = false; // Handle error and update loading state
+            return of([]);
+          })
+        );
       } else {
-          this.todoLists$ = this.todoService.getTodoLists();
+        this.todoLists$ = this.todoService.getTodoLists().pipe(
+          tap(() => (this.isLoading = false)), // Update loading state
+          catchError(() => {
+            this.isLoading = false; // Handle error and update loading state
+            return of([]);
+          })
+        );
       }
-  }
+    }
 }

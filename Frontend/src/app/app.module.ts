@@ -28,6 +28,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
 import { OurServicesComponent } from './our-services/our-services.component';
 import { OurServicesPageComponent } from './our-services-page/our-services-page.component';
 import { ContactPageComponent } from './contact-page/contact-page.component';
+import { ForbiddenAccessComponent } from './forbidden-access/forbidden-access.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ContactPageComponent } from './contact-page/contact-page.component';
     TodoListComponent,
     SidebarComponent,
     WorkspaceComponent,
+    ForbiddenAccessComponent,
     RouterModule.forRoot([{ path: '', component: TodoListComponent }]),
   ],
   providers: [provideClientHydration(withEventReplay())],

@@ -1,0 +1,157 @@
+.not-found-container {
+    display: flex;
+    padding: 120px;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .content {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+  }
+
+  p {
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .back-button, .home-button {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+  }
+
+  .back-button {
+    background: transparent;
+    border: 2px solid #6a11cb;
+    color: #6a11cb;
+  }
+
+  .home-button {
+    background: #6a11cb;
+    color: white;
+    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+  }
+
+  .back-button:hover {
+    background: rgba(106, 17, 203, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .home-button:hover {
+    background: #5a0fb0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
+  }
+
+  .search-animation {
+    position: relative;
+    height: 120px;
+    margin: 2rem 0;
+  }
+
+  .magnifier {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: searching 2s infinite;
+  }
+
+  .magnifier-glass {
+    width: 60px;
+    height: 60px;
+    border: 8px solid #6a11cb;
+    border-radius: 50%;
+    position: relative;
+    opacity: 0.8;
+  }
+
+  .magnifier-handle {
+    position: absolute;
+    width: 8px;
+    height: 40px;
+    background: #6a11cb;
+    bottom: -30px;
+    right: -10px;
+    transform: rotate(45deg);
+    border-radius: 4px;
+  }
+
+  @keyframes fadeIn {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes searching {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    25% {
+      transform: translate(-60%, -50%) rotate(-20deg);
+    }
+    75% {
+      transform: translate(-40%, -50%) rotate(20deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .buttons {
+      flex-direction: column;
+    }
+    .error-code {
+      font-size: 6rem;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+  }

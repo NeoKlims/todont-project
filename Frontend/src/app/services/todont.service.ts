@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin } from 'rxjs';
 import { TodontList, TodontTask } from '../models/todo-list.model';
 import { environment } from '../../environments/environment.development';
 import { AuthService } from './auth.service';
@@ -15,11 +15,12 @@ export class TodontService {
   private dateTime = new Date();
   constructor(private http: HttpClient, private authService: AuthService) {
     this.currentUserId = this.authService.getUserId();
-    this.fetchTodontLists();
-    this.fetchTasks();
+    /*this.fetchTodontLists();
+    this.fetchTasks();*/
+    this.fetchData()
   }
 
-  private fetchTodontLists(): void {
+  /*private fetchTodontLists(): void {
     if (this.currentUserId === null) {
       console.error('No user is logged in');
       return;
@@ -48,7 +49,31 @@ export class TodontService {
       },
       error: (error) => console.error('Error fetching tasks', error),
     });
-  }
+  }*/
+ private fetchData(): void {
+       if (this.currentUserId === null) {
+         console.error('No user is logged in');
+         return;
+       }
+   
+       // Fetch lists and tasks in parallel
+       forkJoin({
+         lists: this.http.get<TodontList[]>(`${this.apiUrl}/todontlists`),
+         tasks: this.http.get<TodontTask[]>(`${this.apiUrl}/todonttasks`),
+       }).subscribe({
+         next: ({ lists, tasks }) => {
+           // Filter lists for the current user
+           const filteredLists = lists.filter(
+             (list) => list.user_id === this.currentUserId
+           );
+           this.todontLists.next(filteredLists);
+   
+           // Distribute tasks to the filtered lists
+           this.distributeTasksToLists(tasks);
+         },
+         error: (error) => console.error('Error fetching data', error),
+       });
+     }
 
   private distributeTasksToLists(tasks: TodontTask[]): void {
     const todontLists = this.todontLists.value;
@@ -154,29 +179,7 @@ export class TodontService {
     });
   }
 
-  /*addTask(listId: number, title: string): void {
-    const lists = this.todontLists.value;
-    const listIndex = lists.findIndex((list) => list.id === listId);
-
-    if (listIndex !== -1) {
-      const newTask: TodontTask = {
-        id: -1,
-        title,
-        description: '1',
-        completed: 0,
-        streak: '0',
-        list_id: listId,
-      };
-
-      this.http.post(`${this.apiUrl}/todonttasks`, newTask).subscribe({
-        next: (response) => {
-          lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
-          this.todontLists.next([...lists]);
-        },
-        error: (error) => console.error('Error adding task', error),
-      });
-    }
-  }*/
+  
   addTask(listId: number, title: string): void {
     const lists = this.todontLists.value;
     const listIndex = lists.findIndex((list) => list.id === listId);
@@ -207,14 +210,7 @@ export class TodontService {
     }
   }
 
-  /*deleteTask(listId: number, taskId: number): void {
-    const lists = this.todontLists.value;
-    const list = lists.find((l) => l.id === listId);
-    if (list) {
-      list.tasks = list.tasks.filter((t) => t.id !== taskId);
-      this.todontLists.next([...lists]);
-    }
-  }*/
+ 
   deleteTask(listId: number, taskId: number): void {
     console.log(listId);
     console.log(taskId);
@@ -234,17 +230,7 @@ export class TodontService {
     });
   }
 
-  /*updateTaskTitle(listId: number, taskId: number, newTitle: string): void {
-    const lists = this.todontLists.value;
-    const list = lists.find((l) => l.id === listId);
-    if (list) {
-      const task = list.tasks.find((t) => t.id === taskId);
-      if (task && newTitle.trim()) {
-        task.title = newTitle;
-        this.todontLists.next([...lists]);
-      }
-    }
-  }*/
+  
   updateTaskTitle(
     listId: number,
     taskId: number,
@@ -273,29 +259,22 @@ export class TodontService {
       });
   }
 
-  // toggleTask(listId: number, taskId: number): void {
-  //   const lists = this.todontLists.value;
-  //   const list = lists.find((l) => l.id === listId);
-  //   if (list) {
-  //     const task = list.tasks.find((t) => t.id === taskId);
-  //     if (task) {
-  //       task.completed != task.completed;
-  //       this.todontLists.next([...lists]);
-  //     }
-  //   }
-  // }
+  
   toggleTask(listId: number, taskId: number): void {
     const url = `${this.apiUrl}/todonttasks/${taskId}`;
     const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
+    // console.log(list)
     if (list) {
       const task = list.tasks.find((t) => t.id === taskId);
+      // console.log(task)
       if (task) {
         // Toggle the completion status locally
-        task.completed = !task.completed;
+        task.completed = task.completed ? true : false;
+        console.log("task in if",task)
         if (task.completed) {
           // Send a request to the backend to update the task's completion status
-          this.http.put(url, { completed: 0 }).subscribe({
+          this.http.put(url, { completed: 1 }).subscribe({
             next: () => {
               // Update the local state after the backend confirms the update
               this.todontLists.next([...lists]);
@@ -307,8 +286,10 @@ export class TodontService {
             },
           });
         }else{
+          console.log(task.completed)
+
           // Send a request to the backend to update the task's completion status
-          this.http.put(url, { completed: 1 }).subscribe({
+          this.http.put(url, { completed: 0 }).subscribe({
             next: () => {
               // Update the local state after the backend confirms the update
               this.todontLists.next([...lists]);

@@ -9,6 +9,8 @@ import { ContactPageComponent } from './contact-page/contact-page.component';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
 import { OurServicesPageComponent } from './our-services-page/our-services-page.component';
+import { ForbiddenAccessComponent } from './forbidden-access/forbidden-access.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Default route
   { path: 'home', component: HomeComponent },
@@ -20,6 +22,9 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'services', component: OurServicesPageComponent },
   { path: 'reset-password', component: NewPasswordComponent },
+  { path: 'forbidden-access', component: ForbiddenAccessComponent },
+  { path: '**', component: NotFoundComponent } 
+
 ];
 
 @NgModule({
