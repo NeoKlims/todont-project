@@ -27,7 +27,7 @@ export class TodoListComponent implements OnInit {
   isEditing = false; // Toggle list name editing
   editingTaskId: number | null = null; // Track which task is being edited
   showCompleted: boolean = false; // Toggle visibility of completed tasks
-  currentSort: 'alphabetical' | 'creationDate' | 'deadline' | null = null;
+  currentSort: 'alphabetical' | 'creationDate' | 'deadline' | 'streak' | null = null;
 
   constructor(
     private todoService: TodoService,
@@ -210,7 +210,7 @@ export class TodoListComponent implements OnInit {
     return this.isTodont && task.hasOwnProperty('streak') ? (task as TodontTask).streak : null;
   }
 
-  sortTasks(criteria: 'alphabetical' | 'creationDate' | 'deadline') {
+  sortTasks(criteria: 'alphabetical' | 'creationDate' | 'deadline' | 'streak') {
     this.currentSort = criteria;
 
     switch (criteria) {
@@ -226,6 +226,15 @@ export class TodoListComponent implements OnInit {
           const deadlineB = b.deadline ? new Date(b.deadline).getTime() : Infinity;
           return deadlineA - deadlineB;
         });
+        break;
+      case 'streak':
+        if (this.isTodont) {
+          this.list.tasks.sort((a, b) => {
+            const taskA = a as unknown as TodontTask; // Cast to TodontTask
+            const taskB = b as unknown as TodontTask; // Cast to TodontTask
+            return taskB.streak - taskA.streak; // Sort by streak in descending order
+          });
+        }
         break;
       default:
         // No sorting
