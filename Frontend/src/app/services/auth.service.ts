@@ -104,4 +104,7 @@ export class AuthService {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+  hasAuthToken(): boolean {
+    return !!sessionStorage.getItem('authToken'); 
+  }
 }

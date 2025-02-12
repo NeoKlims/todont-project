@@ -122,12 +122,13 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update Task Title
-  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string) {
+  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string, newDeadline: string) {
     if (newTitle.trim()) {
       const task = this.list.tasks.find((task) => task.id === taskId);
       if (task) {
         task.title = newTitle;
         task.description = newDesc;
+        task.deadline = newDeadline;
         this.editingTaskId = null;
         // Optionally, send a request to the backend to update the task title
       }
@@ -135,7 +136,7 @@ export class TodoListComponent implements OnInit {
         this.todontService.updateTaskTitle(listId, taskId, newTitle,newDesc);
         this.isEditing = false;
       } else {
-        this.todoService.updateTaskTitle(listId, taskId, newTitle,newDesc);
+        this.todoService.updateTaskTitle(listId, taskId, newTitle,newDesc, newDeadline);
         this.isEditing = false;
       }
     }
