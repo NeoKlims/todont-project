@@ -25,6 +25,10 @@ export class HeaderComponent {
     { label: 'Contact', url: '/contact-us' }
   ];
 
+  get hasAuthToken(): boolean {
+    return this.authService.hasAuthToken();
+  }
+  
   logout(event: Event): void {
     event.preventDefault();
 

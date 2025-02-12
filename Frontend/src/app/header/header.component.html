@@ -1,7 +1,5 @@
 <div class="container">
-  <header
-    class="d-flex flex-row align-items-center justify-content-between py-3 w-100"
-  >
+  <header class="d-flex flex-row align-items-center justify-content-between py-3 w-100">
     <!-- Logo -->
     <div class="text-center text-md-start">
       <a href="/home">
@@ -11,16 +9,16 @@
 
     <!-- Botones de Login/Register y Dropdown -->
     <div class="d-flex align-items-center gap-2 order-md-2">
-      <!-- Hide Sign Up and Sign In buttons if the user is logged in -->
-      <a *ngIf="!isLoggedIn" href="/register" class="btn btn-outline-primary">
+      <!-- Hide Sign Up and Sign In buttons if there is an authToken -->
+      <a *ngIf="!hasAuthToken" href="/register" class="btn btn-outline-primary">
         Sign Up
       </a>
-      <a *ngIf="!isLoggedIn" href="/login" class="btn btn-outline-primary">
+      <a *ngIf="!hasAuthToken" href="/login" class="btn btn-outline-primary">
         Sign In
       </a>
 
-      <!-- Dropdown de perfil del usuario -->
-      <div *ngIf="isLoggedIn" class="dropdown">
+      <!-- Show profile dropdown if there is an authToken -->
+      <div *ngIf="hasAuthToken" class="dropdown">
         <a
           href="#"
           class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
