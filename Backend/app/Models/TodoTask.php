@@ -17,4 +17,5 @@ class TodoTask extends Model
     {
         return $this->belongsTo(Todolist::class);
     }
+    
 }

@@ -23,6 +23,7 @@ export class TodoListComponent implements OnInit {
 
   showListMenu = false; // Toggle visibility of the list menu
   showTaskMenu: { [key: string]: boolean } = {}; // Toggle visibility of task menus
+  showAddTaskModal = false;
   isEditing = false; // Toggle list name editing
   editingTaskId: number | null = null; // Track which task is being edited
   showCompleted: boolean = false; // Toggle visibility of completed tasks
@@ -49,6 +50,18 @@ export class TodoListComponent implements OnInit {
     return this.list.tasks.filter((task) => task.completed);
   }
 
+  showAddTask() {
+    this.showAddTaskModal = true;
+  }
+
+  hideAddTask() {
+    this.showAddTaskModal = false;
+  }
+
+  hideEditing() {
+    this.isEditing = false;
+  }
+
   // Add a Task
   /*addTask(title: string): void {
     if (title.trim()) {
@@ -63,12 +76,13 @@ export class TodoListComponent implements OnInit {
       });
     }
   }*/
-  addTask(title: string): void {
+  addTask(title: string, description: string, deadline: string): void {
     if (title.trim()) {
       if (this.isTodont) {
         this.todontService.addTask(this.list.id, title);
       } else {
-        this.todoService.addTask(this.list.id, title);
+        this.todoService.addTask(this.list.id, title, description, deadline);
+        this.showAddTaskModal = false;
       }
       //this.list.tasks.push(newTask);
     }
@@ -101,6 +115,7 @@ export class TodoListComponent implements OnInit {
     this.isEditing = true;
     this.showListMenu = false;
   }
+  
 
   // Start Editing Task Title
   startEditingTask(taskId: number) {

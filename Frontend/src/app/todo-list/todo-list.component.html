@@ -54,13 +54,13 @@
             <div
               class="modal-box p-4 py-md-5"
               id="modalEditTask"
-              *ngIf="editingTaskId != null && +editingTaskId === task.id"
+              *ngIf="editingTaskId != null && +editingTaskId === task.id "
             >
               <div class="modal-dialog">
                 <div class="modal-content rounded-4 shadow">
                   <div class="modal-header p-5 pb-4 border-bottom-0">
                     <h1 class="fw-bold mb-0 fs-2">Edit task</h1>
-                    <button type="button" class="close"></button>
+                    <button type="button" class="close" (click)="hideEditing()"></button>
                   </div>
 
                   <div class="modal-body p-5 pt-0">
@@ -129,7 +129,7 @@
         </div>
         <span class="task-description">{{ task.description }} </span>
         <div class="task-deadline">
-          <span class="task-deadline-text">{{ task.deadline }}</span>
+          <span class="task-deadline-text">{{ task.deadline | date:'dd-MM-yyyy' }}</span>
         </div>
       </div>
     </div>
@@ -151,16 +151,57 @@
         </div>
       </div>
     </div>
+    <button class="add-task-btn" (click)="showAddTask()">Add Task</button>
 
-    <div class="add-task">
-      <input
-        #taskInput
-        type="text"
-        placeholder="Add a task"
-        (keyup.enter)="addTask(taskInput.value); taskInput.value = ''"
-      />
+<!-- Modal para agregar tarea -->
+<div class="modal-box p-4 py-md-5" *ngIf="showAddTaskModal">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header p-5 pb-4 border-bottom-0">
+        <h1 class="fw-bold mb-0 fs-2">Add Task</h1>
+        <button type="button" class="close" (click)="hideAddTask()"></button>
+      </div>
+
+      <div class="modal-body p-5 pt-0">
+        <form>
+          <label for="newTaskTitle">Task title</label>
+          <div class="form-floating mb-3">
+            <input
+              #newTaskTitle
+              type="text"
+              class="edit-input"
+            />
+          </div>
+          <label for="newTaskDesc">Task description</label>
+          <div class="form-floating mb-3">
+            <input
+              #newTaskDesc
+              type="text"
+              class="form-control rounded-3"
+              placeholder="Description"
+            />
+          </div>
+          <label for="newTaskDeadline">Deadline</label>
+          <div class="form-floating mb-3">
+            <input
+              #newTaskDeadline
+              type="date"
+              class="form-control rounded-3"
+              placeholder="Deadline"
+            />
+          </div>
+          <button
+            class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
+            (click)="addTask(newTaskTitle.value, newTaskDesc.value, newTaskDeadline.value)"
+          >
+            Add
+          </button>
+        </form>
+      </div>
     </div>
   </div>
+</div>
+
 
   <!-- Todont List View -->
   <div class="items" *ngIf="isTodont">
@@ -283,13 +324,5 @@
       </div>
     </div>
 
-    <div class="add-task">
-      <input
-        #taskInput
-        type="text"
-        placeholder="Add a task"
-        (keyup.enter)="addTask(taskInput.value); taskInput.value = ''"
-      />
-    </div>
   </div>
 </div>

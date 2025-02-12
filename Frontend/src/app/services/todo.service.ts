@@ -175,7 +175,7 @@ export class TodoService {
       });
     }
   }*/
-  addTask(listId: number, title: string): void {
+  addTask(listId: number, title: string, description: string, deadline: string): void {
     const lists = this.todoLists.value;
     const listIndex = lists.findIndex((list) => list.id === listId);
 
@@ -183,9 +183,9 @@ export class TodoService {
       const newTask: TodoTask = {
         id: -1, // Placeholder
         title,
-        description: 'Place description here',
+        description,
         completed: false,
-        deadline: '',
+        deadline,
         tags: '3',
         repeat_on: 'n',
         list_id: listId,
