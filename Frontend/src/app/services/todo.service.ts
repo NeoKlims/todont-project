@@ -243,9 +243,9 @@ export class TodoService {
       }
     }
   }*/
-  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string): void {
+  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string, newDeadline: string): void {
     const url = `${this.apiUrl}/todotasks/${taskId}`;
-    const updatedTask: Partial<TodoTask> = { title: newTitle, description: newDesc};
+    const updatedTask: Partial<TodoTask> = { title: newTitle, description: newDesc, deadline: newDeadline };
 
     this.http
       .put<TodoTask>(url, updatedTask)
