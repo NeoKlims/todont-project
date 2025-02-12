@@ -9,22 +9,22 @@ import { Component, OnInit } from '@angular/core';
 export class AboutComponent implements OnInit {
   slides = [
     {
-      title: 'Example headline.',
-      text: 'Some representative placeholder content for the first slide of the carousel.',
+      title: 'Hard Work, Smart Results',
+      text: 'We believe in dedication and efficiency. Great things happen when we stay focused.',
       buttonText: 'Sign up today',
       buttonLink: '/login',
       image: 'aboutus1.jpg',
     },
     {
-      title: 'Another example headline.',
-      text: 'Some representative placeholder content for the second slide of the carousel.',
-      buttonText: 'Learn more',
+      title: 'Stronger Together',
+      text: 'Collaboration fuels success. We support and uplift each other every step of the way.',
+      buttonText: 'Stay organized',
       buttonLink: '/login',
       image: 'aboutus2.jpg',
     },
     {
-      title: 'One more for good measure.',
-      text: 'Some representative placeholder content for the third slide of this carousel.',
+      title: 'Celebrate Every Win',
+      text: 'Every milestone counts. We grow, improve, and celebrate as a team.',
       buttonText: 'Enter the workspace',
       buttonLink: '/login',
       image: 'aboutus3.jpg',
@@ -33,20 +33,16 @@ export class AboutComponent implements OnInit {
 
   cards = [
     {
-      title: 'Adrian',
-      description: 'Backend',
+      title: 'Adrian & Archie',
+      subtitle: 'Backend Architects',
+      description:
+        'The fundamental pillars of Todont. They ensure everything runs smoothly behind the scenes, suffering with AWS, handling databases and APIs.',
     },
     {
-      title: 'Archie',
-      description: 'Backend',
-    },
-    {
-      title: 'Nikita',
-      description: 'Frontend',
-    },
-    {
-      title: 'Diego',
-      description: 'Frontend',
+      title: 'Nikita & Diego',
+      subtitle: 'Frontend Innovators',
+      description:
+        'Designing and building an intuitive, pretty experience. They bring the vision to life with clean and responsive UI.',
     },
   ];
 

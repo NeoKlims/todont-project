@@ -65,13 +65,22 @@
 <div
   class="row cards d-flex flex-wrap justify-content-center align-items-center text-center"
 >
-  <div class="text mb-5"><h1>Our Team</h1></div>
+  <div class="team-header text-center">
+    <div class="text mb-5"><h1>Meet Our Team</h1></div>
+    <div class="text mb-5">
+      <h6>
+        A perfect blend of backend mastery and frontend creativity. Together, we
+        build an experience that keeps productivity at its peak.
+      </h6>
+    </div>
+  </div>
   <hr />
   <div
     *ngFor="let card of cards"
     class="col-lg-3 col-md-6 d-flex flex-column align-items-center text-center p-5"
   >
     <h2>{{ card.title }}</h2>
+    <h4>{{ card.subtitle }}</h4>
     <p>{{ card.description }}</p>
   </div>
 </div>

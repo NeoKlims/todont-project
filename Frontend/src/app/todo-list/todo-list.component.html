@@ -85,13 +85,24 @@
                           placeholder="Description"
                         />
                       </div>
+                      <label for="floatingPassword">Deadline</label>
+                      <div class="form-floating mb-3">
+                        <input
+                          #taskEditInputDeadline
+                          type="date"
+                          [value]="task.deadline"
+                          class="form-control rounded-3"
+                          id=""
+                          placeholder="Description"
+                        />
+                      </div>
                       <button
                         class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
                         (keyup.enter)="
-                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value)
+                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value, taskEditInputDeadline.value)
                         "
                         (click)="
-                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value)
+                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value, taskEditInputDeadline.value)
                         "
                       >
                         Edit
@@ -118,7 +129,7 @@
         </div>
         <span class="task-description">{{ task.description }} </span>
         <div class="task-deadline">
-          <span class="task-deadline-text">12/12/25</span>
+          <span class="task-deadline-text">{{ task.deadline }}</span>
         </div>
       </div>
     </div>
@@ -205,13 +216,24 @@
                           placeholder="Description"
                         />
                       </div>
+                      <label for="floatingPassword">Deadline</label>
+                      <div class="form-floating mb-3">
+                        <input
+                          #taskEditInputDeadline
+                          type="date"
+                          [value]="task.deadline"
+                          class="form-control rounded-3"
+                          id=""
+                          placeholder="Description"
+                        />
+                      </div>
                       <button
                         class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
                         (keyup.enter)="
-                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value)
+                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value, taskEditInputDeadline.value)
                         "
                         (click)="
-                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value)
+                          updateTaskTitle(list.id, task.id, taskEditInput.value,taskEditInputDesc.value, taskEditInputDeadline.value)
                         "
                       >
                         Edit
