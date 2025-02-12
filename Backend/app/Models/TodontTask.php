@@ -17,4 +17,7 @@ class TodontTask extends Model
     {
         return $this->belongsTo(Todontlist::class);
     }
+    protected $casts = [
+        'streak_reseted' => 'date',
+    ];
 }

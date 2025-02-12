@@ -269,7 +269,7 @@ addTask(listId: number, title: string, description: string): void {
       title: newTitle,
       description: newDesc,
     };
-
+    console.log("task updatedd",updatedTask, taskId)
     this.http
       .put<TodontTask>(url, updatedTask)
       .subscribe((updatedTaskFromBackend) => {
@@ -330,5 +330,30 @@ addTask(listId: number, title: string, description: string): void {
         }
       }
     }
+  }
+
+  resetStreak(
+    listId: number,
+    taskId: number
+  ): void {
+    const url = `${this.apiUrl}/todonttasks/${taskId}`;
+    const updatedTask: Partial<TodontTask> = {
+      streak_reseted: dayjs(new Date()).format('YYYY-MM-DD')
+    };
+    console.log("task updatedd",updatedTask, taskId)
+    this.http
+      .put<TodontTask>(url, updatedTask)
+      .subscribe((updatedTaskFromBackend) => {
+        // Update the local state after successful update
+        const lists = this.todontLists.value;
+        const list = lists.find((l) => l.id === listId);
+        if (list) {
+          const taskIndex = list.tasks.findIndex((t) => t.id === taskId);
+          if (taskIndex !== -1) {
+            list.tasks[taskIndex] = updatedTaskFromBackend;
+            this.todontLists.next([...lists]);
+          }
+        }
+      });
   }
 }

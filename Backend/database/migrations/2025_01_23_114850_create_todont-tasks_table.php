@@ -11,7 +11,7 @@ class CreateTodontTasksTable extends Migration
         Schema::create('todont-tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();;
             $table->boolean('completed')->default(false);
             $table->integer('streak')->default(0);
             $table->date('streak_reseted')->default(date("Y-m-d"));

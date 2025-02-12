@@ -194,10 +194,6 @@
   /* Add any other styling you want for the button */
 }
 
-.sort-options .dropdown-menu {
-  /* Style the dropdown menu itself */
-}
-
 .sort-options .dropdown-item {
   cursor: pointer; /* Make the items look clickable */
 }

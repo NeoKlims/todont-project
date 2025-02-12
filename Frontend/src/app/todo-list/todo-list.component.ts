@@ -232,4 +232,13 @@ export class TodoListComponent implements OnInit {
         break;
     }
   }
+  resetStreak(listId: number, taskId: number) {
+    if (confirm('Are you sure you want to reset the streak?')) {
+      if (this.isTodont) {
+          this.todontService.resetStreak(listId, taskId);
+          this.isEditing = false;
+        
+      }
+    }
+  }
 }

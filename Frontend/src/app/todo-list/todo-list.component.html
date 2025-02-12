@@ -244,11 +244,11 @@
       >
         <div class="task-content-actions">
           <div class="task-content">
-            <input
+            <!-- <input
               type="checkbox"
               [checked]="task.completed"
               (change)="toggleTask(list.id, task.id)"
-            />
+            /> -->
             <span *ngIf="!editingTaskId || +editingTaskId !== task.id">
               {{ task.title }}
             </span>
@@ -316,6 +316,7 @@
                   Edit
                 </button>
                 <button (click)="deleteTask(list.id, task.id)">Delete</button>
+                <button *ngIf="isTodont" (click)="resetStreak(list.id, task.id)">Reset Streak</button>
               </div>
             </div>
           </div>
@@ -327,9 +328,9 @@
       </div>
     </div>
 
-    <button class="completed-btn" (click)="toggleCompletedSection()">
+    <!-- <button class="completed-btn" (click)="toggleCompletedSection()">
       {{ showCompleted ? "Hide completed tasks" : "Show completed tasks" }}
-    </button>
+    </button> -->
     <button class="add-task-btn" (click)="showAddTask()">Add Task</button>
     <div class="completed-tasks" *ngIf="showCompleted" id="completed-section">
       <h4>Completed tasks</h4>
