@@ -76,10 +76,11 @@ export class TodoListComponent implements OnInit {
       });
     }
   }*/
-  addTask(title: string, description: string, deadline: string): void {
+  addTask(title: string, description: string, deadline: string = ""): void {
     if (title.trim()) {
       if (this.isTodont) {
-        this.todontService.addTask(this.list.id, title);
+        this.todontService.addTask(this.list.id, title, description);
+        this.showAddTaskModal = false;
       } else {
         this.todoService.addTask(this.list.id, title, description, deadline);
         this.showAddTaskModal = false;
@@ -137,7 +138,7 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update Task Title
-  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string, newDeadline: string) {
+  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string, newDeadline: string = "") {
     if (newTitle.trim()) {
       const task = this.list.tasks.find((task) => task.id === taskId);
       if (task) {

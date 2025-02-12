@@ -180,7 +180,36 @@ export class TodontService {
   }
 
   
-  addTask(listId: number, title: string): void {
+  // addTask(listId: number, title: string): void {
+  //   const lists = this.todontLists.value;
+  //   const listIndex = lists.findIndex((list) => list.id === listId);
+
+  //   if (listIndex !== -1) {
+  //     const newTask: TodontTask = {
+  //       id: -1, // Placeholder
+  //       title,
+  //       description: 'Place description here',
+  //       completed: false,
+  //       streak: 0,
+  //       streak_reseted: dayjs(new Date()).format('YYYY-MM-DD'),
+  //       list_id: listId,
+  //     };
+  //     console.log(newTask);
+
+  //     this.http
+  //       .post<{ id: number }>(`${this.apiUrl}/todonttasks`, newTask)
+  //       .subscribe({
+  //         next: (response) => {
+  //           newTask.id = response.id; // Update task ID from database
+  //           lists[listIndex].tasks = [...lists[listIndex].tasks, newTask];
+  //           this.todontLists.next([...lists]);
+  //           console.log('Task added successfully', response);
+  //         },
+  //         error: (error) => console.error('Error adding task', error),
+  //       });
+  //   }
+  // }
+addTask(listId: number, title: string, description: string): void {
     const lists = this.todontLists.value;
     const listIndex = lists.findIndex((list) => list.id === listId);
 
@@ -188,13 +217,12 @@ export class TodontService {
       const newTask: TodontTask = {
         id: -1, // Placeholder
         title,
-        description: 'Place description here',
+        description,
         completed: false,
         streak: 0,
         streak_reseted: dayjs(new Date()).format('YYYY-MM-DD'),
         list_id: listId,
       };
-      console.log(newTask);
 
       this.http
         .post<{ id: number }>(`${this.apiUrl}/todonttasks`, newTask)
@@ -209,7 +237,6 @@ export class TodontService {
         });
     }
   }
-
  
   deleteTask(listId: number, taskId: number): void {
     console.log(listId);
