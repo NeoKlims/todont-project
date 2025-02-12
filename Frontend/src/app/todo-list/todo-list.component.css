@@ -182,3 +182,43 @@
 .streak-text {
   font-weight: bold;
 }
+
+/* sort-options.css or your global stylesheet */
+.sort-options .dropdown-toggle {
+  background-color: #fff; /* Or your preferred background color */
+  border: 1px solid #ced4da; /* Example border */
+  color: #495057; /* Example text color */
+  padding: 0.375rem 0.75rem; /* Adjust padding as needed */
+  border-radius: 0.25rem; /* Example border radius */
+  cursor: pointer;
+  /* Add any other styling you want for the button */
+}
+
+.sort-options .dropdown-menu {
+  /* Style the dropdown menu itself */
+}
+
+.sort-options .dropdown-item {
+  cursor: pointer; /* Make the items look clickable */
+}
+
+.sort-options .dropdown-item.active {
+  background-color: #007bff; /* Example active color */
+  color: white;
+}
+
+/* Optional: Add hover effect */
+.sort-options .dropdown-item:hover {
+  background-color: #f8f9fa; /* Example hover color */
+}
+
+/* Remove default button focus styles if you don't like them */
+.sort-options .dropdown-toggle:focus {
+  outline: none;
+  box-shadow: none; /* Or a subtle box-shadow */
+}
+
+/* Style the caret (down arrow) if you want */
+.sort-options .dropdown-toggle::after {
+    vertical-align: 0; /* Adjust vertical alignment if needed */
+}

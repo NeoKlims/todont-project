@@ -27,6 +27,7 @@ export class TodoListComponent implements OnInit {
   isEditing = false; // Toggle list name editing
   editingTaskId: number | null = null; // Track which task is being edited
   showCompleted: boolean = false; // Toggle visibility of completed tasks
+  currentSort: 'alphabetical' | 'creationDate' | 'deadline' | null = null;
 
   constructor(
     private todoService: TodoService,
@@ -138,7 +139,7 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update Task Title
-  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string, newDeadline: string = "") {
+  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string , newDeadline: string = "") {
     if (newTitle.trim()) {
       const task = this.list.tasks.find((task) => task.id === taskId);
       if (task) {
@@ -207,5 +208,28 @@ export class TodoListComponent implements OnInit {
   getTaskStreak(task: any): number | null {
     // Check if the task is a TodontTask and has a streak property
     return this.isTodont && task.hasOwnProperty('streak') ? (task as TodontTask).streak : null;
+  }
+
+  sortTasks(criteria: 'alphabetical' | 'creationDate' | 'deadline') {
+    this.currentSort = criteria;
+
+    switch (criteria) {
+      case 'alphabetical':
+        this.list.tasks.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'creationDate':
+        //this.list.tasks.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        break;
+      case 'deadline':
+        this.list.tasks.sort((a, b) => {
+          const deadlineA = a.deadline ? new Date(a.deadline).getTime() : Infinity;
+          const deadlineB = b.deadline ? new Date(b.deadline).getTime() : Infinity;
+          return deadlineA - deadlineB;
+        });
+        break;
+      default:
+        // No sorting
+        break;
+    }
   }
 }

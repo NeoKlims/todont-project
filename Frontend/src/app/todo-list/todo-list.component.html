@@ -1,5 +1,7 @@
 <div class="todo-list" *ngIf="list.isVisible">
+  
   <div class="list-header">
+    
     <div class="header-left">
       <h2 *ngIf="!isEditing">{{ list.title }}</h2>
       <input
@@ -11,8 +13,34 @@
         (blur)="updateListName(list.id, editInput.value)"
         class="edit-input"
       />
+      
     </div>
+    
     <div class="header-actions">
+      <div class="sort-options">
+        <div class="dropdown">
+          <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort By
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" 
+               [class.active]="currentSort === 'alphabetical'"
+               (click)="sortTasks('alphabetical')">
+              Alphabetical
+            </a>
+            <a class="dropdown-item" 
+               [class.active]="currentSort === 'creationDate'"
+               (click)="sortTasks('creationDate')">
+              Creation Date
+            </a>
+            <a class="dropdown-item" 
+               [class.active]="currentSort === 'deadline'"
+               (click)="sortTasks('deadline')">
+              Deadline
+            </a>
+          </div>
+        </div>
+      </div>
       <button
         class="star-btn"
         [class.starred]="list.isStarred"
@@ -34,7 +62,9 @@
 
   <!-- Todo List View -->
   <div class="items" *ngIf="!isTodont">
+    
     <div class="tasks">
+      
       <div
         *ngFor="let task of pendingTasks"
         class="task-item"
