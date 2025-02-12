@@ -142,10 +142,17 @@ export class TodoListComponent implements OnInit {
   }
 
   // Toggle Task Completion
-  toggleTask(taskId: number) {
+  toggleTask(listId:number,taskId: number) {
     const task = this.list.tasks.find((task) => task.id === taskId);
     if (task) {
       task.completed = !task.completed;
+      if (this.isTodont) {
+        this.todontService.toggleTask(listId, taskId);
+        this.isEditing = false;
+      } else {
+        this.todoService.toggleTask(listId, taskId);
+        this.isEditing = false;
+      }
       // Optionally, send a request to the backend to update the task status
     }
   }

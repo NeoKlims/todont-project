@@ -288,14 +288,17 @@ export class TodontService {
     const url = `${this.apiUrl}/todonttasks/${taskId}`;
     const lists = this.todontLists.value;
     const list = lists.find((l) => l.id === listId);
+    // console.log(list)
     if (list) {
       const task = list.tasks.find((t) => t.id === taskId);
+      // console.log(task)
       if (task) {
         // Toggle the completion status locally
-        task.completed = !task.completed;
+        task.completed = task.completed ? true : false;
+        console.log("task in if",task)
         if (task.completed) {
           // Send a request to the backend to update the task's completion status
-          this.http.put(url, { completed: 0 }).subscribe({
+          this.http.put(url, { completed: 1 }).subscribe({
             next: () => {
               // Update the local state after the backend confirms the update
               this.todontLists.next([...lists]);
@@ -307,8 +310,10 @@ export class TodontService {
             },
           });
         }else{
+          console.log(task.completed)
+
           // Send a request to the backend to update the task's completion status
-          this.http.put(url, { completed: 1 }).subscribe({
+          this.http.put(url, { completed: 0 }).subscribe({
             next: () => {
               // Update the local state after the backend confirms the update
               this.todontLists.next([...lists]);

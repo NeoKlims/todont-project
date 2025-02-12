@@ -45,7 +45,7 @@
             <input
               type="checkbox"
               [checked]="task.completed"
-              (change)="toggleTask(task.id)"
+              (change)="toggleTask(list.id,task.id)"
             />
             <span *ngIf="!editingTaskId || +editingTaskId !== task.id">
               {{ task.title }}
@@ -134,7 +134,7 @@
           <input
             type="checkbox"
             [checked]="task.completed"
-            (change)="toggleTask(task.id)"
+            (change)="toggleTask(list.id,task.id)"
           />
           <span>{{ task.title }}</span>
         </div>
@@ -164,7 +164,7 @@
             <input
               type="checkbox"
               [checked]="task.completed"
-              (change)="toggleTask(task.id)"
+              (change)="toggleTask( list.id, task.id)"
             />
             <span *ngIf="!editingTaskId || +editingTaskId !== task.id">
               {{ task.title }}
@@ -254,7 +254,7 @@
           <input
             type="checkbox"
             [checked]="task.completed"
-            (change)="toggleTask(task.id)"
+            (change)="toggleTask(list.id,task.id)"
           />
           <span>{{ task.title }}</span>
         </div>
