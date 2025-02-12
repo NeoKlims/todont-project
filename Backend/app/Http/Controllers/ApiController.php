@@ -151,6 +151,12 @@ class ApiController extends Controller
 
     public function updateTodontTask(Request $request, $id) {
         $task = TodontTask::findOrFail($id);
+        $task->update($request->all());
+        return $task;
+    }
+    
+    public function resetStreak(Request $request, $id) {
+        $task = TodontTask::findOrFail($id);
         $task->streak_reseted = $request->streak_reseted;
         $task->update($request->all());
         return $task;

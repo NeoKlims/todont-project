@@ -48,4 +48,5 @@ Route::get('/todonttasks', [ApiController::class, 'getTodontTasks']);
 Route::get('/todonttasks/{id}', [ApiController::class, 'getTodontTask']);
 Route::post('/todonttasks', [ApiController::class, 'createTodontTask']);
 Route::put('/todonttasks/{id}', [ApiController::class, 'updateTodontTask']);
+Route::put('/todonttasks/{id}/reset-streak', [ApiController::class, 'resetStreak']);
 Route::delete('/todonttasks/{id}', [ApiController::class, 'deleteTodontTask']);

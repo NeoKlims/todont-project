@@ -336,7 +336,7 @@ addTask(listId: number, title: string, description: string): void {
     listId: number,
     taskId: number
   ): void {
-    const url = `${this.apiUrl}/todonttasks/${taskId}`;
+    const url = `${this.apiUrl}/todonttasks/${taskId}/reset-streak`;
     const updatedTask: Partial<TodontTask> = {
       streak_reseted: dayjs(new Date()).format('YYYY-MM-DD')
     };
