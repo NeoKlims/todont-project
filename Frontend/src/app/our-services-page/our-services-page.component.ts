@@ -1,40 +1,40 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-our-services-page', // Selector del componente
+  selector: 'app-our-services-page',
   standalone: false,
-  templateUrl: './our-services-page.component.html', // Ruta de la plantilla HTML
-  styleUrls: ['./our-services-page.component.css'], // Ruta de los estilos CSS
+  templateUrl: './our-services-page.component.html',
+  styleUrls: ['./our-services-page.component.css'],
 })
 export class OurServicesPageComponent {
   // Sección de tarjetas de servicios (sin cambios)
   cards = [
     {
       image: 'assets/images/services1.jpg',
-      title: 'Short title, long jacket',
+      title: 'Organize with Purpose',
     },
     {
       image: 'assets/images/services2.jpg',
-      title: 'Much longer title that wraps to multiple lines',
+      title: 'Beat the Clock',
     },
     {
       image: 'assets/images/services3.jpg',
-      title: 'Another longer title belongs here',
+      title: 'Break Free',
     },
   ];
 
   // Sección de videos con descripciones
   services = [
     {
-      video: 'assets/videos/services-video1.mp4', // Cambia la imagen por un video
-      title: 'Servicio 1',
-      description: 'Descripción breve del servicio 1.',
+      video: 'assets/videos/services-video1.mp4',
+      title: 'Master Your Time',
+      description: 'Stay on top of deadlines and make every second count.',
       align: 'left-align',
     },
     {
-      video: 'assets/videos/services-video2.mp4', // Cambia la imagen por un video
-      title: 'Servicio 2',
-      description: 'Descripción breve del servicio 2.',
+      video: 'assets/videos/services-video2.mp4',
+      title: 'Track Your Progress',
+      description: 'Check off tasks, stay motivated, and achieve more.',
       align: 'right-align',
     },
   ];
