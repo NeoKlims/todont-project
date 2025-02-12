@@ -1,1 +1,29 @@
-<p>workspace works!</p>
+<div class="workspace">
+    <div class="toggle-container">
+      <div class="toggle-switch">
+        <input
+          type="checkbox"
+          id="listToggle"
+          [checked]="showTodont"
+          (change)="toggleListType(!showTodont)"
+        />
+        <label for="listToggle" class="toggle-label">
+          <span class="toggle-button">
+            <i class="toggle-icon">
+              {{ !showTodont ? '✓' : '✕' }}
+            </i>
+          </span>
+        </label>
+        <span class="toggle-text" [class.active]="!showTodont">Todo</span>
+        <span class="toggle-text" [class.active]="showTodont">Todont</span>
+      </div>
+    </div>
+    <div class="main-content">
+      <app-sidebar [showTodont]="showTodont"></app-sidebar>
+      <app-todo-list
+        *ngFor="let list of (showTodont ? todontLists$ : todoLists$) | async"
+        [list]="list"
+        [isTodont]="showTodont"
+      ></app-todo-list>
+    </div>
+  </div>
