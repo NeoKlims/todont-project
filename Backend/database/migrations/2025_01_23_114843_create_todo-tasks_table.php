@@ -11,7 +11,7 @@ class CreateTodoTasksTable extends Migration
         Schema::create('todo-tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->boolean('completed')->default(false);
             $table->timestamp('deadline')->nullable();
             $table->string('tags')->nullable();
