@@ -144,3 +144,10 @@
   font-size: 20px;
   padding: 4px;
 }
+
+.list-title {
+  width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

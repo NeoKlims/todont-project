@@ -24,7 +24,10 @@
           </label>
 
           <!-- Display List Title or Edit Input -->
-          <span *ngIf="!editingListId || editingListId !== list.id">
+          <span
+            class="list-title"
+            *ngIf="!editingListId || editingListId !== list.id"
+          >
             {{ list.title }}
           </span>
           <input

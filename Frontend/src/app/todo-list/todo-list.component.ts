@@ -27,7 +27,8 @@ export class TodoListComponent implements OnInit {
   isEditing = false; // Toggle list name editing
   editingTaskId: number | null = null; // Track which task is being edited
   showCompleted: boolean = false; // Toggle visibility of completed tasks
-  currentSort: 'alphabetical' | 'creationDate' | 'deadline' | 'streak' | null = null;
+  currentSort: 'alphabetical' | 'creationDate' | 'deadline' | 'streak' | null =
+    null;
 
   constructor(
     private todoService: TodoService,
@@ -60,7 +61,8 @@ export class TodoListComponent implements OnInit {
   }
 
   hideEditing() {
-    this.isEditing = false;
+    this.isEditing = false; // Oculta la edición del nombre de la lista
+    this.editingTaskId = null; // Oculta la edición de la tarea
   }
 
   // Add a Task
@@ -77,7 +79,7 @@ export class TodoListComponent implements OnInit {
       });
     }
   }*/
-  addTask(title: string, description: string, deadline: string = ""): void {
+  addTask(title: string, description: string, deadline: string = ''): void {
     if (title.trim()) {
       if (this.isTodont) {
         this.todontService.addTask(this.list.id, title, description);
@@ -117,7 +119,6 @@ export class TodoListComponent implements OnInit {
     this.isEditing = true;
     this.showListMenu = false;
   }
-  
 
   // Start Editing Task Title
   startEditingTask(taskId: number) {
@@ -139,7 +140,13 @@ export class TodoListComponent implements OnInit {
   }
 
   // Update Task Title
-  updateTaskTitle(listId: number, taskId: number, newTitle: string, newDesc: string , newDeadline: string = "") {
+  updateTaskTitle(
+    listId: number,
+    taskId: number,
+    newTitle: string,
+    newDesc: string,
+    newDeadline: string = ''
+  ) {
     if (newTitle.trim()) {
       const task = this.list.tasks.find((task) => task.id === taskId);
       if (task) {
@@ -150,17 +157,23 @@ export class TodoListComponent implements OnInit {
         // Optionally, send a request to the backend to update the task title
       }
       if (this.isTodont) {
-        this.todontService.updateTaskTitle(listId, taskId, newTitle,newDesc);
+        this.todontService.updateTaskTitle(listId, taskId, newTitle, newDesc);
         this.isEditing = false;
       } else {
-        this.todoService.updateTaskTitle(listId, taskId, newTitle,newDesc, newDeadline);
+        this.todoService.updateTaskTitle(
+          listId,
+          taskId,
+          newTitle,
+          newDesc,
+          newDeadline
+        );
         this.isEditing = false;
       }
     }
   }
 
   // Toggle Task Completion
-  toggleTask(listId:number,taskId: number) {
+  toggleTask(listId: number, taskId: number) {
     const task = this.list.tasks.find((task) => task.id === taskId);
     if (task) {
       task.completed = !task.completed;
@@ -207,7 +220,9 @@ export class TodoListComponent implements OnInit {
   }
   getTaskStreak(task: any): number | null {
     // Check if the task is a TodontTask and has a streak property
-    return this.isTodont && task.hasOwnProperty('streak') ? (task as TodontTask).streak : null;
+    return this.isTodont && task.hasOwnProperty('streak')
+      ? (task as TodontTask).streak
+      : null;
   }
 
   sortTasks(criteria: 'alphabetical' | 'creationDate' | 'deadline' | 'streak') {
@@ -222,8 +237,12 @@ export class TodoListComponent implements OnInit {
         break;
       case 'deadline':
         this.list.tasks.sort((a, b) => {
-          const deadlineA = a.deadline ? new Date(a.deadline).getTime() : Infinity;
-          const deadlineB = b.deadline ? new Date(b.deadline).getTime() : Infinity;
+          const deadlineA = a.deadline
+            ? new Date(a.deadline).getTime()
+            : Infinity;
+          const deadlineB = b.deadline
+            ? new Date(b.deadline).getTime()
+            : Infinity;
           return deadlineA - deadlineB;
         });
         break;
@@ -244,9 +263,8 @@ export class TodoListComponent implements OnInit {
   resetStreak(listId: number, taskId: number) {
     if (confirm('Are you sure you want to reset the streak?')) {
       if (this.isTodont) {
-          this.todontService.resetStreak(listId, taskId);
-          this.isEditing = false;
-        
+        this.todontService.resetStreak(listId, taskId);
+        this.isEditing = false;
       }
     }
   }
