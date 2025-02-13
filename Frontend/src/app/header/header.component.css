@@ -1,0 +1,42 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--background-color);
+  box-shadow: var(--card-shadow);
+}
+
+.nav-link {
+  color: var(--text-color);
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+}
+
+.nav-link.active {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.logo {
+  height: 70px;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color) !important;
+  background-color: var(--background-color);
+  border-color: var(--primary-color) !important;
+}
+.btn-outline-primary:hover {
+  color: var(--background-color) !important;
+  background-color: var(--primary-color);
+}

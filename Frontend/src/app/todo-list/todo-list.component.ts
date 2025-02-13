@@ -1,0 +1,271 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  TodoList,
+  TodoTask,
+  TodontList,
+  TodontTask,
+} from '../models/todo-list.model';
+import { TodoService } from '../services/todo.service';
+import { FormsModule } from '@angular/forms';
+import { TodontService } from '../services/todont.service';
+
+@Component({
+  selector: 'app-todo-list',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './todo-list.component.html',
+  styleUrls: ['./todo-list.component.css'],
+})
+export class TodoListComponent implements OnInit {
+  @Input() list!: TodoList; // Input list from the parent component
+  @Input() isTodont: boolean = false; // Determines if it's a To-Don't list
+
+  showListMenu = false; // Toggle visibility of the list menu
+  showTaskMenu: { [key: string]: boolean } = {}; // Toggle visibility of task menus
+  showAddTaskModal = false;
+  isEditing = false; // Toggle list name editing
+  editingTaskId: number | null = null; // Track which task is being edited
+  showCompleted: boolean = false; // Toggle visibility of completed tasks
+  currentSort: 'alphabetical' | 'creationDate' | 'deadline' | 'streak' | null =
+    null;
+
+  constructor(
+    private todoService: TodoService,
+    private todontService: TodontService
+  ) {}
+
+  ngOnInit(): void {
+    // Initialize tasks if not provided
+    if (!this.list.tasks) {
+      this.list.tasks = [];
+    }
+  }
+
+  // Get Pending Tasks
+  get pendingTasks(): TodoTask[] {
+    return this.list.tasks.filter((task) => !task.completed);
+  }
+
+  // Get Completed Tasks
+  get completedTasks(): TodoTask[] {
+    return this.list.tasks.filter((task) => task.completed);
+  }
+
+  showAddTask() {
+    this.showAddTaskModal = true;
+  }
+
+  hideAddTask() {
+    this.showAddTaskModal = false;
+  }
+
+  hideEditing() {
+    this.isEditing = false; // Oculta la edición del nombre de la lista
+    this.editingTaskId = null; // Oculta la edición de la tarea
+  }
+
+  // Add a Task
+  /*addTask(title: string): void {
+    if (title.trim()) {
+      this.todoService.addTask(this.list.id, title, this.isTodont).subscribe({
+        next: (newTask: TodoTask) => { 
+          // Update the local state only after the backend confirms the creation
+          this.list.tasks.push(newTask);
+        },
+        error: (error) => {
+          console.error('Error adding task', error);
+        },
+      });
+    }
+  }*/
+  addTask(title: string, description: string, deadline: string = ''): void {
+    if (title.trim()) {
+      if (this.isTodont) {
+        this.todontService.addTask(this.list.id, title, description);
+        this.showAddTaskModal = false;
+      } else {
+        this.todoService.addTask(this.list.id, title, description, deadline);
+        this.showAddTaskModal = false;
+      }
+      //this.list.tasks.push(newTask);
+    }
+  }
+
+  // Delete a Task
+  deleteTask(listId: number, taskId: number) {
+    //this.list.tasks = this.list.tasks.filter((task) => task.id !== taskId);
+    //this.showTaskMenu[taskId] = false;
+    if (this.isTodont) {
+      this.todontService.deleteTask(listId, taskId);
+      this.showTaskMenu[taskId] = false;
+    } else {
+      this.todoService.deleteTask(listId, taskId);
+      this.showTaskMenu[taskId] = false;
+    }
+  }
+
+  // Delete the List
+  deleteList(listId: number): void {
+    if (this.isTodont) {
+      this.todontService.deleteList(listId);
+    } else {
+      this.todoService.deleteList(listId);
+    }
+  }
+
+  // Start Editing List Name
+  startEditing() {
+    this.isEditing = true;
+    this.showListMenu = false;
+  }
+
+  // Start Editing Task Title
+  startEditingTask(taskId: number) {
+    this.editingTaskId = taskId;
+    this.showTaskMenu[taskId] = false;
+  }
+
+  // Update List Name
+  updateListName(listId: number, newName: string, isTodont = this.isTodont) {
+    if (newName.trim()) {
+      if (this.isTodont) {
+        this.todontService.updateListName(listId, newName, isTodont);
+        this.isEditing = false;
+      } else {
+        this.todoService.updateListName(listId, newName, isTodont);
+        this.isEditing = false;
+      }
+    }
+  }
+
+  // Update Task Title
+  updateTaskTitle(
+    listId: number,
+    taskId: number,
+    newTitle: string,
+    newDesc: string,
+    newDeadline: string = ''
+  ) {
+    if (newTitle.trim()) {
+      const task = this.list.tasks.find((task) => task.id === taskId);
+      if (task) {
+        task.title = newTitle;
+        task.description = newDesc;
+        task.deadline = newDeadline;
+        this.editingTaskId = null;
+        // Optionally, send a request to the backend to update the task title
+      }
+      if (this.isTodont) {
+        this.todontService.updateTaskTitle(listId, taskId, newTitle, newDesc);
+        this.isEditing = false;
+      } else {
+        this.todoService.updateTaskTitle(
+          listId,
+          taskId,
+          newTitle,
+          newDesc,
+          newDeadline
+        );
+        this.isEditing = false;
+      }
+    }
+  }
+
+  // Toggle Task Completion
+  toggleTask(listId: number, taskId: number) {
+    const task = this.list.tasks.find((task) => task.id === taskId);
+    if (task) {
+      task.completed = !task.completed;
+      if (this.isTodont) {
+        this.todontService.toggleTask(listId, taskId);
+        this.isEditing = false;
+      } else {
+        this.todoService.toggleTask(listId, taskId);
+        this.isEditing = false;
+      }
+      // Optionally, send a request to the backend to update the task status
+    }
+  }
+
+  // Toggle List Star
+  toggleListStar() {
+    this.list.isStarred = !this.list.isStarred;
+    // Optionally, send a request to the backend to update the list star status
+  }
+
+  // Toggle Task Star
+  /*toggleTaskStar(taskId: string) {
+    const task = this.list.tasks.find((task) => task.id === taskId);
+    if (task) {
+      task.isStarred = !task.isStarred;
+      // Optionally, send a request to the backend to update the task star status
+    }
+  }*/
+
+  // Toggle Completed Tasks Section
+  toggleCompletedSection() {
+    this.showCompleted = !this.showCompleted;
+  }
+
+  // Toggle Task Menu
+  toggleTaskMenu(taskId: number) {
+    this.showTaskMenu[taskId] = !this.showTaskMenu[taskId];
+    // Close other task menus
+    for (let id in this.showTaskMenu) {
+      if (+id !== taskId) {
+        this.showTaskMenu[id] = false;
+      }
+    }
+  }
+  getTaskStreak(task: any): number | null {
+    // Check if the task is a TodontTask and has a streak property
+    return this.isTodont && task.hasOwnProperty('streak')
+      ? (task as TodontTask).streak
+      : null;
+  }
+
+  sortTasks(criteria: 'alphabetical' | 'creationDate' | 'deadline' | 'streak') {
+    this.currentSort = criteria;
+
+    switch (criteria) {
+      case 'alphabetical':
+        this.list.tasks.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'creationDate':
+        //this.list.tasks.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        break;
+      case 'deadline':
+        this.list.tasks.sort((a, b) => {
+          const deadlineA = a.deadline
+            ? new Date(a.deadline).getTime()
+            : Infinity;
+          const deadlineB = b.deadline
+            ? new Date(b.deadline).getTime()
+            : Infinity;
+          return deadlineA - deadlineB;
+        });
+        break;
+      case 'streak':
+        if (this.isTodont) {
+          this.list.tasks.sort((a, b) => {
+            const taskA = a as unknown as TodontTask; // Cast to TodontTask
+            const taskB = b as unknown as TodontTask; // Cast to TodontTask
+            return taskB.streak - taskA.streak; // Sort by streak in descending order
+          });
+        }
+        break;
+      default:
+        // No sorting
+        break;
+    }
+  }
+  resetStreak(listId: number, taskId: number) {
+    if (confirm('Are you sure you want to reset the streak?')) {
+      if (this.isTodont) {
+        this.todontService.resetStreak(listId, taskId);
+        this.isEditing = false;
+      }
+    }
+  }
+}

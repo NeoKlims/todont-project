@@ -1,0 +1,513 @@
+<div class="todo-list m-3" *ngIf="list.isVisible">
+  <div class="list-header card-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="header-left">
+        <h5 *ngIf="!isEditing" class="mb-0">{{ list.title }}</h5>
+        <input
+          *ngIf="isEditing"
+          #editInput
+          type="text"
+          [value]="list.title"
+          (keyup.enter)="updateListName(list.id, editInput.value)"
+          (blur)="updateListName(list.id, editInput.value)"
+          class="form-control"
+        />
+      </div>
+
+      <div class="header-actions d-flex align-items-center">
+        <div class="sort-options me-3">
+          <div class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Sort By
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a
+                class="dropdown-item"
+                [class.active]="currentSort === 'alphabetical'"
+                (click)="sortTasks('alphabetical')"
+              >
+                Alphabetical
+              </a>
+              <a
+                class="dropdown-item"
+                *ngIf="!isTodont"
+                [class.active]="currentSort === 'deadline'"
+                (click)="sortTasks('deadline')"
+              >
+                Deadline
+              </a>
+              <a
+                class="dropdown-item"
+                *ngIf="isTodont"
+                [class.active]="currentSort === 'streak'"
+                (click)="sortTasks('streak')"
+              >
+                Streak
+              </a>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-outline-warning me-3"
+          [class.starred]="list.isStarred"
+          (click)="toggleListStar()"
+        >
+          ★
+        </button>
+        <div class="menu-container">
+          <!-- Botón que abre el desplegable -->
+          <button
+            class="btn btn-outline-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            ⋮
+          </button>
+
+          <!-- Menú desplegable -->
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <button class="dropdown-item" (click)="startEditing()">
+                Edit
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" (click)="deleteList(list.id)">
+                Delete
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Todo List View -->
+  <div class="items card-body" *ngIf="!isTodont">
+    <div class="tasks">
+      <div
+        *ngFor="let task of pendingTasks"
+        class="task-item card mb-2"
+        [class.completed]="task.completed"
+      >
+        <div class="task-content-actions card-body">
+          <div class="task-content">
+            <input
+              type="checkbox"
+              [checked]="task.completed"
+              (change)="toggleTask(list.id, task.id)"
+              class="form-check-input me-2"
+            />
+            <span
+              *ngIf="!editingTaskId || +editingTaskId !== task.id"
+              class="task-title"
+            >
+              {{ task.title }}
+            </span>
+
+            <!-- MODAL BOX TO EDIT THE TASK -->
+            <div
+              class="modal-box p-4 py-md-5"
+              id="modalEditTask"
+              *ngIf="editingTaskId != null && +editingTaskId === task.id"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content rounded-4 shadow">
+                  <div class="modal-header p-5 pb-4 border-bottom-0">
+                    <h1 class="fw-bold mb-0 fs-2">Edit task</h1>
+                    <button type="button" class="close" (click)="hideEditing()">
+                      x
+                    </button>
+                  </div>
+
+                  <div class="modal-body p-5 pt-0">
+                    <form>
+                      <label for="floatingInput">Task title</label>
+                      <div class="form-floating mb-3">
+                        <input
+                          #taskEditInput
+                          type="text"
+                          [value]="task.title"
+                          class="form-control"
+                        />
+                      </div>
+                      <label for="floatingPassword">Task description</label>
+                      <div class="form-floating mb-3">
+                        <input
+                          #taskEditInputDesc
+                          type="description"
+                          [value]="task.description"
+                          class="form-control rounded-3"
+                          id=""
+                          placeholder="Description"
+                        />
+                      </div>
+                      <label for="floatingPassword">Deadline</label>
+                      <div class="form-floating mb-3">
+                        <input
+                          #taskEditInputDeadline
+                          type="date"
+                          [value]="task.deadline"
+                          class="form-control rounded-3"
+                          id=""
+                          placeholder="Description"
+                        />
+                      </div>
+                      <button
+                        class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
+                        (keyup.enter)="
+                          updateTaskTitle(
+                            list.id,
+                            task.id,
+                            taskEditInput.value,
+                            taskEditInputDesc.value,
+                            taskEditInputDeadline.value
+                          )
+                        "
+                        (click)="
+                          updateTaskTitle(
+                            list.id,
+                            task.id,
+                            taskEditInput.value,
+                            taskEditInputDesc.value,
+                            taskEditInputDeadline.value
+                          )
+                        "
+                      >
+                        Edit
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="task-actions">
+            <div class="menu-container">
+              <button
+                class="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                (click)="toggleTaskMenu(task.id)"
+              >
+                ⋮
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    (click)="startEditingTask(task.id)"
+                    id="btnEditTask"
+                  >
+                    Edit
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    (click)="deleteTask(list.id, task.id)"
+                  >
+                    Delete
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <span class="task-description text-muted">{{ task.description }}</span>
+        <div class="task-deadline text-muted">
+          <span class="task-deadline-text">
+            {{ task.deadline | date : "dd-MM-yyyy" }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="btn btn-outline-primary w-100 mb-3"
+      (click)="toggleCompletedSection()"
+    >
+      {{ showCompleted ? "Hide completed tasks" : "Show completed tasks" }}
+    </button>
+
+    <div class="completed-tasks" *ngIf="showCompleted" id="completed-section">
+      <h4>Completed tasks</h4>
+      <div
+        *ngFor="let task of completedTasks"
+        class="task-item completed card mb-2"
+      >
+        <div class="task-content card-body">
+          <input
+            type="checkbox"
+            [checked]="task.completed"
+            (change)="toggleTask(list.id, task.id)"
+            class="form-check-input me-2"
+          />
+          <span class="task-title">{{ task.title }}</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary w-100 addTaskButton" (click)="showAddTask()">
+      Add Task
+    </button>
+
+    <!-- Modal para agregar tarea -->
+    <div class="modal-box p-4 py-md-5" *ngIf="showAddTaskModal">
+      <div class="modal-dialog">
+        <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+            <h1 class="fw-bold mb-0 fs-2">Add Task</h1>
+            <button type="button" class="close" (click)="hideAddTask()">
+              x
+            </button>
+          </div>
+
+          <div class="modal-body p-5 pt-0">
+            <form>
+              <label for="newTaskTitle">Task title</label>
+              <div class="form-floating mb-3">
+                <input #newTaskTitle type="text" class="form-control" />
+              </div>
+              <label for="newTaskDesc">Task description</label>
+              <div class="form-floating mb-3">
+                <input
+                  #newTaskDesc
+                  type="text"
+                  class="form-control rounded-3"
+                  placeholder="Description"
+                />
+              </div>
+              <label for="newTaskDeadline">Deadline</label>
+              <div class="form-floating mb-3">
+                <input
+                  #newTaskDeadline
+                  type="date"
+                  class="form-control rounded-3"
+                  placeholder="Deadline"
+                />
+              </div>
+              <button
+                class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
+                (click)="
+                  addTask(
+                    newTaskTitle.value,
+                    newTaskDesc.value,
+                    newTaskDeadline.value
+                  )
+                "
+              >
+                Add
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Todont List View -->
+  <div class="items card-body" *ngIf="isTodont">
+    <div class="tasks">
+      <div
+        *ngFor="let task of pendingTasks"
+        class="task-item card mb-2"
+        [class.completed]="task.completed"
+      >
+        <div class="task-content-actions card-body">
+          <div class="task-content">
+            <span
+              *ngIf="!editingTaskId || +editingTaskId !== task.id"
+              class="task-title"
+            >
+              {{ task.title }}
+            </span>
+
+            <!-- MODAL BOX TO EDIT THE TASK -->
+            <div
+              class="modal-box p-4 py-md-5"
+              id="modalEditTask"
+              *ngIf="editingTaskId != null && +editingTaskId === task.id"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content rounded-4 shadow">
+                  <div class="modal-header p-5 pb-4 border-bottom-0">
+                    <h1 class="fw-bold mb-0 fs-2">Edit task</h1>
+                    <button type="button" class="close" (click)="hideEditing()">
+                      x
+                    </button>
+                  </div>
+
+                  <div class="modal-body p-5 pt-0">
+                    <form>
+                      <label for="floatingInput">Task title</label>
+                      <div class="form-floating mb-3">
+                        <input
+                          #taskEditInput
+                          type="text"
+                          [value]="task.title"
+                          class="form-control"
+                        />
+                      </div>
+                      <label for="floatingPassword">Task description</label>
+                      <div class="form-floating mb-3">
+                        <input
+                          #taskEditInputDesc
+                          type="description"
+                          [value]="task.description"
+                          class="form-control rounded-3"
+                          id=""
+                          placeholder="Description"
+                        />
+                      </div>
+
+                      <button
+                        class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
+                        (keyup.enter)="
+                          updateTaskTitle(
+                            list.id,
+                            task.id,
+                            taskEditInput.value,
+                            taskEditInputDesc.value
+                          )
+                        "
+                        (click)="
+                          updateTaskTitle(
+                            list.id,
+                            task.id,
+                            taskEditInput.value,
+                            taskEditInputDesc.value
+                          )
+                        "
+                      >
+                        Edit
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="task-actions">
+            <div class="menu-container">
+              <button
+                class="btn btn-outline-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                (click)="toggleTaskMenu(task.id)"
+              >
+                ⋮
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    (click)="startEditingTask(task.id)"
+                    id="btnEditTask"
+                  >
+                    Edit
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    (click)="deleteTask(list.id, task.id)"
+                  >
+                    Delete
+                  </button>
+                </li>
+                <li>
+                  <button
+                    *ngIf="isTodont"
+                    class="dropdown-item"
+                    (click)="resetStreak(list.id, task.id)"
+                  >
+                    Reset Streak
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <span class="task-description text-muted">{{ task.description }}</span>
+        <div
+          class="task-streak text-muted"
+          *ngIf="isTodont && getTaskStreak(task) !== null"
+        >
+          <span class="streak-text">Streak: {{ getTaskStreak(task) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary w-100 mb-3" (click)="showAddTask()">
+      Add Task
+    </button>
+    <div class="completed-tasks" *ngIf="showCompleted" id="completed-section">
+      <h4>Completed tasks</h4>
+      <div
+        *ngFor="let task of completedTasks"
+        class="task-item completed card mb-2"
+      >
+        <div class="task-content card-body">
+          <input
+            type="checkbox"
+            [checked]="task.completed"
+            (change)="toggleTask(list.id, task.id)"
+            class="form-check-input me-2"
+          />
+          <span class="task-title">{{ task.title }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para agregar tarea -->
+    <div class="modal-box p-4 py-md-5" *ngIf="showAddTaskModal">
+      <div class="modal-dialog">
+        <div class="modal-content rounded-4 shadow">
+          <div class="modal-header p-5 pb-4 border-bottom-0">
+            <h1 class="fw-bold mb-0 fs-2">Add Task</h1>
+            <button type="button" class="close" (click)="hideAddTask()">
+              x
+            </button>
+          </div>
+
+          <div class="modal-body p-5 pt-0">
+            <form>
+              <label for="newTaskTitle">Task title</label>
+              <div class="form-floating mb-3">
+                <input #newTaskTitle type="text" class="form-control" />
+              </div>
+              <label for="newTaskDesc">Task description</label>
+              <div class="form-floating mb-3">
+                <input
+                  #newTaskDesc
+                  type="text"
+                  class="form-control rounded-3"
+                  placeholder="Description"
+                />
+              </div>
+
+              <button
+                class="w-100 mb-2 btn btn-lg rounded-3 btn-primary"
+                (click)="addTask(newTaskTitle.value, newTaskDesc.value)"
+              >
+                Add
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+<div class="sidebar">
+  <!-- Create List Button -->
+  <button class="create-btn" (click)="showCreateList = true">
+    + Create List
+  </button>
+
+  <!-- Lists Section -->
+  <div class="lists-section">
+    <!-- Todo Lists -->
+    <ng-container *ngIf="!showTodont">
+      <div
+        class="list-item"
+        *ngFor="let list of todoLists$ | async"
+        [class.starred]="list.isStarred"
+      >
+        <div class="list-item-content">
+          <!-- Toggle List Visibility -->
+          <label>
+            <input
+              type="checkbox"
+              [checked]="list.isVisible"
+              (change)="toggleListVisibility(list.id)"
+            />
+          </label>
+
+          <!-- Display List Title or Edit Input -->
+          <span
+            class="list-title"
+            *ngIf="!editingListId || editingListId !== list.id"
+          >
+            {{ list.title }}
+          </span>
+          <input
+            *ngIf="editingListId === list.id"
+            #editInput
+            type="text"
+            [value]="list.title"
+            (keyup.enter)="updateListName(list.id, editInput.value)"
+            (blur)="updateListName(list.id, editInput.value)"
+            class="edit-input"
+          />
+        </div>
+
+        <!-- List Actions (Edit, Delete) -->
+        <div class="list-actions">
+          <div class="menu-container">
+            <button
+              class="more-options"
+              (click)="showMenu[list.id] = !showMenu[list.id]"
+            >
+              ⋮
+            </button>
+            <div class="menu" *ngIf="showMenu[list.id]">
+              <button (click)="startEditing(list.id)">Edit</button>
+              <button (click)="deleteList(list.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Todont Lists -->
+    <ng-container *ngIf="showTodont">
+      <div
+        class="list-item"
+        *ngFor="let list of todontLists$ | async"
+        [class.starred]="list.isStarred"
+      >
+        <div class="list-item-content">
+          <!-- Toggle List Visibility -->
+          <label>
+            <input
+              type="checkbox"
+              [checked]="list.isVisible"
+              (change)="toggleListVisibility(list.id)"
+            />
+          </label>
+
+          <!-- Display List Title or Edit Input -->
+          <span *ngIf="!editingListId || editingListId !== list.id">
+            {{ list.title }}
+          </span>
+          <input
+            *ngIf="editingListId === list.id"
+            #editInput
+            type="text"
+            [value]="list.title"
+            (keyup.enter)="updateListName(list.id, editInput.value)"
+            (blur)="updateListName(list.id, editInput.value)"
+            class="edit-input"
+          />
+        </div>
+
+        <!-- List Actions (Edit, Delete) -->
+        <div class="list-actions">
+          <div class="menu-container">
+            <button
+              class="more-options"
+              (click)="showMenu[list.id] = !showMenu[list.id]"
+            >
+              ⋮
+            </button>
+            <div class="menu" *ngIf="showMenu[list.id]">
+              <button (click)="startEditing(list.id)">Edit</button>
+              <button (click)="deleteList(list.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Create List Form -->
+  <div class="create-list-form" *ngIf="showCreateList">
+    <input
+      #listInput
+      type="text"
+      placeholder="New list name"
+      (keyup.enter)="createList(listInput.value); listInput.value = ''"
+    />
+    <div class="form-actions">
+      <button (click)="showCreateList = false">Cancel</button>
+      <button
+        (click)="createList(listInput.value); listInput.value = ''"
+        class="create"
+      >
+        Create
+      </button>
+    </div>
+  </div>
+</div>

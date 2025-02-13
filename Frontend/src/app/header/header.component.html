@@ -1,0 +1,92 @@
+<div class="container">
+  <header class="d-flex flex-row align-items-center justify-content-between py-3 w-100">
+    <!-- Logo -->
+    <div class="text-center text-md-start">
+      <a href="/home">
+        <img src="assets/images/logo.png" alt="Logo image" class="logo" />
+      </a>
+    </div>
+
+    <!-- Botones de Login/Register y Dropdown -->
+    <div class="d-flex align-items-center gap-2 order-md-2">
+      <!-- Hide Sign Up and Sign In buttons if there is an authToken -->
+      <a *ngIf="!hasAuthToken" href="/register" class="btn btn-outline-primary">
+        Sign Up
+      </a>
+      <a *ngIf="!hasAuthToken" href="/login" class="btn btn-outline-primary">
+        Sign In
+      </a>
+
+      <!-- Show profile dropdown if there is an authToken -->
+      <div *ngIf="hasAuthToken" class="dropdown">
+        <a
+          href="#"
+          class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            src="assets/images/user.png"
+            alt="mdo"
+            width="40"
+            height="40"
+            class="rounded-circle"
+          />
+        </a>
+        <ul class="dropdown-menu text-small">
+          <li><a class="dropdown-item" href="/workspace">Workspace</a></li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li>
+            <a class="dropdown-item" href="/login" (click)="logout($event)">
+              Sign out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Menú de navegación para pantallas grandes -->
+    <div class="d-none d-md-flex flex-grow-1 justify-content-center order-md-1">
+      <ul class="nav">
+        <li *ngFor="let link of navLinks" class="nav-item">
+          <a
+            [routerLink]="link.url"
+            routerLinkActive="active"
+            class="nav-link px-3"
+          >
+            {{ link.label }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Botón de dropdown para móviles -->
+    <div class="d-md-none order-md-3">
+      <div class="dropdown">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Menú
+        </button>
+        <ul
+          class="dropdown-menu dropdown-menu bg-dark bg-opacity-75"
+          aria-labelledby="dropdownMenuButton"
+        >
+          <li *ngFor="let link of navLinks" class="nav-item">
+            <a
+              [routerLink]="link.url"
+              routerLinkActive="active"
+              class="dropdown-item text-white"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+</div>

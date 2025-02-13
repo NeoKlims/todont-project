@@ -1,0 +1,38 @@
+<div
+  class="container px-4 py-5 custom-cards d-flex align-items-center flex-column"
+  id="custom-cards"
+>
+  <h2 class="pb-2">Our services</h2>
+  <h5 class="pb-2 border-bottom">What Todont has to offer</h5>
+
+  <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+    <div class="col" *ngFor="let card of cards">
+      <div
+        class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg"
+        [style.background-image]="'url(' + card.image + ')'"
+      >
+        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+          <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
+            {{ card.title }}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid p-0">
+  <div class="row g-0">
+    <div *ngFor="let service of services" class="col-6 video-section">
+      <!-- Usa la etiqueta <video> para mostrar el video -->
+      <video class="w-100 h-100" autoplay loop muted>
+        <source [src]="service.video" type="video/mp4" />
+        Tu navegador no soporta la etiqueta de video.
+      </video>
+      <div class="image-text" [ngClass]="service.align">
+        <div class="text-large">{{ service.title }}</div>
+        <div class="text-small">{{ service.description }}</div>
+      </div>
+    </div>
+  </div>
+</div>

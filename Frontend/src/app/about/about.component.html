@@ -1,0 +1,86 @@
+<div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button
+      *ngFor="let slide of slides; let i = index"
+      type="button"
+      data-bs-target="#myCarousel"
+      [attr.data-bs-slide-to]="i"
+      [class.active]="i === 0"
+      [attr.aria-label]="'Slide ' + (i + 1)"
+    ></button>
+  </div>
+
+  <div class="carousel-inner">
+    <div
+      *ngFor="let slide of slides; let i = index"
+      class="carousel-item"
+      [class.active]="i === 0"
+    >
+      <img
+        [src]="getImageUrl(slide.image)"
+        class="d-block w-100 carousel-img"
+        alt="{{ slide.title }}"
+      />
+      <div class="container">
+        <div
+          class="carousel-caption"
+          [ngClass]="{
+            'text-start': i === 0,
+            'text-end': i === slides.length - 1
+          }"
+        >
+          <h1>{{ slide.title }}</h1>
+          <p class="opacity-75">{{ slide.text }}</p>
+          <p>
+            <a class="btn btn-lg btn-primary" [href]="slide.buttonLink">
+              {{ slide.buttonText }}
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#myCarousel"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#myCarousel"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<!-- Three columns of text below the carousel -->
+<div
+  class="row cards d-flex flex-wrap justify-content-center align-items-center text-center"
+>
+  <div class="team-header text-center">
+    <div class="text mb-5"><h1>Meet Our Team</h1></div>
+    <div class="text mb-5">
+      <h6>
+        A perfect blend of backend mastery and frontend creativity. Together, we
+        build an experience that keeps productivity at its peak.
+      </h6>
+    </div>
+  </div>
+  <hr />
+  <div
+    *ngFor="let card of cards"
+    class="col-lg-3 col-md-6 d-flex flex-column align-items-center text-center p-5"
+  >
+    <h2>{{ card.title }}</h2>
+    <h4>{{ card.subtitle }}</h4>
+    <p>{{ card.description }}</p>
+  </div>
+</div>

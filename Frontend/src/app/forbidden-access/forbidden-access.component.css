@@ -1,0 +1,116 @@
+.forbidden-container {
+    display: flex;
+    padding: 120px;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .content {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: bold;
+    color: #e74c3c;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+
+  h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  p {
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .home-button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  }
+
+  .home-button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+  }
+
+  .lock-animation {
+    position: relative;
+    height: 100px;
+    margin: 2rem 0;
+  }
+
+  .lock {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: lockShake 1s ease-in-out infinite;
+  }
+
+  .lock-body {
+    width: 60px;
+    height: 45px;
+    background: #e74c3c;
+    border-radius: 5px;
+    position: relative;
+    top: 25px;
+  }
+
+  .lock-hole {
+    width: 20px;
+    height: 20px;
+    background: #c0392b;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes lockShake {
+    0%, 100% {
+      transform: translateX(-50%) rotate(0);
+    }
+    25% {
+      transform: translateX(-50%) rotate(-10deg);
+    }
+    75% {
+      transform: translateX(-50%) rotate(10deg);
+    }
+  }
